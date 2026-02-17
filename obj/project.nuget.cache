@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "0i9YsXZGLHs=",
+  "success": true,
+  "projectFilePath": "/Users/eglibecerra/.openclaw/workspace/WRKFLO-Shell/Wrkflo.Shell.csproj",
+  "expectedPackageFiles": [
+    "/Users/eglibecerra/.nuget/packages/microsoft.aspnetcore.app.internal.assets/10.0.3/microsoft.aspnetcore.app.internal.assets.10.0.3.nupkg.sha512",
+    "/Users/eglibecerra/.nuget/packages/mudblazor/8.15.0/mudblazor.8.15.0.nupkg.sha512"
+  ],
+  "logs": []
+}
