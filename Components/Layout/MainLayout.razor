@@ -9,13 +9,13 @@
     @* HEADER *@
     <MudAppBar Elevation="1" Style="background-color: #4F46E5;">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="ToggleDrawer" />
-        <MudText Typo="Typo.h6" Style="font-weight: 600;">WRKFLO</MudText>
+        <MudText Typo="Typo.h6" Style="font-weight: 600;">WrkFlo</MudText>
         <MudSpacer />
         <MudIconButton Icon="@Icons.Material.Filled.Person" Color="Color.Inherit" />
     </MudAppBar>
 
     @* LEFT NAVIGATION *@
-    <MudDrawer @bind-Open="_drawerOpen" Elevation="1" Variant="DrawerVariant.Responsive">
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="2" Variant="DrawerVariant.Temporary" ClipMode="DrawerClipMode.Always">
         <MudDrawerHeader>
             <MudText Typo="Typo.h6">Menu</MudText>
         </MudDrawerHeader>
@@ -36,13 +36,13 @@
 
 @* FOOTER *@
 <MudAppBar Bottom="true" Elevation="0" Style="background-color: #F9FAFB; border-top: 1px solid #E5E7EB;">
-    <MudText Typo="Typo.body2" Style="color: #6B7280;">© 2026 BECTEC — WRKFLO</MudText>
+    <MudText Typo="Typo.body2" Style="color: #6B7280;">© 2026 {bectec} — WrkFlo</MudText>
     <MudSpacer />
     <MudText Typo="Typo.body2" Style="color: #6B7280;">v0.1.0</MudText>
 </MudAppBar>
 
 @code {
-    private bool _drawerOpen = true;
+    private bool _drawerOpen = false;
 
     private void ToggleDrawer()
     {
