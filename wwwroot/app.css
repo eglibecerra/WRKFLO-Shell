@@ -68,6 +68,161 @@ html, body {
   cursor: pointer;
 }
 
+/* ===== ANNOUNCEMENT BAR ===== */
+.announcement-bar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px 16px;
+  min-height: 44px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  z-index: 1099;
+  position: relative;
+}
+
+.announcement-bar__content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.announcement-bar__icon {
+  flex-shrink: 0;
+}
+
+.announcement-bar__message {
+  line-height: 1.4;
+}
+
+.announcement-bar__action {
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  white-space: nowrap;
+  margin-left: 4px;
+}
+
+.announcement-bar__close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+  margin-left: auto;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.announcement-bar__close:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Severity variants */
+.announcement-bar--info {
+  background-color: #3B82F6;
+  color: #FFFFFF;
+}
+.announcement-bar--info .announcement-bar__action {
+  color: #FFFFFF;
+}
+
+.announcement-bar--success {
+  background-color: #10B981;
+  color: #FFFFFF;
+}
+.announcement-bar--success .announcement-bar__action {
+  color: #FFFFFF;
+}
+
+.announcement-bar--warning {
+  background-color: #F59E0B;
+  color: #111827;
+}
+.announcement-bar--warning .announcement-bar__action {
+  color: #111827;
+}
+.announcement-bar--warning .announcement-bar__close:hover {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.announcement-bar--error {
+  background-color: #EF4444;
+  color: #FFFFFF;
+}
+.announcement-bar--error .announcement-bar__action {
+  color: #FFFFFF;
+}
+
+.announcement-bar--normal {
+  background-color: #4F46E5;
+  color: #FFFFFF;
+}
+.announcement-bar--normal .announcement-bar__action {
+  color: #FFFFFF;
+}
+
+/* Pulsating bottom border */
+.announcement-bar::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  animation: announcement-pulse 2s ease-in-out infinite;
+}
+
+.announcement-bar--info::after {
+  background-color: #1E40AF;
+  animation: announcement-pulse-info 2s ease-in-out infinite;
+}
+.announcement-bar--success::after {
+  background-color: #065F46;
+  animation: announcement-pulse-success 2s ease-in-out infinite;
+}
+.announcement-bar--warning::after {
+  background-color: #92400E;
+  animation: announcement-pulse-warning 2s ease-in-out infinite;
+}
+.announcement-bar--error::after {
+  background-color: #991B1B;
+  animation: announcement-pulse-error 2s ease-in-out infinite;
+}
+.announcement-bar--normal::after {
+  background-color: #312E81;
+  animation: announcement-pulse-normal 2s ease-in-out infinite;
+}
+
+@keyframes announcement-pulse-info {
+  0%, 100% { box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.2), 0 1px 10px 2px rgba(59, 130, 246, 0.4); }
+  50% { box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.35), 0 1px 15px 4px rgba(59, 130, 246, 0.7); }
+}
+@keyframes announcement-pulse-success {
+  0%, 100% { box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.2), 0 1px 10px 2px rgba(16, 185, 129, 0.4); }
+  50% { box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.35), 0 1px 15px 4px rgba(16, 185, 129, 0.7); }
+}
+@keyframes announcement-pulse-warning {
+  0%, 100% { box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.2), 0 1px 10px 2px rgba(245, 158, 11, 0.4); }
+  50% { box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.35), 0 1px 15px 4px rgba(245, 158, 11, 0.7); }
+}
+@keyframes announcement-pulse-error {
+  0%, 100% { box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.2), 0 1px 10px 2px rgba(239, 68, 68, 0.4); }
+  50% { box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.35), 0 1px 15px 4px rgba(239, 68, 68, 0.7); }
+}
+@keyframes announcement-pulse-normal {
+  0%, 100% { box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.2), 0 1px 10px 2px rgba(79, 70, 229, 0.4); }
+  50% { box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.35), 0 1px 15px 4px rgba(79, 70, 229, 0.7); }
+}
+
 .mud-overlay {
   display: none !important;
 }

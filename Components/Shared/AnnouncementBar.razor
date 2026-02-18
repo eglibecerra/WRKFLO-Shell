@@ -1,0 +1,120 @@
+@rendermode InteractiveServer
+
+@if (Visible)
+{
+    <div class="announcement-bar announcement-bar--@Severity.ToString().ToLower()" style="@StyleString">
+        <div class="announcement-bar__content">
+            <MudIcon Icon="@GetIcon()" Size="Size.Small" Class="announcement-bar__icon" />
+            <span class="announcement-bar__message">@Message</span>
+            @if (!string.IsNullOrEmpty(ActionText))
+            {
+                <a class="announcement-bar__action" href="@ActionHref" @onclick="OnActionClick" @onclick:preventDefault="@(string.IsNullOrEmpty(ActionHref))">@ActionText</a>
+            }
+        </div>
+        @if (Dismissible)
+        {
+            <button class="announcement-bar__close" @onclick="Dismiss" aria-label="Dismiss">
+                <MudIcon Icon="@Icons.Material.Filled.Close" Size="Size.Small" />
+            </button>
+        }
+    </div>
+}
+
+@code {
+    /// <summary>
+    /// The announcement message to display.
+    /// </summary>
+    [Parameter]
+    public string Message { get; set; } = "";
+
+    /// <summary>
+    /// Severity level controlling colour scheme: Info, Success, Warning, Error.
+    /// </summary>
+    [Parameter]
+    public Severity Severity { get; set; } = Severity.Info;
+
+    /// <summary>
+    /// Whether the banner is visible.
+    /// </summary>
+    [Parameter]
+    public bool Visible { get; set; } = true;
+
+    /// <summary>
+    /// Whether the user can dismiss the banner.
+    /// </summary>
+    [Parameter]
+    public bool Dismissible { get; set; } = true;
+
+    /// <summary>
+    /// Optional action link text (e.g. "Learn more", "View details").
+    /// </summary>
+    [Parameter]
+    public string? ActionText { get; set; }
+
+    /// <summary>
+    /// URL for the action link. If empty, OnAction fires instead.
+    /// </summary>
+    [Parameter]
+    public string? ActionHref { get; set; }
+
+    /// <summary>
+    /// Custom icon override. If null, uses default icon for the severity.
+    /// </summary>
+    [Parameter]
+    public string? Icon { get; set; }
+
+    /// <summary>
+    /// Additional CSS classes.
+    /// </summary>
+    [Parameter]
+    public string CssClass { get; set; } = "";
+
+    /// <summary>
+    /// Fires when the action link is clicked (if no ActionHref is set).
+    /// </summary>
+    [Parameter]
+    public EventCallback OnAction { get; set; }
+
+    /// <summary>
+    /// Fires when the banner is dismissed.
+    /// </summary>
+    [Parameter]
+    public EventCallback OnDismissed { get; set; }
+
+    /// <summary>
+    /// Two-way binding support for Visible.
+    /// </summary>
+    [Parameter]
+    public EventCallback<bool> VisibleChanged { get; set; }
+
+    private string StyleString => string.Empty;
+
+    private string GetIcon()
+    {
+        if (!string.IsNullOrEmpty(Icon)) return Icon;
+
+        return Severity switch
+        {
+            Severity.Info => Icons.Material.Filled.Info,
+            Severity.Success => Icons.Material.Filled.CheckCircle,
+            Severity.Warning => Icons.Material.Filled.Warning,
+            Severity.Error => Icons.Material.Filled.Error,
+            _ => Icons.Material.Filled.Campaign
+        };
+    }
+
+    private async Task Dismiss()
+    {
+        Visible = false;
+        await VisibleChanged.InvokeAsync(false);
+        await OnDismissed.InvokeAsync();
+    }
+
+    private async Task OnActionClick()
+    {
+        if (string.IsNullOrEmpty(ActionHref))
+        {
+            await OnAction.InvokeAsync();
+        }
+    }
+}

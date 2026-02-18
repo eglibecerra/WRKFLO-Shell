@@ -50,6 +50,13 @@
 
     @* MAIN CONTENT *@
     <MudMainContent>
+        @* ANNOUNCEMENT BAR — full width, outside container *@
+        <AnnouncementBar @bind-Visible="_announcementVisible"
+                         Severity="Severity.Info"
+                         Message="🚀 WRKFLO v2.0 is coming soon! New form builder, workflow engine, and more."
+                         ActionText="Learn more"
+                         ActionHref="/changelog"
+                         Dismissible="true" />
         <MudContainer MaxWidth="MaxWidth.Large" Class="py-4 pb-16">
             @Body
         </MudContainer>
@@ -69,6 +76,7 @@
 @code {
     private bool _drawerOpen = false;
     private bool _isLoading = true; // Demo: shows loading bar
+    private bool _announcementVisible = true;
     private List<NavSearch.SearchResult> _searchResults = [];
 
     private void ToggleDrawer()

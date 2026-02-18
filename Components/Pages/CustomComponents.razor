@@ -4,6 +4,46 @@
 
 <MudText Typo="Typo.h4" Class="mb-4">Custom Components</MudText>
 
+@* ===== ANNOUNCEMENT BAR ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-2">AnnouncementBar</MudText>
+    <MudText Typo="Typo.body2" Class="mb-3" Color="Color.Secondary">
+        Full-width banner for site-wide alerts — maintenance schedules, product updates, important notices.
+        Sits flush under the top navigation, behind the slide-out menu.
+    </MudText>
+    <MudText Typo="Typo.caption" Class="mb-3" Style="font-family: monospace;">
+        &lt;AnnouncementBar Message="Scheduled maintenance tonight at 11pm" Severity="Severity.Warning" Dismissible="true" /&gt;
+    </MudText>
+    <MudText Typo="Typo.subtitle2" Class="mb-2 mt-2">Parameters</MudText>
+    <MudSimpleTable Dense="true" Bordered="true" Class="mb-4" Style="max-width: 700px;">
+        <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+            <tr><td><code>Message</code></td><td>string</td><td>""</td><td>The announcement text</td></tr>
+            <tr><td><code>Severity</code></td><td>Severity</td><td>Info</td><td>Info, Success, Warning, Error, Normal</td></tr>
+            <tr><td><code>Visible</code></td><td>bool</td><td>true</td><td>Show/hide (supports two-way binding)</td></tr>
+            <tr><td><code>Dismissible</code></td><td>bool</td><td>true</td><td>Show close button</td></tr>
+            <tr><td><code>ActionText</code></td><td>string?</td><td>null</td><td>Optional action link text</td></tr>
+            <tr><td><code>ActionHref</code></td><td>string?</td><td>null</td><td>URL for action link</td></tr>
+            <tr><td><code>Icon</code></td><td>string?</td><td>null</td><td>Custom icon (defaults based on severity)</td></tr>
+            <tr><td><code>OnAction</code></td><td>EventCallback</td><td>—</td><td>Fires when action clicked (if no href)</td></tr>
+            <tr><td><code>OnDismissed</code></td><td>EventCallback</td><td>—</td><td>Fires when banner dismissed</td></tr>
+        </tbody>
+    </MudSimpleTable>
+
+    <MudText Typo="Typo.subtitle2" Class="mb-3">Live Demos</MudText>
+    <div class="d-flex flex-column gap-2 mb-3">
+        <AnnouncementBar Message="🚀 New feature: Drag & drop form builder is now available!" Severity="Severity.Info" ActionText="Try it now" Dismissible="false" />
+        <AnnouncementBar Message="✅ All systems operational. No issues detected." Severity="Severity.Success" Dismissible="false" />
+        <AnnouncementBar Message="⚠️ Scheduled maintenance tonight from 11:00 PM to 2:00 AM AEST." Severity="Severity.Warning" ActionText="View details" Dismissible="false" />
+        <AnnouncementBar Message="🔴 Service disruption: Form submissions may be delayed." Severity="Severity.Error" ActionText="Status page" Dismissible="false" />
+        <AnnouncementBar @bind-Visible="_demoBannerVisible" Message="This one is dismissible — click the X to close it." Severity="Severity.Normal" Dismissible="true" />
+    </div>
+    @if (!_demoBannerVisible)
+    {
+        <MudButton Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="@(() => _demoBannerVisible = true)">Show dismissed banner</MudButton>
+    }
+</MudPaper>
+
 @* ===== NAV SEARCH ===== *@
 <MudPaper Class="pa-4 mb-4" Elevation="1">
     <MudText Typo="Typo.h5" Class="mb-2">NavSearch</MudText>
@@ -208,6 +248,8 @@
 <MudText Typo="Typo.body1" Color="Color.Secondary" Class="mt-4">More custom components coming soon...</MudText>
 
 @code {
+    private bool _demoBannerVisible = true;
+
     private string _demoTab = "inbox";
     private void OnDemoTabChanged(string tab) => _demoTab = tab;
 
