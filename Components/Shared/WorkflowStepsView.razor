@@ -122,42 +122,39 @@
                             }
                         </div>
 
-                        @* Expanded branch panel *@
-                        @if (hasBranch && isBranchExpanded)
-                        {
-                            <div class="wf-branch-panel">
-                                <div class="wf-branch-panel-header">
-                                    <MudIcon Icon="@Icons.Material.Outlined.AccountTree" Size="Size.Small" />
-                                    <MudText Typo="Typo.caption"><strong>Branch Point</strong> — @step.BranchConditionLabel</MudText>
-                                </div>
-                                <div class="wf-branch-paths">
-                                    @foreach (var branch in step.Branches!)
-                                    {
-                                        var isTaken = branch.WasTaken;
-                                        <div class="wf-branch-path @(isTaken ? "wf-branch-path--taken" : "wf-branch-path--skipped")">
-                                            <div class="wf-branch-path-indicator">
-                                                @if (isTaken)
-                                                {
-                                                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Color="Color.Success" />
-                                                }
-                                                else
-                                                {
-                                                    <MudIcon Icon="@Icons.Material.Outlined.Circle" Size="Size.Small" Style="color: #D1D5DB;" />
-                                                }
-                                            </div>
-                                            <div class="wf-branch-path-info">
-                                                <div class="wf-branch-path-condition">@branch.Condition</div>
-                                                <div class="wf-branch-path-target">→ @branch.TargetStepName</div>
-                                            </div>
+                        @* Expanded branch panel — using MudPopover to escape overflow:hidden *@
+                        <MudPopover Open="@(hasBranch && isBranchExpanded)" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Class="wf-branch-panel">
+                            <div class="wf-branch-panel-header">
+                                <MudIcon Icon="@Icons.Material.Outlined.AccountTree" Size="Size.Small" />
+                                <MudText Typo="Typo.caption"><strong>Branch Point</strong> — @step.BranchConditionLabel</MudText>
+                            </div>
+                            <div class="wf-branch-paths">
+                                @foreach (var branch in step.Branches!)
+                                {
+                                    var isTaken = branch.WasTaken;
+                                    <div class="wf-branch-path @(isTaken ? "wf-branch-path--taken" : "wf-branch-path--skipped")">
+                                        <div class="wf-branch-path-indicator">
                                             @if (isTaken)
                                             {
-                                                <MudChip T="string" Size="Size.Small" Color="Color.Success" Variant="Variant.Outlined" Class="wf-branch-path-chip">Taken</MudChip>
+                                                <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Color="Color.Success" />
+                                            }
+                                            else
+                                            {
+                                                <MudIcon Icon="@Icons.Material.Outlined.Circle" Size="Size.Small" Style="color: #D1D5DB;" />
                                             }
                                         </div>
-                                    }
-                                </div>
+                                        <div class="wf-branch-path-info">
+                                            <div class="wf-branch-path-condition">@branch.Condition</div>
+                                            <div class="wf-branch-path-target">→ @branch.TargetStepName</div>
+                                        </div>
+                                        @if (isTaken)
+                                        {
+                                            <MudChip T="string" Size="Size.Small" Color="Color.Success" Variant="Variant.Outlined" Class="wf-branch-path-chip">Taken</MudChip>
+                                        }
+                                    </div>
+                                }
                             </div>
-                        }
+                        </MudPopover>
                     }
                 </div>
             }
