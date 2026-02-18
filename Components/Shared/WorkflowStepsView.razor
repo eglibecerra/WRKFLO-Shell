@@ -1,9 +1,9 @@
 @* ===========================
-   WorkflowStepperBranching Component (Option 3: Hybrid)
+   WorkflowStepsView Component (Option 3: Hybrid)
    Linear stepper with branch point indicators.
    Click a branch icon to expand and see possible paths.
    Hover any step for action details.
-   Usage: <WorkflowStepperBranching Steps="steps" />
+   Usage: <WorkflowStepsView Steps="steps" />
    =========================== *@
 
 <div class="wf-branch">
@@ -27,8 +27,14 @@
 
     @if (!_showFullMap)
     {
-        @* ===== LINEAR VIEW (default) ===== *@
-        <div class="wf-branch-linear">
+        @* ===== LINEAR VIEW (default) with carousel ===== *@
+        <div class="wf-branch-carousel">
+            <button class="wf-branch-nav" @onclick="ScrollLeft" disabled="@(_scrollIndex <= 0)">
+                <MudIcon Icon="@Icons.Material.Filled.ChevronLeft" />
+            </button>
+
+            <div class="wf-branch-viewport">
+                <div class="wf-branch-linear" style="transform: translateX(-@(_scrollIndex * _stepWidth)px);">
             @for (int i = 0; i < Steps.Count; i++)
             {
                 var step = Steps[i];
@@ -155,6 +161,12 @@
                     }
                 </div>
             }
+                </div>
+            </div>
+
+            <button class="wf-branch-nav" @onclick="ScrollRight" disabled="@(_scrollIndex >= _maxScroll)">
+                <MudIcon Icon="@Icons.Material.Filled.ChevronRight" />
+            </button>
         </div>
     }
     else
@@ -234,9 +246,16 @@
 
 @code {
     [Parameter] public List<BranchingStep> Steps { get; set; } = new();
+    [Parameter] public int VisibleSteps { get; set; } = 5;
 
     private bool _showFullMap = false;
     private HashSet<int> _expandedBranches = new();
+    private int _scrollIndex = 0;
+    private int _stepWidth = 200;
+    private int _maxScroll => Math.Max(0, Steps.Count - VisibleSteps);
+
+    private void ScrollLeft() { if (_scrollIndex > 0) _scrollIndex--; }
+    private void ScrollRight() { if (_scrollIndex < _maxScroll) _scrollIndex++; }
 
     private void ToggleBranch(int index)
     {

@@ -72,32 +72,24 @@
 
 <div class="mb-6"></div>
 
-@* ===== WORKFLOW STATUS VIEW ===== *@
+@* ===== WORKFLOW STEPPER BRANCHING ===== *@
 <MudPaper Class="pa-4 mb-4 mt-6" Elevation="1">
-    <MudText Typo="Typo.h5" Class="mb-2">WorkflowStatusView</MudText>
+    <MudText Typo="Typo.h5" Class="mb-2">WorkflowStepsView</MudText>
     <MudText Typo="Typo.body2" Class="mb-3" Color="Color.Secondary">
-        Horizontal carousel stepper showing workflow progress. Completed steps show green ticks, active step pulses, pending steps are grey.
+        Hybrid stepper with carousel navigation, branch point indicators, and linear/full map toggle.
+    </MudText>
+    <MudText Typo="Typo.caption" Class="mb-3" Style="font-family: monospace;">
+        &lt;WorkflowStepsView Steps="steps" VisibleSteps="5" /&gt;
     </MudText>
 
-    <MudText Typo="Typo.h6" Class="mb-2 mt-4">Completed Workflow</MudText>
-    <WorkflowStatusView Steps="_completedSteps" />
+    <MudText Typo="Typo.h6" Class="mb-2 mt-4">Long Workflow — Carousel Active (8 steps)</MudText>
+    <WorkflowStepsView Steps="_longWorkflowSteps" VisibleSteps="5" />
 
-    <MudText Typo="Typo.h6" Class="mb-2 mt-6">In-Progress Workflow</MudText>
-    <WorkflowStatusView Steps="_inProgressSteps" />
-</MudPaper>
-
-@* ===== WORKFLOW STEPPER BRANCHING (Option 3: Hybrid) ===== *@
-<MudPaper Class="pa-4 mb-4 mt-6" Elevation="1">
-    <MudText Typo="Typo.h5" Class="mb-2">WorkflowStepperBranching</MudText>
-    <MudText Typo="Typo.body2" Class="mb-3" Color="Color.Secondary">
-        Hybrid stepper: linear view by default with branch point indicators. Click the fork icon to see possible paths. Toggle to full map view for complex workflows.
-    </MudText>
-
-    <MudText Typo="Typo.h6" Class="mb-2 mt-4">Expense Claim — Branching Workflow (In Progress)</MudText>
-    <WorkflowStepperBranching Steps="_branchingExpenseSteps" />
+    <MudText Typo="Typo.h6" Class="mb-2 mt-6">Short Workflow — No Scrolling Needed (5 steps)</MudText>
+    <WorkflowStepsView Steps="_branchingExpenseSteps" VisibleSteps="5" />
 
     <MudText Typo="Typo.h6" Class="mb-2 mt-6">IT Access Request — Completed with Skipped Branch</MudText>
-    <WorkflowStepperBranching Steps="_branchingITSteps" />
+    <WorkflowStepsView Steps="_branchingITSteps" VisibleSteps="5" />
 </MudPaper>
 
 <MudText Typo="Typo.body1" Color="Color.Secondary" Class="mt-4">More custom components coming soon...</MudText>
@@ -109,42 +101,54 @@
     private bool _loadingVisible = true;
     private void ToggleLoading() => _loadingVisible = !_loadingVisible;
 
-    // Completed workflow demo
-    private List<WorkflowStatusView.WorkflowStep> _completedSteps = new()
-    {
-        new() { Name = "Details Entered", Role = "BY CSR EMPLOYEE", Status = WorkflowStatusView.StepStatus.Completed, ActionedBy = "BECERRA.EGLI", ActionedDate = new DateTime(2026, 2, 10, 9, 15, 0) },
-        new() { Name = "Considered for Approval", Role = "BY YOUR MANAGER", Status = WorkflowStatusView.StepStatus.Completed, ActionedBy = "SMITH.JANE", ActionedDate = new DateTime(2026, 2, 11, 14, 30, 0) },
-        new() { Name = "Considered for Authorisation", Role = "BY REVIEW CRM ROLE TEAM", Status = WorkflowStatusView.StepStatus.Completed, ActionedBy = "WILSON.BOB", ActionedDate = new DateTime(2026, 2, 12, 10, 45, 0) },
-        new() { Name = "Processed", Role = "BY SERVICE DESK TEAM", Status = WorkflowStatusView.StepStatus.Completed, ActionedBy = "CHEN.MIKE", ActionedDate = new DateTime(2026, 2, 13, 16, 20, 0) },
-        new() { Name = "Considered for Authorisation", Role = "BY SECURITY TEAM", Status = WorkflowStatusView.StepStatus.Completed, ActionedBy = "EDLINN", ActionedDate = new DateTime(2026, 2, 14, 14, 46, 15) },
-        new() { Name = "Authorised", Role = "BY EXECUTIVE GENERAL MANAGER", Status = WorkflowStatusView.StepStatus.Completed, ActionedBy = "PARK.LISA", ActionedDate = new DateTime(2026, 2, 15, 11, 0, 0) },
-    };
-
-    // In-progress workflow demo
-    private List<WorkflowStatusView.WorkflowStep> _inProgressSteps = new()
-    {
-        new() { Name = "Details Entered", Role = "BY CSR EMPLOYEE", Status = WorkflowStatusView.StepStatus.Completed, ActionedBy = "BECERRA.EGLI", ActionedDate = new DateTime(2026, 2, 16, 9, 0, 0) },
-        new() { Name = "Considered for Authorisation", Role = "BY MANAGER", Status = WorkflowStatusView.StepStatus.Active, ActionedBy = "PRUE.FRANCIS", ActionedDate = new DateTime(2026, 2, 18, 15, 52, 2) },
-        new() { Name = "Considered for Authorisation", Role = "BY EXECUTIVE GENERAL MANAGER / REGIONAL MANAGER / HR / FINANCE MANAGER", Status = WorkflowStatusView.StepStatus.Pending },
-        new() { Name = "Considered for Authorisation", Role = "BY NBIT ARCHITECTURE", Status = WorkflowStatusView.StepStatus.Pending },
-        new() { Name = "Authorised", Role = "BY EXECUTIVE GENERAL MANAGER NBIT", Status = WorkflowStatusView.StepStatus.Pending },
-    };
-
     // ===== BRANCHING WORKFLOW DEMOS =====
 
+    // Long workflow with 8 steps — needs carousel
+    private List<WorkflowStepsView.BranchingStep> _longWorkflowSteps = new()
+    {
+        new() { Name = "Details Entered", Role = "CSR Employee", Status = WorkflowStepsView.StepStatus.Completed, ActionedBy = "BECERRA.EGLI", ActionedDate = new DateTime(2026, 2, 10, 9, 15, 0) },
+        new()
+        {
+            Name = "Manager Approval", Role = "Direct Manager", Status = WorkflowStepsView.StepStatus.Completed,
+            ActionedBy = "SMITH.JANE", ActionedDate = new DateTime(2026, 2, 11, 14, 30, 0),
+            BranchConditionLabel = "Department",
+            Branches = new()
+            {
+                new() { Condition = "IT Department", TargetStepName = "IT Architecture Review", WasTaken = true },
+                new() { Condition = "Other Departments", TargetStepName = "Finance Review", WasTaken = false }
+            }
+        },
+        new() { Name = "IT Architecture Review", Role = "NBIT Architecture", Status = WorkflowStepsView.StepStatus.Completed, ActionedBy = "WILSON.BOB", ActionedDate = new DateTime(2026, 2, 12, 10, 45, 0) },
+        new() { Name = "Security Review", Role = "Security Team", Status = WorkflowStepsView.StepStatus.Completed, ActionedBy = "EDLINN", ActionedDate = new DateTime(2026, 2, 13, 16, 20, 0) },
+        new()
+        {
+            Name = "Executive Authorisation", Role = "EGM NBIT", Status = WorkflowStepsView.StepStatus.Completed,
+            ActionedBy = "PARK.LISA", ActionedDate = new DateTime(2026, 2, 14, 11, 0, 0),
+            BranchConditionLabel = "Cost threshold",
+            Branches = new()
+            {
+                new() { Condition = "Cost ≤ $50,000", TargetStepName = "Procurement", WasTaken = false },
+                new() { Condition = "Cost > $50,000", TargetStepName = "Board Approval", WasTaken = true }
+            }
+        },
+        new() { Name = "Board Approval", Role = "Board of Directors", Status = WorkflowStepsView.StepStatus.Active, ActionedDate = new DateTime(2026, 2, 15, 9, 0, 0) },
+        new() { Name = "Procurement", Role = "Procurement Team", Status = WorkflowStepsView.StepStatus.Pending },
+        new() { Name = "Complete", Role = "System", Status = WorkflowStepsView.StepStatus.Pending },
+    };
+
     // Expense claim with a branch at manager approval (amount determines route)
-    private List<WorkflowStepperBranching.BranchingStep> _branchingExpenseSteps = new()
+    private List<WorkflowStepsView.BranchingStep> _branchingExpenseSteps = new()
     {
         new()
         {
             Name = "Details Entered", Role = "Requester",
-            Status = WorkflowStepperBranching.StepStatus.Completed,
+            Status = WorkflowStepsView.StepStatus.Completed,
             ActionedBy = "BECERRA.EGLI", ActionedDate = new DateTime(2026, 2, 15, 9, 30, 0)
         },
         new()
         {
             Name = "Manager Approval", Role = "Direct Manager",
-            Status = WorkflowStepperBranching.StepStatus.Completed,
+            Status = WorkflowStepsView.StepStatus.Completed,
             ActionedBy = "SMITH.JANE", ActionedDate = new DateTime(2026, 2, 16, 11, 15, 0),
             Comment = "Approved — within budget",
             BranchConditionLabel = "Amount threshold",
@@ -158,34 +162,34 @@
         new()
         {
             Name = "Finance Review", Role = "Finance Team",
-            Status = WorkflowStepperBranching.StepStatus.Active,
+            Status = WorkflowStepsView.StepStatus.Active,
             ActionedDate = new DateTime(2026, 2, 16, 11, 15, 0)
         },
         new()
         {
             Name = "Payment Processing", Role = "Accounts Payable",
-            Status = WorkflowStepperBranching.StepStatus.Pending
+            Status = WorkflowStepsView.StepStatus.Pending
         },
         new()
         {
             Name = "Complete", Role = "System",
-            Status = WorkflowStepperBranching.StepStatus.Pending
+            Status = WorkflowStepsView.StepStatus.Pending
         }
     };
 
     // IT access request — completed, with a skipped security review branch
-    private List<WorkflowStepperBranching.BranchingStep> _branchingITSteps = new()
+    private List<WorkflowStepsView.BranchingStep> _branchingITSteps = new()
     {
         new()
         {
             Name = "Request Submitted", Role = "Requester",
-            Status = WorkflowStepperBranching.StepStatus.Completed,
+            Status = WorkflowStepsView.StepStatus.Completed,
             ActionedBy = "CHEN.MIKE", ActionedDate = new DateTime(2026, 2, 10, 8, 0, 0)
         },
         new()
         {
             Name = "Manager Approval", Role = "Direct Manager",
-            Status = WorkflowStepperBranching.StepStatus.Completed,
+            Status = WorkflowStepsView.StepStatus.Completed,
             ActionedBy = "WILSON.BOB", ActionedDate = new DateTime(2026, 2, 10, 14, 30, 0),
             BranchConditionLabel = "Access level requested",
             Branches = new()
@@ -197,19 +201,19 @@
         new()
         {
             Name = "Security Review", Role = "Security Team",
-            Status = WorkflowStepperBranching.StepStatus.Skipped,
+            Status = WorkflowStepsView.StepStatus.Skipped,
             SkipReason = "Standard access requested — security review not required"
         },
         new()
         {
             Name = "IT Provisioning", Role = "Service Desk",
-            Status = WorkflowStepperBranching.StepStatus.Completed,
+            Status = WorkflowStepsView.StepStatus.Completed,
             ActionedBy = "LEE.SARAH", ActionedDate = new DateTime(2026, 2, 11, 10, 0, 0)
         },
         new()
         {
             Name = "Complete", Role = "System",
-            Status = WorkflowStepperBranching.StepStatus.Completed,
+            Status = WorkflowStepsView.StepStatus.Completed,
             ActionedBy = "SYSTEM", ActionedDate = new DateTime(2026, 2, 11, 10, 0, 30)
         }
     };
