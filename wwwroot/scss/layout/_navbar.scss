@@ -1,6 +1,26 @@
+@use '../base/variables' as *;
+
 // ===========================
 // Top Navigation Bar
 // ===========================
 
-// (Inline styles on MudAppBar handle most navbar styling)
-// Add any navbar-specific overrides here
+.wrkflo-appbar {
+  background-color: $background !important;
+  box-shadow: $shadow-md !important;
+}
+
+.wrkflo-menu-btn {
+  color: $primary !important;
+}
+
+.wrkflo-logo {
+  font-weight: 600;
+  color: $primary;
+}
+
+.wrkflo-search {
+  max-width: 650px;
+  width: 100%;
+  background: $surface;
+  border-radius: 8px;
+}

@@ -1,9 +1,91 @@
 @page "/"
 
-<PageTitle>WRKFLO</PageTitle>
+<PageTitle>WRKFLO - MyForms</PageTitle>
 
-<MudText Typo="Typo.h4" Class="mb-4">Dashboard</MudText>
+<MudText Typo="Typo.h4" Class="mb-4">MyForms</MudText>
 
-<MudText Typo="Typo.body1" Color="Color.Secondary">
-    Welcome to WRKFLO. This is the shell layout.
-</MudText>
+@* Status Tabs Component *@
+<StatusTabs InboxCount="_inboxCount" OutboxCount="_outboxCount" CompleteCount="_completeCount"
+            ActiveTab="_activeTab" OnTabChanged="HandleTabChanged" />
+
+<div class="mb-6"></div>
+
+@* Forms Table *@
+<MudPaper Elevation="1" Class="pa-4">
+    <MudSimpleTable Style="overflow-x: auto;">
+        <thead>
+            <tr>
+                <th>Form Name</th>
+                <th>Submitted By</th>
+                <th>Current Step</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var form in GetFilteredForms())
+            {
+                <tr>
+                    <td>@form.Name</td>
+                    <td>@form.SubmittedBy</td>
+                    <td>@form.CurrentStep</td>
+                    <td>
+                        <MudChip T="string" Color="@GetStatusColor(form.Status)" Size="Size.Small">@form.Status</MudChip>
+                    </td>
+                    <td>@form.Date.ToString("dd MMM yyyy")</td>
+                    <td>
+                        <MudButton Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small">View</MudButton>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </MudSimpleTable>
+</MudPaper>
+
+@code {
+    private string _activeTab = "inbox";
+    private int _inboxCount = 5;
+    private int _outboxCount = 12;
+    private int _completeCount = 48;
+
+    private void HandleTabChanged(string tab) => _activeTab = tab;
+
+    private List<FormItem> _forms = new()
+    {
+        new("Expense Claim #1042", "Jane Smith", "Manager Approval", "Pending", DateTime.Today.AddDays(-1), "inbox"),
+        new("Leave Request #892", "Bob Wilson", "HR Review", "Pending", DateTime.Today, "inbox"),
+        new("Purchase Order #445", "Sarah Lee", "Finance Approval", "Pending", DateTime.Today.AddDays(-2), "inbox"),
+        new("IT Access Request #201", "Mike Chen", "Security Review", "Pending", DateTime.Today.AddDays(-1), "inbox"),
+        new("Travel Request #67", "Lisa Park", "Manager Approval", "Pending", DateTime.Today, "inbox"),
+        new("Expense Claim #1038", "Egli Becerra", "Finance Review", "In Progress", DateTime.Today.AddDays(-3), "outbox"),
+        new("Leave Request #885", "Egli Becerra", "Manager Approval", "In Progress", DateTime.Today.AddDays(-1), "outbox"),
+        new("Purchase Order #440", "Egli Becerra", "Procurement", "In Progress", DateTime.Today.AddDays(-5), "outbox"),
+        new("IT Access Request #198", "Egli Becerra", "IT Admin", "In Progress", DateTime.Today.AddDays(-2), "outbox"),
+        new("Contractor Onboard #55", "Egli Becerra", "HR Processing", "In Progress", DateTime.Today.AddDays(-4), "outbox"),
+        new("Vehicle Request #33", "Egli Becerra", "Fleet Manager", "In Progress", DateTime.Today.AddDays(-1), "outbox"),
+        new("Office Supplies #112", "Egli Becerra", "Admin", "In Progress", DateTime.Today.AddDays(-2), "outbox"),
+        new("Expense Claim #990", "Egli Becerra", "—", "Approved", DateTime.Today.AddDays(-14), "outbox"),
+        new("Leave Request #850", "Egli Becerra", "—", "Approved", DateTime.Today.AddDays(-10), "outbox"),
+        new("Purchase Order #420", "Egli Becerra", "—", "Approved", DateTime.Today.AddDays(-21), "outbox"),
+        new("Expense Claim #1035", "Egli Becerra", "—", "Approved", DateTime.Today.AddDays(-7), "outbox"),
+        new("Training Request #78", "Egli Becerra", "—", "Approved", DateTime.Today.AddDays(-30), "outbox"),
+        new("Expense Claim #800", "Egli Becerra", "Complete", "Completed", DateTime.Today.AddDays(-60), "complete"),
+        new("Leave Request #720", "Egli Becerra", "Complete", "Completed", DateTime.Today.AddDays(-45), "complete"),
+        new("Purchase Order #380", "Egli Becerra", "Complete", "Completed", DateTime.Today.AddDays(-90), "complete"),
+    };
+
+    private List<FormItem> GetFilteredForms() => _forms.Where(f => f.Tab == _activeTab).ToList();
+
+    private Color GetStatusColor(string status) => status switch
+    {
+        "Pending" => Color.Warning,
+        "In Progress" => Color.Info,
+        "Approved" => Color.Success,
+        "Completed" => Color.Primary,
+        "Rejected" => Color.Error,
+        _ => Color.Default
+    };
+
+    private record FormItem(string Name, string SubmittedBy, string CurrentStep, string Status, DateTime Date, string Tab);
+}

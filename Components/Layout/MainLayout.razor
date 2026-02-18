@@ -7,19 +7,19 @@
 
 <MudLayout>
     @* HEADER *@
-    <MudAppBar Elevation="3" Style="background-color: #F9FAFB; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Style="color: #4F46E5;" Edge="Edge.Start" OnClick="ToggleDrawer" />
-        <MudText Typo="Typo.h6" Style="font-weight: 600; color: #4F46E5;">WrkFlo</MudText>
+    <MudAppBar Elevation="3" Class="wrkflo-appbar">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Class="wrkflo-menu-btn" Edge="Edge.Start" OnClick="ToggleDrawer" />
+        <MudText Typo="Typo.h6" Class="wrkflo-logo">WrkFlo</MudText>
         <MudSpacer />
         <MudTextField @bind-Value="_searchText" Placeholder="Search Forms" Variant="Variant.Outlined" Margin="Margin.Dense"
             Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary"
-            Style="max-width: 650px; width: 100%; background: white; border-radius: 8px;" />
+            Class="wrkflo-search" />
         <MudSpacer />
         <MudMenu AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
             <ActivatorContent>
-                <MudButton Variant="Variant.Text" Style="text-transform: none; color: #111827;">
-                    <MudText Typo="Typo.body2" Class="mr-2" Style="color: #6B7280;">Becerra, Egli</MudText>
-                    <MudAvatar Size="Size.Small" Style="width: 36px; height: 36px;">
+                <MudButton Variant="Variant.Text" Class="wrkflo-user-btn">
+                    <MudText Typo="Typo.body2" Class="mr-2 wrkflo-user-name">Becerra, Egli</MudText>
+                    <MudAvatar Size="Size.Small" Class="wrkflo-user-avatar">
                         <MudImage Src="images/avatar-egli.png" Alt="Egli Becerra" />
                     </MudAvatar>
                 </MudButton>
@@ -40,12 +40,13 @@
 
     @* LEFT NAVIGATION *@
     <MudDrawer @bind-Open="_drawerOpen" Elevation="2" Variant="DrawerVariant.Responsive" ClipMode="DrawerClipMode.Always">
-        <MudNavMenu Class="pt-0" Style="margin-top: 0;">
-            <MudNavLink Href="/" Icon="@Icons.Material.Filled.Dashboard" IconColor="Color.Primary" Style="color: #4F46E5;">Dashboard</MudNavLink>
-            <MudNavLink Href="/forms" Icon="@Icons.Material.Filled.Description" IconColor="Color.Primary" Style="color: #4F46E5;">Forms</MudNavLink>
-            <MudNavLink Href="/workflows" Icon="@Icons.Material.Filled.AccountTree" IconColor="Color.Primary" Style="color: #4F46E5;">Workflows</MudNavLink>
+        <MudNavMenu>
+            <MudNavLink Href="/" Icon="@Icons.Material.Filled.Dashboard" IconColor="Color.Primary" Class="wrkflo-nav-link">Dashboard</MudNavLink>
+            <MudNavLink Href="/forms" Icon="@Icons.Material.Filled.Description" IconColor="Color.Primary" Class="wrkflo-nav-link">Forms</MudNavLink>
+            <MudNavLink Href="/workflows" Icon="@Icons.Material.Filled.AccountTree" IconColor="Color.Primary" Class="wrkflo-nav-link">Workflows</MudNavLink>
             <MudDivider Class="my-2" />
-            <MudNavLink Href="/components" Icon="@Icons.Material.Filled.Widgets" IconColor="Color.Primary" Style="color: #4F46E5;">Component Showcase</MudNavLink>
+            <MudNavLink Href="/components" Icon="@Icons.Material.Filled.Widgets" IconColor="Color.Primary" Class="wrkflo-nav-link">Component Showcase</MudNavLink>
+            <MudNavLink Href="/custom-components" Icon="@Icons.Material.Filled.Extension" IconColor="Color.Primary" Class="wrkflo-nav-link">Custom Components</MudNavLink>
         </MudNavMenu>
     </MudDrawer>
 
@@ -58,15 +59,19 @@
 </MudLayout>
 
 @* FOOTER *@
-<MudAppBar Bottom="true" Elevation="0" Style="background-color: #F9FAFB; border-top: 1px solid #E5E7EB; min-height: 40px; height: 40px;">
-    <MudText Typo="Typo.body2" Style="color: #4F46E5;">WrkFlo © 2026 by { bectec }</MudText>
-    <MudSpacer />
-    <MudText Typo="Typo.body2" Style="color: #4F46E5;">v0.1.0</MudText>
-</MudAppBar>
+<footer class="wrkflo-footer-wrapper">
+    <LoadingBar Color="Color.Primary" Visible="_isLoading" CssClass="wrkflo-footer-loader" />
+    <div class="wrkflo-footer">
+        <MudText Typo="Typo.body2" Class="wrkflo-footer-text">WrkFlo © 2026 by { bectec }</MudText>
+        <MudSpacer />
+        <MudText Typo="Typo.body2" Class="wrkflo-footer-text">v0.1.0</MudText>
+    </div>
+</footer>
 
 @code {
     private bool _drawerOpen = false;
     private string _searchText = "";
+    private bool _isLoading = true; // Demo: shows loading bar
 
     private void ToggleDrawer()
     {

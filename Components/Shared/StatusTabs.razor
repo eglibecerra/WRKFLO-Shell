@@ -1,0 +1,31 @@
+@* ===========================
+   StatusTabs Component
+   Segmented button bar for filtering forms by status.
+   Usage: <StatusTabs InboxCount="5" OutboxCount="12" CompleteCount="48" ActiveTab="inbox" OnTabChanged="HandleTab" />
+   =========================== *@
+
+<div class="status-tabs">
+    <button class="status-tab inbox @(ActiveTab == "inbox" ? "active" : "")" @onclick='() => SelectTab("inbox")'>
+        Inbox (@InboxCount)
+    </button>
+    <button class="status-tab outbox @(ActiveTab == "outbox" ? "active" : "")" @onclick='() => SelectTab("outbox")'>
+        Outbox (@OutboxCount)
+    </button>
+    <button class="status-tab complete @(ActiveTab == "complete" ? "active" : "")" @onclick='() => SelectTab("complete")'>
+        Complete (@CompleteCount)
+    </button>
+</div>
+
+@code {
+    [Parameter] public int InboxCount { get; set; }
+    [Parameter] public int OutboxCount { get; set; }
+    [Parameter] public int CompleteCount { get; set; }
+    [Parameter] public string ActiveTab { get; set; } = "inbox";
+    [Parameter] public EventCallback<string> OnTabChanged { get; set; }
+
+    private async Task SelectTab(string tab)
+    {
+        ActiveTab = tab;
+        await OnTabChanged.InvokeAsync(tab);
+    }
+}

@@ -1,0 +1,19 @@
+@use '../base/variables' as *;
+
+// ===========================
+// User Profile Menu (Top Right)
+// ===========================
+
+.wrkflo-user-btn {
+  text-transform: none !important;
+  color: $text-primary !important;
+}
+
+.wrkflo-user-name {
+  color: $text-secondary;
+}
+
+.wrkflo-user-avatar {
+  width: 36px;
+  height: 36px;
+}

@@ -24,6 +24,27 @@ html, body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16) !important;
 }
 
+.wrkflo-appbar {
+  background-color: #F9FAFB !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.wrkflo-menu-btn {
+  color: #4F46E5 !important;
+}
+
+.wrkflo-logo {
+  font-weight: 600;
+  color: #4F46E5;
+}
+
+.wrkflo-search {
+  max-width: 650px;
+  width: 100%;
+  background: #FFFFFF;
+  border-radius: 8px;
+}
+
 .mud-overlay {
   display: none !important;
 }
@@ -38,6 +59,11 @@ html, body {
 
 .mud-navmenu {
   padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+.wrkflo-nav-link {
+  color: #4F46E5 !important;
 }
 
 .mud-nav-link:hover {
@@ -46,6 +72,38 @@ html, body {
 }
 .mud-nav-link:hover .mud-icon-root {
   color: #818CF8 !important;
+}
+
+.wrkflo-footer-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1100;
+}
+
+.wrkflo-footer {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  background-color: #F9FAFB;
+  border-top: 1px solid #E5E7EB;
+  min-height: 40px;
+  height: 40px;
+}
+
+.wrkflo-footer-text {
+  color: #4F46E5;
+}
+
+.wrkflo-footer-loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px !important;
+  min-height: 3px !important;
+  z-index: 1;
 }
 
 .mud-input-outlined .mud-input-outlined-border {
@@ -74,4 +132,66 @@ label.mud-input-label-animated {
 }
 #components-reconnect-modal .loading {
   color: #4F46E5 !important;
+}
+
+.status-tabs {
+  display: inline-flex;
+  gap: 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.status-tabs .status-tab {
+  padding: 10px 24px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+  color: white;
+  position: relative;
+  transition: all 0.2s;
+}
+.status-tabs .status-tab::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  transform: scaleX(0);
+  transition: transform 0.2s ease;
+}
+.status-tabs .status-tab:hover::after, .status-tabs .status-tab.active::after {
+  transform: scaleX(1);
+}
+.status-tabs .status-tab.inbox {
+  background-color: #4F46E5;
+}
+.status-tabs .status-tab.inbox::after {
+  background-color: #D1D5DB;
+}
+.status-tabs .status-tab.outbox {
+  background-color: #818CF8;
+}
+.status-tabs .status-tab.outbox::after {
+  background-color: rgb(56.5263157895, 73.8533834586, 243.9736842105);
+}
+.status-tabs .status-tab.complete {
+  background-color: #10B981;
+}
+.status-tabs .status-tab.complete::after {
+  background-color: rgb(9.9104477612, 114.5895522388, 79.9029850746);
+}
+
+.wrkflo-user-btn {
+  text-transform: none !important;
+  color: #111827 !important;
+}
+
+.wrkflo-user-name {
+  color: #6B7280;
+}
+
+.wrkflo-user-avatar {
+  width: 36px;
+  height: 36px;
 }

@@ -1,0 +1,16 @@
+@* ===========================
+   LoadingBar Component
+   Animated progress bar for loading states.
+   Usage: <LoadingBar Color="Color.Success" Visible="true" />
+   =========================== *@
+
+@if (Visible)
+{
+    <MudProgressLinear Color="@Color" Indeterminate="true" Class="@CssClass" />
+}
+
+@code {
+    [Parameter] public Color Color { get; set; } = Color.Success;
+    [Parameter] public bool Visible { get; set; } = true;
+    [Parameter] public string CssClass { get; set; } = "";
+}

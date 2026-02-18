@@ -1,21 +1,35 @@
 @use '../base/variables' as *;
 
+// ===========================
+// Side Drawer / Navigation
+// ===========================
+
+// Remove overlay/dimming on all screen sizes
 .mud-overlay {
   display: none !important;
 }
 
+// Drawer shadow
 .mud-drawer {
   box-shadow: $shadow-drawer !important;
 }
 
+// Remove drawer top padding
 .mud-drawer-content {
   padding-top: 0 !important;
 }
 
 .mud-navmenu {
   padding-top: 0 !important;
+  margin-top: 0 !important;
 }
 
+// Nav links - primary colour
+.wrkflo-nav-link {
+  color: $primary !important;
+}
+
+// Nav link hover - secondary colour
 .mud-nav-link:hover {
   background-color: rgba($primary-light, 0.12) !important;
   color: $primary-light !important;

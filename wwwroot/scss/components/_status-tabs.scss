@@ -1,0 +1,64 @@
+@use 'sass:color';
+@use '../base/variables' as *;
+
+// ===========================
+// MyForms Status Tabs
+// ===========================
+
+.status-tabs {
+  display: inline-flex;
+  gap: 0;
+  border-radius: 8px;
+  overflow: hidden;
+
+  .status-tab {
+    padding: 10px 24px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border: none;
+    color: white;
+    position: relative;
+    transition: all 0.2s;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      transform: scaleX(0);
+      transition: transform 0.2s ease;
+    }
+
+    &:hover::after,
+    &.active::after {
+      transform: scaleX(1);
+    }
+
+    &.inbox {
+      background-color: $primary;
+
+      &::after {
+        background-color: #D1D5DB;
+      }
+    }
+
+    &.outbox {
+      background-color: $primary-light;
+
+      &::after {
+        background-color: color.adjust($primary-light, $lightness: -15%);
+      }
+    }
+
+    &.complete {
+      background-color: $success;
+
+      &::after {
+        background-color: color.adjust($success, $lightness: -15%);
+      }
+    }
+  }
+}

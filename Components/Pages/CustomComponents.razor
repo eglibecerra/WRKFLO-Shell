@@ -1,0 +1,43 @@
+@page "/custom-components"
+
+<PageTitle>Custom Components</PageTitle>
+
+<MudText Typo="Typo.h4" Class="mb-4">Custom Components</MudText>
+
+@* ===== STATUS TABS ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-2">StatusTabs</MudText>
+    <MudText Typo="Typo.body2" Class="mb-3" Color="Color.Secondary">
+        Segmented button bar for filtering forms by status. Reusable component.
+    </MudText>
+    <MudText Typo="Typo.caption" Class="mb-3" Style="font-family: monospace;">
+        &lt;StatusTabs InboxCount="36" OutboxCount="714" CompleteCount="15555" ActiveTab="inbox" OnTabChanged="Handler" /&gt;
+    </MudText>
+    <StatusTabs InboxCount="36" OutboxCount="714" CompleteCount="15555" ActiveTab="inbox" OnTabChanged="OnDemoTabChanged" />
+    <MudText Typo="Typo.body2" Class="mt-3">Selected tab: <strong>@_demoTab</strong></MudText>
+</MudPaper>
+
+@* ===== LOADING BAR ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-2">LoadingBar</MudText>
+    <MudText Typo="Typo.body2" Class="mb-3" Color="Color.Secondary">
+        Animated indeterminate progress bar for loading states. Toggleable visibility.
+    </MudText>
+    <MudText Typo="Typo.caption" Class="mb-3" Style="font-family: monospace;">
+        &lt;LoadingBar Color="Color.Primary" Visible="true" /&gt;
+    </MudText>
+    <LoadingBar Color="Color.Primary" Visible="_loadingVisible" />
+    <MudButton Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" Class="mt-3" OnClick="ToggleLoading">
+        @(_loadingVisible ? "Hide" : "Show") Loading Bar
+    </MudButton>
+</MudPaper>
+
+<MudText Typo="Typo.body1" Color="Color.Secondary" Class="mt-4">More custom components coming soon...</MudText>
+
+@code {
+    private string _demoTab = "inbox";
+    private void OnDemoTabChanged(string tab) => _demoTab = tab;
+
+    private bool _loadingVisible = true;
+    private void ToggleLoading() => _loadingVisible = !_loadingVisible;
+}
