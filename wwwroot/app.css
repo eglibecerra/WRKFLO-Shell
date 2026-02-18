@@ -45,6 +45,29 @@ html, body {
   border-radius: 8px;
 }
 
+.wrkflo-nav-search {
+  position: relative;
+  width: 100%;
+  max-width: 650px;
+}
+
+.wrkflo-search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  max-height: 350px;
+  overflow-y: auto;
+  margin-top: 4px;
+  border-radius: 8px;
+}
+
+.wrkflo-search-result-item:hover {
+  background-color: #F3F4F6;
+  cursor: pointer;
+}
+
 .mud-overlay {
   display: none !important;
 }
