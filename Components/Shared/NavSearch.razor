@@ -1,0 +1,130 @@
+@rendermode InteractiveServer
+
+<div class="wrkflo-nav-search @CssClass">
+    <MudTextField @bind-Value="_searchText"
+                  Placeholder="@Placeholder"
+                  Variant="Variant.Outlined"
+                  Margin="Margin.Dense"
+                  Adornment="Adornment.Start"
+                  AdornmentIcon="@Icons.Material.Filled.Search"
+                  AdornmentColor="Color.Primary"
+                  Immediate="true"
+                  DebounceInterval="300"
+                  OnDebounceIntervalElapsed="OnSearchChanged"
+                  OnKeyUp="OnKeyUp"
+                  Class="wrkflo-search" />
+
+    @if (_isOpen && _results.Any())
+    {
+        <MudPaper Class="wrkflo-search-results" Elevation="4">
+            <MudList T="SearchResult" Dense="true" Class="py-0">
+                @foreach (var result in _results)
+                {
+                    <MudListItem OnClick="@(() => SelectResult(result))" Class="wrkflo-search-result-item">
+                        <div class="d-flex align-center gap-2">
+                            <MudIcon Icon="@result.Icon" Size="Size.Small" Color="Color.Primary" />
+                            <div>
+                                <MudText Typo="Typo.body2">@result.Title</MudText>
+                                @if (!string.IsNullOrEmpty(result.Subtitle))
+                                {
+                                    <MudText Typo="Typo.caption" Color="Color.Secondary">@result.Subtitle</MudText>
+                                }
+                            </div>
+                        </div>
+                    </MudListItem>
+                }
+            </MudList>
+        </MudPaper>
+    }
+    else if (_isOpen && !string.IsNullOrWhiteSpace(_searchText) && !_results.Any())
+    {
+        <MudPaper Class="wrkflo-search-results" Elevation="4">
+            <div class="pa-3 d-flex align-center justify-center">
+                <MudText Typo="Typo.body2" Color="Color.Secondary">No results found</MudText>
+            </div>
+        </MudPaper>
+    }
+</div>
+
+@code {
+    private string _searchText = "";
+    private bool _isOpen;
+    private List<SearchResult> _results = [];
+
+    /// <summary>
+    /// Placeholder text shown in the search box.
+    /// </summary>
+    [Parameter]
+    public string Placeholder { get; set; } = "Search forms, workflows...";
+
+    /// <summary>
+    /// Additional CSS classes applied to the wrapper div.
+    /// </summary>
+    [Parameter]
+    public string CssClass { get; set; } = "";
+
+    /// <summary>
+    /// Fires when the search text changes (debounced). Use this to query your API/database.
+    /// </summary>
+    [Parameter]
+    public EventCallback<string> OnSearch { get; set; }
+
+    /// <summary>
+    /// Fires when a result is selected. Returns the selected SearchResult.
+    /// </summary>
+    [Parameter]
+    public EventCallback<SearchResult> OnResultSelected { get; set; }
+
+    /// <summary>
+    /// The list of search results to display. Pass these in after handling OnSearch.
+    /// </summary>
+    [Parameter]
+    public List<SearchResult> Results
+    {
+        get => _results;
+        set
+        {
+            _results = value ?? [];
+            StateHasChanged();
+        }
+    }
+
+    private async Task OnSearchChanged(string value)
+    {
+        _searchText = value;
+        _isOpen = !string.IsNullOrWhiteSpace(value);
+
+        if (_isOpen)
+        {
+            await OnSearch.InvokeAsync(value);
+        }
+    }
+
+    private void OnKeyUp(KeyboardEventArgs e)
+    {
+        if (e.Key == "Escape")
+        {
+            _isOpen = false;
+        }
+    }
+
+    private async Task SelectResult(SearchResult result)
+    {
+        _isOpen = false;
+        _searchText = result.Title;
+        await OnResultSelected.InvokeAsync(result);
+    }
+
+    /// <summary>
+    /// Model representing a single search result.
+    /// </summary>
+    public class SearchResult
+    {
+        public string Title { get; set; } = "";
+        public string? Subtitle { get; set; }
+        public string Icon { get; set; } = Icons.Material.Filled.Description;
+        public string? Href { get; set; }
+        public string? Id { get; set; }
+        public string? Category { get; set; }
+    }
+}

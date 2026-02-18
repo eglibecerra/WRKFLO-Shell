@@ -11,9 +11,7 @@
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Class="wrkflo-menu-btn" Edge="Edge.Start" OnClick="ToggleDrawer" />
         <MudText Typo="Typo.h6" Class="wrkflo-logo">WrkFlo</MudText>
         <MudSpacer />
-        <MudTextField @bind-Value="_searchText" Placeholder="Search Forms" Variant="Variant.Outlined" Margin="Margin.Dense"
-            Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary"
-            Class="wrkflo-search" />
+        <NavSearch Placeholder="Search Forms" OnSearch="OnSearchForms" Results="_searchResults" OnResultSelected="OnSearchResultSelected" />
         <MudSpacer />
         <MudMenu AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
             <ActivatorContent>
@@ -70,12 +68,40 @@
 
 @code {
     private bool _drawerOpen = false;
-    private string _searchText = "";
     private bool _isLoading = true; // Demo: shows loading bar
+    private List<NavSearch.SearchResult> _searchResults = [];
 
     private void ToggleDrawer()
     {
         _drawerOpen = !_drawerOpen;
+    }
+
+    private void OnSearchForms(string query)
+    {
+        // TODO: Replace with API call to search forms/workflows
+        // Demo: static results for now
+        var allForms = new List<NavSearch.SearchResult>
+        {
+            new() { Title = "Leave Request", Subtitle = "HR", Icon = Icons.Material.Filled.EventBusy, Href = "/forms/1", Category = "Form" },
+            new() { Title = "Expense Claim", Subtitle = "Finance", Icon = Icons.Material.Filled.Receipt, Href = "/forms/2", Category = "Form" },
+            new() { Title = "Hardware Request", Subtitle = "IT Services", Icon = Icons.Material.Filled.Computer, Href = "/forms/3", Category = "Form" },
+            new() { Title = "Purchase Order", Subtitle = "Procurement", Icon = Icons.Material.Filled.ShoppingCart, Href = "/forms/4", Category = "Form" },
+            new() { Title = "IT Access Request", Subtitle = "IT Services", Icon = Icons.Material.Filled.VpnKey, Href = "/forms/5", Category = "Form" },
+        };
+
+        _searchResults = allForms
+            .Where(f => f.Title.Contains(query, StringComparison.OrdinalIgnoreCase)
+                     || (f.Subtitle?.Contains(query, StringComparison.OrdinalIgnoreCase) ?? false))
+            .ToList();
+    }
+
+    private void OnSearchResultSelected(NavSearch.SearchResult result)
+    {
+        // TODO: Navigate to the selected form/workflow
+        if (!string.IsNullOrEmpty(result.Href))
+        {
+            // NavigationManager.NavigateTo(result.Href);
+        }
     }
 
     private readonly MudTheme _theme = new()

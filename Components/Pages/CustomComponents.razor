@@ -4,6 +4,52 @@
 
 <MudText Typo="Typo.h4" Class="mb-4">Custom Components</MudText>
 
+@* ===== NAV SEARCH ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-2">NavSearch</MudText>
+    <MudText Typo="Typo.body2" Class="mb-3" Color="Color.Secondary">
+        Search bar with debounced input and dropdown results panel. Designed for the app bar but works anywhere.
+        Results are fed externally via the Results parameter — wire OnSearch to your API.
+    </MudText>
+    <MudText Typo="Typo.caption" Class="mb-3" Style="font-family: monospace;">
+        &lt;NavSearch Placeholder="Search forms..." OnSearch="HandleSearch" Results="results" OnResultSelected="HandleSelect" /&gt;
+    </MudText>
+    <MudText Typo="Typo.subtitle2" Class="mb-2 mt-2">Parameters</MudText>
+    <MudSimpleTable Dense="true" Bordered="true" Class="mb-4" Style="max-width: 700px;">
+        <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+            <tr><td><code>Placeholder</code></td><td>string</td><td>"Search forms, workflows..."</td><td>Placeholder text in the search box</td></tr>
+            <tr><td><code>CssClass</code></td><td>string</td><td>""</td><td>Additional CSS classes on wrapper</td></tr>
+            <tr><td><code>OnSearch</code></td><td>EventCallback&lt;string&gt;</td><td>—</td><td>Fires on debounced input (300ms). Wire to your search API.</td></tr>
+            <tr><td><code>Results</code></td><td>List&lt;SearchResult&gt;</td><td>[]</td><td>Search results to display in dropdown</td></tr>
+            <tr><td><code>OnResultSelected</code></td><td>EventCallback&lt;SearchResult&gt;</td><td>—</td><td>Fires when a result is clicked</td></tr>
+        </tbody>
+    </MudSimpleTable>
+
+    <MudText Typo="Typo.subtitle2" Class="mb-2 mt-4">SearchResult Model</MudText>
+    <MudSimpleTable Dense="true" Bordered="true" Class="mb-4" Style="max-width: 700px;">
+        <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+        <tbody>
+            <tr><td><code>Title</code></td><td>string</td><td>Result display name</td></tr>
+            <tr><td><code>Subtitle</code></td><td>string?</td><td>Secondary text (e.g. department)</td></tr>
+            <tr><td><code>Icon</code></td><td>string</td><td>MudBlazor icon (default: Description)</td></tr>
+            <tr><td><code>Href</code></td><td>string?</td><td>Navigation URL when selected</td></tr>
+            <tr><td><code>Id</code></td><td>string?</td><td>Unique identifier for the result</td></tr>
+            <tr><td><code>Category</code></td><td>string?</td><td>Result category (Form, Workflow, etc.)</td></tr>
+        </tbody>
+    </MudSimpleTable>
+
+    <MudText Typo="Typo.subtitle2" Class="mb-3">Live Demo</MudText>
+    <MudText Typo="Typo.body2" Class="mb-2" Color="Color.Secondary">Try searching: "leave", "expense", "IT"</MudText>
+    <div style="max-width: 400px; position: relative;">
+        <NavSearch Placeholder="Search forms..." OnSearch="OnDemoSearch" Results="_demoSearchResults" OnResultSelected="OnDemoResultSelected" />
+    </div>
+    @if (_demoSelectedResult is not null)
+    {
+        <MudText Typo="Typo.body2" Class="mt-3">Selected: <strong>@_demoSelectedResult.Title</strong> (@_demoSelectedResult.Category)</MudText>
+    }
+</MudPaper>
+
 @* ===== STATUS TABS ===== *@
 <MudPaper Class="pa-4 mb-4" Elevation="1">
     <MudText Typo="Typo.h5" Class="mb-2">StatusTabs</MudText>
@@ -164,6 +210,33 @@
 @code {
     private string _demoTab = "inbox";
     private void OnDemoTabChanged(string tab) => _demoTab = tab;
+
+    // NavSearch demo
+    private List<NavSearch.SearchResult> _demoSearchResults = [];
+    private NavSearch.SearchResult? _demoSelectedResult;
+
+    private void OnDemoSearch(string query)
+    {
+        var allForms = new List<NavSearch.SearchResult>
+        {
+            new() { Title = "Leave Request", Subtitle = "HR", Icon = Icons.Material.Filled.EventBusy, Category = "Form" },
+            new() { Title = "Expense Claim", Subtitle = "Finance", Icon = Icons.Material.Filled.Receipt, Category = "Form" },
+            new() { Title = "Hardware Request", Subtitle = "IT Services", Icon = Icons.Material.Filled.Computer, Category = "Form" },
+            new() { Title = "Purchase Order", Subtitle = "Procurement", Icon = Icons.Material.Filled.ShoppingCart, Category = "Form" },
+            new() { Title = "IT Access Request", Subtitle = "IT Services", Icon = Icons.Material.Filled.VpnKey, Category = "Form" },
+            new() { Title = "Onboarding Workflow", Subtitle = "HR", Icon = Icons.Material.Filled.AccountTree, Category = "Workflow" },
+        };
+
+        _demoSearchResults = allForms
+            .Where(f => f.Title.Contains(query, StringComparison.OrdinalIgnoreCase)
+                     || (f.Subtitle?.Contains(query, StringComparison.OrdinalIgnoreCase) ?? false))
+            .ToList();
+    }
+
+    private void OnDemoResultSelected(NavSearch.SearchResult result)
+    {
+        _demoSelectedResult = result;
+    }
 
     private bool _loadingVisible = true;
     private void ToggleLoading() => _loadingVisible = !_loadingVisible;
