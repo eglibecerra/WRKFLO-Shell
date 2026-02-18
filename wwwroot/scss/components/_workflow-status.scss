@@ -1,0 +1,176 @@
+@use 'sass:color';
+@use '../base/variables' as *;
+
+// ===========================
+// WorkflowStatusView Component
+// ===========================
+
+.workflow-status-view {
+  display: flex;
+  align-items: flex-start;
+  padding: 24px 0;
+  overflow: hidden;
+  position: relative;
+}
+
+// Navigation chevrons
+.workflow-nav {
+  background: none;
+  border: 1px solid $border;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: $text-secondary;
+  margin-top: 8px;
+  transition: all 0.2s;
+  z-index: 2;
+
+  &:hover:not(:disabled) {
+    border-color: $primary;
+    color: $primary;
+    background-color: rgba($primary, 0.05);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+}
+
+// Steps container (overflow hidden, carousel)
+.workflow-steps-container {
+  flex: 1;
+  overflow: hidden;
+  margin: 0 8px;
+}
+
+.workflow-steps {
+  display: flex;
+  transition: transform 0.3s ease;
+}
+
+// Individual step
+.workflow-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 220px;
+  position: relative;
+  padding: 0 10px;
+}
+
+// Connecting lines — span fully across step padding so they join seamlessly
+.workflow-line {
+  position: absolute;
+  top: 18px;
+  height: 2px;
+
+  &.workflow-line-completed {
+    background-color: $success;
+  }
+
+  &.workflow-line-pending {
+    background-color: $border;
+  }
+}
+
+.workflow-step:not(:first-child) > .workflow-line:not(.workflow-line-after) {
+  right: 50%;
+  left: -10px; // extend into previous step's padding
+}
+
+.workflow-line-after {
+  left: 50%;
+  right: -10px; // extend into next step's padding
+}
+
+// Step circles
+.workflow-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  position: relative;
+  transition: all 0.2s;
+
+  &.workflow-circle-completed {
+    background-color: $success;
+  }
+
+  &.workflow-circle-active {
+    background-color: white;
+    border: 3px solid $primary;
+  }
+
+  &.workflow-circle-pending {
+    background-color: white;
+    border: 2px solid $border;
+  }
+}
+
+// Active step dot
+.workflow-active-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: $primary;
+}
+
+// Pulse animation for active step
+.workflow-pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba($primary, 0.4); }
+  50% { box-shadow: 0 0 0 10px rgba($primary, 0); }
+  100% { box-shadow: 0 0 0 0 rgba($primary, 0); }
+}
+
+// Step labels
+.workflow-label {
+  text-align: center;
+  margin-top: 10px;
+  max-width: 200px;
+}
+
+.workflow-step-name {
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: $text-primary;
+  line-height: 1.3;
+}
+
+.workflow-step-role {
+  font-size: 0.7rem;
+  color: $text-secondary;
+  margin-top: 2px;
+  text-transform: uppercase;
+}
+
+.workflow-label-pending {
+  .workflow-step-name {
+    color: $text-secondary;
+    font-weight: 400;
+  }
+
+  .workflow-step-role {
+    color: color.adjust($text-secondary, $lightness: 20%);
+  }
+}
+
+// Tooltip
+.workflow-tooltip {
+  text-align: center;
+  padding: 4px 0;
+  font-size: 0.85rem;
+}

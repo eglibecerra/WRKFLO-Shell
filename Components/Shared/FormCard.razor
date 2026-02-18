@@ -1,0 +1,46 @@
+@* ===========================
+   FormCard Component
+   Card displaying a form summary with status badge, title, time elapsed, and action buttons.
+   Usage: <FormCard Status="Outbox" Title="Expense Claim" SubmittedBy="Smith, John" TimeElapsed="46 mins" Department="Finance" />
+   =========================== *@
+
+<MudCard Class="form-card" Elevation="1">
+    <MudCardContent Class="form-card-content">
+        <div class="form-card-header">
+            <MudChip T="string" Size="Size.Small" Class="@GetStatusClass()">@Status</MudChip>
+            @if (!string.IsNullOrEmpty(Department))
+            {
+                <MudText Typo="Typo.caption" Class="form-card-department">@Department</MudText>
+            }
+        </div>
+        <MudText Typo="Typo.body1" Class="form-card-title">@Title (@SubmittedBy)</MudText>
+        <div class="form-card-footer">
+            <div class="form-card-time">
+                <MudIcon Icon="@Icons.Material.Filled.Schedule" Size="Size.Small" Class="mr-1" />
+                <MudText Typo="Typo.body2">@TimeElapsed</MudText>
+            </div>
+            <div class="form-card-actions">
+                <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Default" OnClick="OnRedirect">REDIRECT</MudButton>
+                <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Default" OnClick="OnView">VIEW</MudButton>
+            </div>
+        </div>
+    </MudCardContent>
+</MudCard>
+
+@code {
+    [Parameter] public string Status { get; set; } = "Inbox";
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public string SubmittedBy { get; set; } = "";
+    [Parameter] public string TimeElapsed { get; set; } = "";
+    [Parameter] public string Department { get; set; } = "";
+    [Parameter] public EventCallback OnRedirect { get; set; }
+    [Parameter] public EventCallback OnView { get; set; }
+
+    private string GetStatusClass() => Status.ToLower() switch
+    {
+        "inbox" => "form-card-status form-card-status-inbox",
+        "outbox" => "form-card-status form-card-status-outbox",
+        "complete" => "form-card-status form-card-status-complete",
+        _ => "form-card-status"
+    };
+}

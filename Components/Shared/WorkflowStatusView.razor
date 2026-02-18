@@ -1,0 +1,111 @@
+@* ===========================
+   WorkflowStatusView Component
+   Horizontal carousel stepper showing workflow progress.
+   Usage: <WorkflowStatusView Steps="steps" />
+   =========================== *@
+
+<div class="workflow-status-view">
+    <button class="workflow-nav workflow-nav-left" @onclick="ScrollLeft" disabled="@(_scrollIndex <= 0)">
+        <MudIcon Icon="@Icons.Material.Filled.ChevronLeft" />
+    </button>
+
+    <div class="workflow-steps-container">
+        <div class="workflow-steps" style="transform: translateX(-@(_scrollIndex * _stepWidth)px);">
+            @for (int i = 0; i < Steps.Count; i++)
+            {
+                var step = Steps[i];
+                var index = i;
+                var isFirst = i == 0;
+                var isLast = i == Steps.Count - 1;
+
+                <div class="workflow-step">
+                    @* Connecting line before *@
+                    @if (!isFirst)
+                    {
+                        <div class="workflow-line @(step.Status == StepStatus.Completed || step.Status == StepStatus.Active ? "workflow-line-completed" : "workflow-line-pending")"></div>
+                    }
+
+                    @* Step circle *@
+                    <MudTooltip Placement="Placement.Bottom" Arrow="true">
+                        <ChildContent>
+                            <div class="workflow-circle workflow-circle-@step.Status.ToString().ToLower() @(step.Status == StepStatus.Active ? "workflow-pulse" : "")">
+                                @if (step.Status == StepStatus.Completed)
+                                {
+                                    <MudIcon Icon="@Icons.Material.Filled.Check" Size="Size.Small" Style="color: white;" />
+                                }
+                                @if (step.Status == StepStatus.Active)
+                                {
+                                    <div class="workflow-active-dot"></div>
+                                }
+                            </div>
+                        </ChildContent>
+                        <TooltipContent>
+                            <div class="workflow-tooltip">
+                                @if (step.Status == StepStatus.Completed)
+                                {
+                                    <div>Actioned on <strong>@step.ActionedDate?.ToString("dd/MM/yyyy h:mm:ss tt")</strong></div>
+                                    <div>By <strong>@step.ActionedBy</strong></div>
+                                }
+                                else if (step.Status == StepStatus.Active)
+                                {
+                                    <div>Forwarded to <strong>@step.ActionedBy</strong></div>
+                                    <div>on <strong>@step.ActionedDate?.ToString("dd/MM/yyyy h:mm:ss tt")</strong></div>
+                                }
+                                else
+                                {
+                                    <div>Pending</div>
+                                }
+                            </div>
+                        </TooltipContent>
+                    </MudTooltip>
+
+                    @* Step label *@
+                    <div class="workflow-label @(step.Status == StepStatus.Pending ? "workflow-label-pending" : "")">
+                        <div class="workflow-step-name">@step.Name</div>
+                        <div class="workflow-step-role">(@step.Role)</div>
+                    </div>
+
+                    @* Connecting line after *@
+                    @if (!isLast)
+                    {
+                        <div class="workflow-line workflow-line-after @(step.Status == StepStatus.Completed ? "workflow-line-completed" : "workflow-line-pending")"></div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+    <button class="workflow-nav workflow-nav-right" @onclick="ScrollRight" disabled="@(_scrollIndex >= _maxScroll)">
+        <MudIcon Icon="@Icons.Material.Filled.ChevronRight" />
+    </button>
+</div>
+
+@code {
+    [Parameter] public List<WorkflowStep> Steps { get; set; } = new();
+    [Parameter] public int VisibleSteps { get; set; } = 5;
+
+    private int _scrollIndex = 0;
+    private int _stepWidth = 220;
+    private int _maxScroll => Math.Max(0, Steps.Count - VisibleSteps);
+
+    private void ScrollLeft()
+    {
+        if (_scrollIndex > 0) _scrollIndex--;
+    }
+
+    private void ScrollRight()
+    {
+        if (_scrollIndex < _maxScroll) _scrollIndex++;
+    }
+
+    public enum StepStatus { Completed, Active, Pending }
+
+    public class WorkflowStep
+    {
+        public string Name { get; set; } = "";
+        public string Role { get; set; } = "";
+        public StepStatus Status { get; set; } = StepStatus.Pending;
+        public string? ActionedBy { get; set; }
+        public DateTime? ActionedDate { get; set; }
+    }
+}

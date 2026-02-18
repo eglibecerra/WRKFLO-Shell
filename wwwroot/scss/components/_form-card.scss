@@ -1,0 +1,84 @@
+@use 'sass:color';
+@use '../base/variables' as *;
+
+// ===========================
+// FormCard Component
+// ===========================
+
+.form-card {
+  height: 100%;
+  border-radius: 8px !important;
+  transition: box-shadow 0.2s;
+
+  &:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+  }
+}
+
+.form-card-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px !important;
+}
+
+.form-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.form-card-department {
+  color: $text-secondary;
+  font-style: italic;
+}
+
+// Status badge styles
+.form-card-status {
+  color: white !important;
+  font-weight: 600 !important;
+  font-size: 0.75rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px;
+}
+
+.form-card-status-inbox {
+  background-color: $primary !important;
+}
+
+.form-card-status-outbox {
+  background-color: $primary-light !important;
+}
+
+.form-card-status-complete {
+  background-color: $success !important;
+}
+
+.form-card-title {
+  font-weight: 500;
+  margin-bottom: auto !important;
+  padding-bottom: 16px;
+}
+
+.form-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.form-card-time {
+  display: flex;
+  align-items: center;
+  color: $text-secondary;
+
+  .mud-icon-root {
+    color: $text-secondary;
+  }
+}
+
+.form-card-actions {
+  display: flex;
+  gap: 8px;
+}

@@ -1,0 +1,272 @@
+@* ===========================
+   WorkflowStepperBranching Component (Option 3: Hybrid)
+   Linear stepper with branch point indicators.
+   Click a branch icon to expand and see possible paths.
+   Hover any step for action details.
+   Usage: <WorkflowStepperBranching Steps="steps" />
+   =========================== *@
+
+<div class="wf-branch">
+    @if (_expandedBranches.Any())
+    {
+        <div class="wf-branch-overlay" @onclick="CloseAllBranches"></div>
+    }
+
+    @* Toggle for full map view *@
+    <div class="wf-branch-toolbar">
+        <MudToggleIconButton @bind-Toggled="_showFullMap"
+            Icon="@Icons.Material.Outlined.AccountTree"
+            ToggledIcon="@Icons.Material.Filled.AccountTree"
+            Size="Size.Small"
+            ToggledColor="Color.Primary"
+            Title="@(_showFullMap ? "Switch to linear view" : "Show full workflow map")" />
+        <MudText Typo="Typo.caption" Class="wf-branch-toggle-label">
+            @(_showFullMap ? "Full Map" : "Linear View")
+        </MudText>
+    </div>
+
+    @if (!_showFullMap)
+    {
+        @* ===== LINEAR VIEW (default) ===== *@
+        <div class="wf-branch-linear">
+            @for (int i = 0; i < Steps.Count; i++)
+            {
+                var step = Steps[i];
+                var index = i;
+                var isLast = i == Steps.Count - 1;
+                var hasBranch = step.Branches?.Any() == true;
+                var isBranchExpanded = _expandedBranches.Contains(index);
+
+                <div class="wf-branch-step-group">
+                    @* The step node *@
+                    <div class="wf-branch-step">
+                        <MudTooltip Placement="Placement.Bottom" Arrow="true">
+                            <ChildContent>
+                                <div class="wf-branch-circle wf-branch-circle--@step.Status.ToString().ToLower() @(step.Status == StepStatus.Active ? "wf-branch-pulse" : "")">
+                                    @if (step.Status == StepStatus.Completed)
+                                    {
+                                        <MudIcon Icon="@Icons.Material.Filled.Check" Size="Size.Small" Style="color: white;" />
+                                    }
+                                    else if (step.Status == StepStatus.Active)
+                                    {
+                                        <div class="wf-branch-active-dot"></div>
+                                    }
+                                    else if (step.Status == StepStatus.Skipped)
+                                    {
+                                        <MudIcon Icon="@Icons.Material.Filled.Remove" Size="Size.Small" Style="color: #9CA3AF;" />
+                                    }
+                                    else
+                                    {
+                                        <span class="wf-branch-step-num">@(index + 1)</span>
+                                    }
+                                </div>
+                            </ChildContent>
+                            <TooltipContent>
+                                <div class="workflow-tooltip">
+                                    @if (step.Status == StepStatus.Completed)
+                                    {
+                                        <div>Actioned on <strong>@step.ActionedDate?.ToString("dd/MM/yyyy h:mm:ss tt")</strong></div>
+                                        <div>By <strong>@step.ActionedBy</strong></div>
+                                        @if (!string.IsNullOrEmpty(step.Comment))
+                                        {
+                                            <div style="margin-top: 4px; font-style: italic;">"@step.Comment"</div>
+                                        }
+                                    }
+                                    else if (step.Status == StepStatus.Active)
+                                    {
+                                        <div>Forwarded to <strong>@step.Role</strong></div>
+                                        <div>on <strong>@step.ActionedDate?.ToString("dd/MM/yyyy h:mm:ss tt")</strong></div>
+                                    }
+                                    else if (step.Status == StepStatus.Skipped)
+                                    {
+                                        <div>Skipped — condition not met</div>
+                                        @if (!string.IsNullOrEmpty(step.SkipReason))
+                                        {
+                                            <div>@step.SkipReason</div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div>Pending</div>
+                                    }
+                                </div>
+                            </TooltipContent>
+                        </MudTooltip>
+
+                        <div class="wf-branch-label @(step.Status == StepStatus.Pending ? "wf-branch-label--pending" : "") @(step.Status == StepStatus.Skipped ? "wf-branch-label--skipped" : "")">
+                            <div class="wf-branch-step-name">@step.Name</div>
+                            <div class="wf-branch-step-role">@step.Role</div>
+                        </div>
+                    </div>
+
+                    @* Connector + branch indicator *@
+                    @if (!isLast)
+                    {
+                        <div class="wf-branch-connector">
+                            <div class="wf-branch-line @(step.Status == StepStatus.Completed ? "wf-branch-line--completed" : "wf-branch-line--pending")"></div>
+
+                            @if (hasBranch)
+                            {
+                                <MudTooltip Text="@($"Branch point: {step.Branches!.Count} possible paths")" Placement="Placement.Top" Arrow="true">
+                                    <button class="wf-branch-fork-btn @(isBranchExpanded ? "wf-branch-fork-btn--active" : "")"
+                                            @onclick="() => ToggleBranch(index)">
+                                        <MudIcon Icon="@Icons.Material.Filled.CallSplit" Size="Size.Small" />
+                                    </button>
+                                </MudTooltip>
+                            }
+                        </div>
+
+                        @* Expanded branch panel *@
+                        @if (hasBranch && isBranchExpanded)
+                        {
+                            <div class="wf-branch-panel">
+                                <div class="wf-branch-panel-header">
+                                    <MudIcon Icon="@Icons.Material.Outlined.AccountTree" Size="Size.Small" />
+                                    <MudText Typo="Typo.caption"><strong>Branch Point</strong> — @step.BranchConditionLabel</MudText>
+                                </div>
+                                <div class="wf-branch-paths">
+                                    @foreach (var branch in step.Branches!)
+                                    {
+                                        var isTaken = branch.WasTaken;
+                                        <div class="wf-branch-path @(isTaken ? "wf-branch-path--taken" : "wf-branch-path--skipped")">
+                                            <div class="wf-branch-path-indicator">
+                                                @if (isTaken)
+                                                {
+                                                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Color="Color.Success" />
+                                                }
+                                                else
+                                                {
+                                                    <MudIcon Icon="@Icons.Material.Outlined.Circle" Size="Size.Small" Style="color: #D1D5DB;" />
+                                                }
+                                            </div>
+                                            <div class="wf-branch-path-info">
+                                                <div class="wf-branch-path-condition">@branch.Condition</div>
+                                                <div class="wf-branch-path-target">→ @branch.TargetStepName</div>
+                                            </div>
+                                            @if (isTaken)
+                                            {
+                                                <MudChip T="string" Size="Size.Small" Color="Color.Success" Variant="Variant.Outlined" Class="wf-branch-path-chip">Taken</MudChip>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        @* ===== FULL MAP VIEW (mini flowchart) ===== *@
+        <div class="wf-branch-map">
+            @for (int i = 0; i < Steps.Count; i++)
+            {
+                var step = Steps[i];
+                var index = i;
+                var isLast = i == Steps.Count - 1;
+                var hasBranch = step.Branches?.Any() == true;
+
+                <div class="wf-branch-map-row">
+                    @* Main step node *@
+                    <div class="wf-branch-map-node wf-branch-map-node--@step.Status.ToString().ToLower()">
+                        <div class="wf-branch-map-icon">
+                            @if (step.Status == StepStatus.Completed)
+                            {
+                                <MudIcon Icon="@Icons.Material.Filled.Check" Size="Size.Small" Style="color: white;" />
+                            }
+                            else if (step.Status == StepStatus.Active)
+                            {
+                                <div class="wf-branch-active-dot"></div>
+                            }
+                            else if (step.Status == StepStatus.Skipped)
+                            {
+                                <MudIcon Icon="@Icons.Material.Filled.Remove" Size="Size.Small" Style="color: #9CA3AF;" />
+                            }
+                            else
+                            {
+                                <span class="wf-branch-step-num">@(index + 1)</span>
+                            }
+                        </div>
+                        <div class="wf-branch-map-label">
+                            <span class="wf-branch-step-name">@step.Name</span>
+                            <span class="wf-branch-step-role">@step.Role</span>
+                        </div>
+                        @if (step.Status == StepStatus.Completed && step.ActionedBy != null)
+                        {
+                            <div class="wf-branch-map-meta">
+                                @step.ActionedBy · @step.ActionedDate?.ToString("dd/MM HH:mm")
+                            </div>
+                        }
+                    </div>
+
+                    @* Branch paths shown inline *@
+                    @if (hasBranch)
+                    {
+                        <div class="wf-branch-map-diamond">
+                            <MudIcon Icon="@Icons.Material.Filled.CallSplit" Size="Size.Small" />
+                            <span class="wf-branch-map-condition">@step.BranchConditionLabel</span>
+                        </div>
+                        <div class="wf-branch-map-paths">
+                            @foreach (var branch in step.Branches!)
+                            {
+                                <div class="wf-branch-map-path-item @(branch.WasTaken ? "wf-branch-map-path-item--taken" : "")">
+                                    <span class="wf-branch-map-path-arrow">@(branch.WasTaken ? "●" : "○")</span>
+                                    <span>@branch.Condition → @branch.TargetStepName</span>
+                                </div>
+                            }
+                        </div>
+                    }
+
+                    @* Vertical connector *@
+                    @if (!isLast)
+                    {
+                        <div class="wf-branch-map-connector">
+                            <div class="wf-branch-map-vline @(step.Status == StepStatus.Completed ? "wf-branch-map-vline--completed" : "")"></div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public List<BranchingStep> Steps { get; set; } = new();
+
+    private bool _showFullMap = false;
+    private HashSet<int> _expandedBranches = new();
+
+    private void ToggleBranch(int index)
+    {
+        if (!_expandedBranches.Remove(index))
+            _expandedBranches.Add(index);
+    }
+
+    private void CloseAllBranches() => _expandedBranches.Clear();
+
+    public enum StepStatus { Completed, Active, Pending, Skipped }
+
+    public class BranchingStep
+    {
+        public string Name { get; set; } = "";
+        public string Role { get; set; } = "";
+        public StepStatus Status { get; set; } = StepStatus.Pending;
+        public string? ActionedBy { get; set; }
+        public DateTime? ActionedDate { get; set; }
+        public string? Comment { get; set; }
+        public string? SkipReason { get; set; }
+
+        // Branching
+        public string? BranchConditionLabel { get; set; }
+        public List<BranchPath>? Branches { get; set; }
+    }
+
+    public class BranchPath
+    {
+        public string Condition { get; set; } = "";
+        public string TargetStepName { get; set; } = "";
+        public bool WasTaken { get; set; }
+    }
+}

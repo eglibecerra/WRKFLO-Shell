@@ -1,0 +1,433 @@
+@use '../base/variables' as *;
+
+// ===========================
+// WorkflowStepperBranching (Option 3: Hybrid)
+// ===========================
+
+.wf-branch {
+  position: relative;
+  padding: 16px 0;
+}
+
+.wf-branch-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9;
+  cursor: default;
+}
+
+// Toolbar (toggle button)
+.wf-branch-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  justify-content: flex-end;
+}
+
+.wf-branch-toggle-label {
+  color: $text-secondary;
+  font-size: 0.75rem;
+}
+
+// ===== LINEAR VIEW =====
+.wf-branch-linear {
+  display: flex;
+  align-items: flex-start;
+  overflow: visible;
+  padding: 8px 0 16px;
+  gap: 0;
+  position: relative;
+}
+
+.wf-branch-step-group {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  // Remove any gap between step and connector
+  gap: 0;
+}
+
+.wf-branch-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 140px;
+  max-width: 180px;
+  position: relative;
+  z-index: 1;
+}
+
+// Step circles
+.wf-branch-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  transition: all 0.2s;
+  cursor: default;
+
+  &--completed {
+    background-color: $success;
+  }
+
+  &--active {
+    background-color: white;
+    border: 3px solid $primary;
+  }
+
+  &--pending {
+    background-color: white;
+    border: 2px solid $border;
+  }
+
+  &--skipped {
+    background-color: #F3F4F6;
+    border: 2px dashed #D1D5DB;
+  }
+}
+
+.wf-branch-active-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: $primary;
+}
+
+.wf-branch-pulse {
+  animation: wf-pulse 2s ease-in-out infinite;
+}
+
+@keyframes wf-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba($primary, 0.4); }
+  50%  { box-shadow: 0 0 0 10px rgba($primary, 0); }
+  100% { box-shadow: 0 0 0 0 rgba($primary, 0); }
+}
+
+.wf-branch-step-num {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: $text-secondary;
+}
+
+// Labels
+.wf-branch-label {
+  text-align: center;
+  margin-top: 10px;
+  max-width: 160px;
+}
+
+.wf-branch-step-name {
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  color: $text-primary;
+  line-height: 1.3;
+}
+
+.wf-branch-step-role {
+  font-size: 0.68rem;
+  color: $text-secondary;
+  margin-top: 2px;
+}
+
+.wf-branch-label--pending {
+  .wf-branch-step-name { color: $text-secondary; font-weight: 400; }
+}
+
+.wf-branch-label--skipped {
+  .wf-branch-step-name { color: #9CA3AF; font-weight: 400; text-decoration: line-through; }
+  .wf-branch-step-role { color: #D1D5DB; }
+}
+
+// Connector between steps
+.wf-branch-connector {
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  margin-top: 18px; // align with circle center
+  position: relative;
+  min-width: 40px;
+  z-index: 0;
+  overflow: visible;
+}
+
+.wf-branch-line {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 2px;
+  // Stretch line to overlap into adjacent step circles
+  left: -50px;
+  right: -50px;
+
+  &--completed { background-color: $success; }
+  &--pending   { background-color: $border; }
+}
+
+// Fork button on connector
+.wf-branch-fork-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid $border;
+  background: $surface;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: $text-secondary;
+  transition: all 0.2s;
+  z-index: 2;
+
+  &:hover, &--active {
+    border-color: $primary;
+    color: $primary;
+    background-color: $background;
+  }
+
+  .mud-icon-root {
+    font-size: 16px;
+  }
+}
+
+// Expanded branch panel
+.wf-branch-panel {
+  position: absolute;
+  top: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border: 1px solid $border;
+  border-radius: 8px;
+  padding: 12px 16px;
+  min-width: 280px;
+  box-shadow: $shadow-md;
+  z-index: 10;
+}
+
+.wf-branch-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  color: $text-secondary;
+  padding-bottom: 8px;
+  border-bottom: 1px solid $border;
+}
+
+.wf-branch-paths {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wf-branch-path {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  transition: background-color 0.15s;
+
+  &--taken {
+    background-color: rgba($success, 0.06);
+  }
+
+  &--skipped {
+    opacity: 0.55;
+  }
+}
+
+.wf-branch-path-indicator {
+  flex-shrink: 0;
+}
+
+.wf-branch-path-info {
+  flex: 1;
+}
+
+.wf-branch-path-condition {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: $text-primary;
+}
+
+.wf-branch-path-target {
+  font-size: 0.72rem;
+  color: $text-secondary;
+}
+
+.wf-branch-path-chip {
+  flex-shrink: 0;
+}
+
+// ===== FULL MAP VIEW =====
+.wf-branch-map {
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px;
+}
+
+.wf-branch-map-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.wf-branch-map-node {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid $border;
+  background: white;
+  transition: all 0.2s;
+
+  &--completed {
+    border-left: 3px solid $success;
+  }
+
+  &--active {
+    border-left: 3px solid $primary;
+    background-color: rgba($primary, 0.03);
+  }
+
+  &--skipped {
+    border-left: 3px dashed #D1D5DB;
+    opacity: 0.55;
+  }
+
+  &--pending {
+    border-left: 3px solid $border;
+  }
+}
+
+.wf-branch-map-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  .wf-branch-map-node--completed & { background-color: $success; }
+  .wf-branch-map-node--active &    { background-color: white; border: 2px solid $primary; }
+  .wf-branch-map-node--pending &   { background-color: white; border: 2px solid $border; }
+  .wf-branch-map-node--skipped &   { background-color: #F3F4F6; }
+}
+
+.wf-branch-map-label {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  .wf-branch-step-name { font-size: 0.82rem; }
+  .wf-branch-step-role { font-size: 0.7rem; }
+}
+
+.wf-branch-map-meta {
+  font-size: 0.7rem;
+  color: $text-secondary;
+  white-space: nowrap;
+}
+
+// Diamond (branch point in map view)
+.wf-branch-map-diamond {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px 6px 44px;
+  color: $primary;
+  position: relative;
+
+  // Vertical line running through the branch section
+  &::before {
+    content: '';
+    position: absolute;
+    left: 30px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: $success;
+  }
+}
+
+.wf-branch-map-condition {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.wf-branch-map-paths {
+  padding: 0 16px 4px 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: relative;
+
+  // Vertical line running through the paths section
+  &::before {
+    content: '';
+    position: absolute;
+    left: 30px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: $success;
+  }
+}
+
+.wf-branch-map-path-item {
+  font-size: 0.75rem;
+  color: $text-secondary;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  &--taken {
+    color: $success;
+    font-weight: 500;
+  }
+}
+
+.wf-branch-map-path-arrow {
+  font-size: 0.6rem;
+}
+
+// Map node needs z-index to sit above the vertical line
+.wf-branch-map-node {
+  z-index: 1;
+  position: relative;
+}
+
+// Vertical connector in map view
+.wf-branch-map-connector {
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 30px;
+  height: 16px;
+  overflow: visible;
+  z-index: 0;
+}
+
+.wf-branch-map-vline {
+  width: 2px;
+  // Stretch beyond the 16px connector to overlap into nodes above/below
+  height: calc(100% + 20px);
+  margin-top: -10px;
+  background-color: $border;
+
+  &--completed { background-color: $success; }
+}

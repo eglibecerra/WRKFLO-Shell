@@ -32,6 +32,74 @@
     </MudButton>
 </MudPaper>
 
+@* ===== FORM CARD ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-2">FormCard</MudText>
+    <MudText Typo="Typo.body2" Class="mb-3" Color="Color.Secondary">
+        Card displaying a form summary with status badge, title, time elapsed, and action buttons.
+    </MudText>
+    <MudText Typo="Typo.caption" Class="mb-3" Style="font-family: monospace;">
+        &lt;FormCard Status="Outbox" Title="Expense Claim" SubmittedBy="Smith, John" TimeElapsed="46 mins" Department="Finance" /&gt;
+    </MudText>
+</MudPaper>
+
+<MudGrid>
+    <MudItem xs="12" md="6">
+        <FormCard Status="Outbox" Title="Hardware, Software and IT Services purchase form" SubmittedBy="Pieske, Benjamin" TimeElapsed="46 mins" Department="IT Services" />
+    </MudItem>
+    <MudItem xs="12" md="6">
+        <FormCard Status="Outbox" Title="Microsoft CRM or Dynamics 365 Online Access" SubmittedBy="Wareing, Luke" TimeElapsed="4 hr 32 mins" Department="IT Services" />
+    </MudItem>
+    <MudItem xs="12" md="6">
+        <FormCard Status="Inbox" Title="Expense Claim Request" SubmittedBy="Becerra, Egli" TimeElapsed="2 hr 15 mins" Department="Finance" />
+    </MudItem>
+    <MudItem xs="12" md="6">
+        <FormCard Status="Outbox" Title="Hardware, Software and IT Services purchase form" SubmittedBy="Etsebeth, Jannes" TimeElapsed="6 hr 34 mins" Department="IT Services" />
+    </MudItem>
+    <MudItem xs="12" md="6">
+        <FormCard Status="Complete" Title="Leave Request Application" SubmittedBy="Park, Lisa" TimeElapsed="3 days" Department="HR" />
+    </MudItem>
+    <MudItem xs="12" md="6">
+        <FormCard Status="Outbox" Title="Australian Mobile Phone Form" SubmittedBy="Passlow, Daniel" TimeElapsed="2 days" Department="IT Services" />
+    </MudItem>
+    <MudItem xs="12" md="6">
+        <FormCard Status="Inbox" Title="Purchase Order Approval" SubmittedBy="Chen, Mike" TimeElapsed="1 hr 10 mins" Department="Procurement" />
+    </MudItem>
+    <MudItem xs="12" md="6">
+        <FormCard Status="Complete" Title="Salary Sacrifice Device Purchase" SubmittedBy="Pochec, Luke" TimeElapsed="5 days" Department="Finance" />
+    </MudItem>
+</MudGrid>
+
+<div class="mb-6"></div>
+
+@* ===== WORKFLOW STATUS VIEW ===== *@
+<MudPaper Class="pa-4 mb-4 mt-6" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-2">WorkflowStatusView</MudText>
+    <MudText Typo="Typo.body2" Class="mb-3" Color="Color.Secondary">
+        Horizontal carousel stepper showing workflow progress. Completed steps show green ticks, active step pulses, pending steps are grey.
+    </MudText>
+
+    <MudText Typo="Typo.h6" Class="mb-2 mt-4">Completed Workflow</MudText>
+    <WorkflowStatusView Steps="_completedSteps" />
+
+    <MudText Typo="Typo.h6" Class="mb-2 mt-6">In-Progress Workflow</MudText>
+    <WorkflowStatusView Steps="_inProgressSteps" />
+</MudPaper>
+
+@* ===== WORKFLOW STEPPER BRANCHING (Option 3: Hybrid) ===== *@
+<MudPaper Class="pa-4 mb-4 mt-6" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-2">WorkflowStepperBranching</MudText>
+    <MudText Typo="Typo.body2" Class="mb-3" Color="Color.Secondary">
+        Hybrid stepper: linear view by default with branch point indicators. Click the fork icon to see possible paths. Toggle to full map view for complex workflows.
+    </MudText>
+
+    <MudText Typo="Typo.h6" Class="mb-2 mt-4">Expense Claim — Branching Workflow (In Progress)</MudText>
+    <WorkflowStepperBranching Steps="_branchingExpenseSteps" />
+
+    <MudText Typo="Typo.h6" Class="mb-2 mt-6">IT Access Request — Completed with Skipped Branch</MudText>
+    <WorkflowStepperBranching Steps="_branchingITSteps" />
+</MudPaper>
+
 <MudText Typo="Typo.body1" Color="Color.Secondary" Class="mt-4">More custom components coming soon...</MudText>
 
 @code {
@@ -40,4 +108,109 @@
 
     private bool _loadingVisible = true;
     private void ToggleLoading() => _loadingVisible = !_loadingVisible;
+
+    // Completed workflow demo
+    private List<WorkflowStatusView.WorkflowStep> _completedSteps = new()
+    {
+        new() { Name = "Details Entered", Role = "BY CSR EMPLOYEE", Status = WorkflowStatusView.StepStatus.Completed, ActionedBy = "BECERRA.EGLI", ActionedDate = new DateTime(2026, 2, 10, 9, 15, 0) },
+        new() { Name = "Considered for Approval", Role = "BY YOUR MANAGER", Status = WorkflowStatusView.StepStatus.Completed, ActionedBy = "SMITH.JANE", ActionedDate = new DateTime(2026, 2, 11, 14, 30, 0) },
+        new() { Name = "Considered for Authorisation", Role = "BY REVIEW CRM ROLE TEAM", Status = WorkflowStatusView.StepStatus.Completed, ActionedBy = "WILSON.BOB", ActionedDate = new DateTime(2026, 2, 12, 10, 45, 0) },
+        new() { Name = "Processed", Role = "BY SERVICE DESK TEAM", Status = WorkflowStatusView.StepStatus.Completed, ActionedBy = "CHEN.MIKE", ActionedDate = new DateTime(2026, 2, 13, 16, 20, 0) },
+        new() { Name = "Considered for Authorisation", Role = "BY SECURITY TEAM", Status = WorkflowStatusView.StepStatus.Completed, ActionedBy = "EDLINN", ActionedDate = new DateTime(2026, 2, 14, 14, 46, 15) },
+        new() { Name = "Authorised", Role = "BY EXECUTIVE GENERAL MANAGER", Status = WorkflowStatusView.StepStatus.Completed, ActionedBy = "PARK.LISA", ActionedDate = new DateTime(2026, 2, 15, 11, 0, 0) },
+    };
+
+    // In-progress workflow demo
+    private List<WorkflowStatusView.WorkflowStep> _inProgressSteps = new()
+    {
+        new() { Name = "Details Entered", Role = "BY CSR EMPLOYEE", Status = WorkflowStatusView.StepStatus.Completed, ActionedBy = "BECERRA.EGLI", ActionedDate = new DateTime(2026, 2, 16, 9, 0, 0) },
+        new() { Name = "Considered for Authorisation", Role = "BY MANAGER", Status = WorkflowStatusView.StepStatus.Active, ActionedBy = "PRUE.FRANCIS", ActionedDate = new DateTime(2026, 2, 18, 15, 52, 2) },
+        new() { Name = "Considered for Authorisation", Role = "BY EXECUTIVE GENERAL MANAGER / REGIONAL MANAGER / HR / FINANCE MANAGER", Status = WorkflowStatusView.StepStatus.Pending },
+        new() { Name = "Considered for Authorisation", Role = "BY NBIT ARCHITECTURE", Status = WorkflowStatusView.StepStatus.Pending },
+        new() { Name = "Authorised", Role = "BY EXECUTIVE GENERAL MANAGER NBIT", Status = WorkflowStatusView.StepStatus.Pending },
+    };
+
+    // ===== BRANCHING WORKFLOW DEMOS =====
+
+    // Expense claim with a branch at manager approval (amount determines route)
+    private List<WorkflowStepperBranching.BranchingStep> _branchingExpenseSteps = new()
+    {
+        new()
+        {
+            Name = "Details Entered", Role = "Requester",
+            Status = WorkflowStepperBranching.StepStatus.Completed,
+            ActionedBy = "BECERRA.EGLI", ActionedDate = new DateTime(2026, 2, 15, 9, 30, 0)
+        },
+        new()
+        {
+            Name = "Manager Approval", Role = "Direct Manager",
+            Status = WorkflowStepperBranching.StepStatus.Completed,
+            ActionedBy = "SMITH.JANE", ActionedDate = new DateTime(2026, 2, 16, 11, 15, 0),
+            Comment = "Approved — within budget",
+            BranchConditionLabel = "Amount threshold",
+            Branches = new()
+            {
+                new() { Condition = "Amount ≤ $5,000", TargetStepName = "Finance Review", WasTaken = true },
+                new() { Condition = "Amount > $5,000", TargetStepName = "Finance Director Approval", WasTaken = false },
+                new() { Condition = "Amount > $20,000", TargetStepName = "Executive Approval", WasTaken = false }
+            }
+        },
+        new()
+        {
+            Name = "Finance Review", Role = "Finance Team",
+            Status = WorkflowStepperBranching.StepStatus.Active,
+            ActionedDate = new DateTime(2026, 2, 16, 11, 15, 0)
+        },
+        new()
+        {
+            Name = "Payment Processing", Role = "Accounts Payable",
+            Status = WorkflowStepperBranching.StepStatus.Pending
+        },
+        new()
+        {
+            Name = "Complete", Role = "System",
+            Status = WorkflowStepperBranching.StepStatus.Pending
+        }
+    };
+
+    // IT access request — completed, with a skipped security review branch
+    private List<WorkflowStepperBranching.BranchingStep> _branchingITSteps = new()
+    {
+        new()
+        {
+            Name = "Request Submitted", Role = "Requester",
+            Status = WorkflowStepperBranching.StepStatus.Completed,
+            ActionedBy = "CHEN.MIKE", ActionedDate = new DateTime(2026, 2, 10, 8, 0, 0)
+        },
+        new()
+        {
+            Name = "Manager Approval", Role = "Direct Manager",
+            Status = WorkflowStepperBranching.StepStatus.Completed,
+            ActionedBy = "WILSON.BOB", ActionedDate = new DateTime(2026, 2, 10, 14, 30, 0),
+            BranchConditionLabel = "Access level requested",
+            Branches = new()
+            {
+                new() { Condition = "Standard access", TargetStepName = "IT Provisioning", WasTaken = true },
+                new() { Condition = "Elevated / Admin access", TargetStepName = "Security Review", WasTaken = false }
+            }
+        },
+        new()
+        {
+            Name = "Security Review", Role = "Security Team",
+            Status = WorkflowStepperBranching.StepStatus.Skipped,
+            SkipReason = "Standard access requested — security review not required"
+        },
+        new()
+        {
+            Name = "IT Provisioning", Role = "Service Desk",
+            Status = WorkflowStepperBranching.StepStatus.Completed,
+            ActionedBy = "LEE.SARAH", ActionedDate = new DateTime(2026, 2, 11, 10, 0, 0)
+        },
+        new()
+        {
+            Name = "Complete", Role = "System",
+            Status = WorkflowStepperBranching.StepStatus.Completed,
+            ActionedBy = "SYSTEM", ActionedDate = new DateTime(2026, 2, 11, 10, 0, 30)
+        }
+    };
 }
