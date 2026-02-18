@@ -1,0 +1,19 @@
+// ===========================
+// WRKFLO Shell - Main Stylesheet
+// ===========================
+// Organised by: base → layout → components
+// Each partial handles one concern.
+
+// --- Base ---
+@use 'base/variables' as *;
+@use 'base/reset';
+@use 'base/elevations';
+
+// --- Layout ---
+@use 'layout/navbar';
+@use 'layout/drawer';
+@use 'layout/footer';
+
+// --- Components ---
+@use 'components/search';
+@use 'components/reconnect';

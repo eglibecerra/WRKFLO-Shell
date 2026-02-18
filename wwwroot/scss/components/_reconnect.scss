@@ -1,0 +1,15 @@
+@use '../base/variables' as *;
+
+#components-reconnect-modal {
+  .spinner-border {
+    color: $primary !important;
+  }
+
+  circle {
+    stroke: $primary !important;
+  }
+
+  .loading {
+    color: $primary !important;
+  }
+}

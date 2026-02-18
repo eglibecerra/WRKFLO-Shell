@@ -1,0 +1,7 @@
+@use 'variables' as *;
+
+html, body {
+  font-family: $font-family;
+  margin: 0;
+  padding: 0;
+}

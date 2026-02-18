@@ -1,0 +1,29 @@
+// ===========================
+// WRKFLO Design Tokens
+// ===========================
+
+// Brand colours
+$primary:         #4F46E5;
+$primary-light:   #818CF8;
+$background:      #F9FAFB;
+$surface:         #FFFFFF;
+$text-primary:    #111827;
+$text-secondary:  #6B7280;
+$success:         #10B981;
+$warning:         #F59E0B;
+$error:           #EF4444;
+$info:            #3B82F6;
+$border:          #E5E7EB;
+
+// Typography
+$font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+// Shadows
+$shadow-sm:  0 1px 4px rgba(0, 0, 0, 0.1);
+$shadow-md:  0 2px 8px rgba(0, 0, 0, 0.1);
+$shadow-lg:  0 3px 8px rgba(0, 0, 0, 0.14);
+$shadow-xl:  0 4px 12px rgba(0, 0, 0, 0.16);
+$shadow-drawer: 4px 0 12px rgba(0, 0, 0, 0.1);
+
+// Spacing
+$footer-height: 40px;

@@ -6,3 +6,5 @@ obj/
 .idea/
 *.swp
 *~
+node_modules/
+.config/

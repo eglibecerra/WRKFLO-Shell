@@ -1,0 +1,10 @@
+@use 'variables' as *;
+
+.mud-paper, .mud-card, .mud-appbar {
+  box-shadow: $shadow-md !important;
+}
+
+.mud-elevation-1 { box-shadow: $shadow-sm !important; }
+.mud-elevation-2 { box-shadow: $shadow-md !important; }
+.mud-elevation-3 { box-shadow: $shadow-lg !important; }
+.mud-elevation-4 { box-shadow: $shadow-xl !important; }

@@ -1,0 +1,25 @@
+{
+  "name": "wrkflo-shell",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "sass:build": "sass wwwroot/scss/app.scss wwwroot/app.css --style=compressed --no-source-map",
+    "sass:watch": "sass wwwroot/scss/app.scss wwwroot/app.css --watch --no-source-map",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eglibecerra/WRKFLO-Shell.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eglibecerra/WRKFLO-Shell/issues"
+  },
+  "homepage": "https://github.com/eglibecerra/WRKFLO-Shell#readme",
+  "devDependencies": {
+    "sass": "^1.97.3"
+  }
+}

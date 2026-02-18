@@ -1,0 +1,470 @@
+@page "/components"
+
+<PageTitle>Component Showcase</PageTitle>
+
+<MudText Typo="Typo.h4" Class="mb-4">MudBlazor Component Showcase</MudText>
+
+@* ===== TYPOGRAPHY ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-3">Typography</MudText>
+    <MudText Typo="Typo.h1">H1 Heading</MudText>
+    <MudText Typo="Typo.h2">H2 Heading</MudText>
+    <MudText Typo="Typo.h3">H3 Heading</MudText>
+    <MudText Typo="Typo.h4">H4 Heading</MudText>
+    <MudText Typo="Typo.h5">H5 Heading</MudText>
+    <MudText Typo="Typo.h6">H6 Heading</MudText>
+    <MudText Typo="Typo.subtitle1">Subtitle 1</MudText>
+    <MudText Typo="Typo.subtitle2">Subtitle 2</MudText>
+    <MudText Typo="Typo.body1">Body 1 — The quick brown fox jumps over the lazy dog.</MudText>
+    <MudText Typo="Typo.body2">Body 2 — The quick brown fox jumps over the lazy dog.</MudText>
+    <MudText Typo="Typo.caption">Caption text</MudText>
+    <MudText Typo="Typo.overline">Overline text</MudText>
+</MudPaper>
+
+@* ===== BUTTONS ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-3">Buttons</MudText>
+    <div class="d-flex flex-wrap gap-3 mb-3">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary">Primary</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Secondary">Secondary</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Success">Success</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Warning">Warning</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error">Error</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Info">Info</MudButton>
+        <MudButton Variant="Variant.Filled" Disabled="true">Disabled</MudButton>
+    </div>
+    <div class="d-flex flex-wrap gap-3 mb-3">
+        <MudButton Variant="Variant.Outlined" Color="Color.Primary">Outlined</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Secondary">Outlined</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Success">Outlined</MudButton>
+    </div>
+    <div class="d-flex flex-wrap gap-3 mb-3">
+        <MudButton Variant="Variant.Text" Color="Color.Primary">Text</MudButton>
+        <MudButton Variant="Variant.Text" Color="Color.Secondary">Text</MudButton>
+        <MudButton Variant="Variant.Text" Color="Color.Success">Text</MudButton>
+    </div>
+    <div class="d-flex flex-wrap gap-3">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Save">Save</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.Delete">Delete</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Success" EndIcon="@Icons.Material.Filled.Send">Send</MudButton>
+    </div>
+</MudPaper>
+
+@* ===== ICON BUTTONS & FAB ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-3">Icon Buttons & FAB</MudText>
+    <div class="d-flex flex-wrap gap-3 align-center mb-3">
+        <MudIconButton Icon="@Icons.Material.Filled.Favorite" Color="Color.Error" />
+        <MudIconButton Icon="@Icons.Material.Filled.Share" Color="Color.Primary" />
+        <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
+        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Warning" />
+    </div>
+    <div class="d-flex flex-wrap gap-3 align-center">
+        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" />
+        <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Edit" />
+        <MudFab Color="Color.Success" StartIcon="@Icons.Material.Filled.Check" Label="Approve" />
+    </div>
+</MudPaper>
+
+@* ===== TEXT FIELDS & INPUTS ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-3">Text Fields & Inputs</MudText>
+    <MudGrid>
+        <MudItem xs="12" md="4">
+            <MudTextField @bind-Value="_textValue" Label="Standard" Variant="Variant.Text" />
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudTextField @bind-Value="_textValue" Label="Filled" Variant="Variant.Filled" />
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudTextField @bind-Value="_textValue" Label="Outlined" Variant="Variant.Outlined" />
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudTextField @bind-Value="_textValue" Label="With Icon" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudTextField @bind-Value="_textValue" Label="Password" Variant="Variant.Outlined" InputType="InputType.Password" />
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudTextField @bind-Value="_textValue" Label="Disabled" Variant="Variant.Outlined" Disabled="true" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField @bind-Value="_multilineValue" Label="Multiline" Variant="Variant.Outlined" Lines="3" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudNumericField @bind-Value="_numericValue" Label="Numeric" Variant="Variant.Outlined" />
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+
+@* ===== SELECTS & PICKERS ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-3">Selects & Pickers</MudText>
+    <MudGrid>
+        <MudItem xs="12" md="4">
+            <MudSelect @bind-Value="_selectValue" Label="Select" Variant="Variant.Outlined">
+                <MudSelectItem Value="@("Option 1")">Option 1</MudSelectItem>
+                <MudSelectItem Value="@("Option 2")">Option 2</MudSelectItem>
+                <MudSelectItem Value="@("Option 3")">Option 3</MudSelectItem>
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudAutocomplete T="string" Label="Autocomplete" @bind-Value="_autocompleteValue" SearchFunc="SearchFunc" Variant="Variant.Outlined" />
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudDatePicker Label="Date Picker" @bind-Date="_dateValue" Variant="Variant.Outlined" />
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudTimePicker Label="Time Picker" @bind-Time="_timeValue" Variant="Variant.Outlined" />
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudColorPicker Label="Color Picker" @bind-Text="_colorValue" Variant="Variant.Outlined" />
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+
+@* ===== CHECKBOXES, RADIOS, SWITCHES ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-3">Checkboxes, Radios & Switches</MudText>
+    <MudGrid>
+        <MudItem xs="12" md="4">
+            <MudCheckBox @bind-Value="_check1" Label="Checkbox 1" Color="Color.Primary" />
+            <MudCheckBox @bind-Value="_check2" Label="Checkbox 2" Color="Color.Secondary" />
+            <MudCheckBox @bind-Value="_check3" Label="Disabled" Disabled="true" />
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudRadioGroup @bind-Value="_radioValue">
+                <MudRadio Value="@("A")" Color="Color.Primary">Option A</MudRadio>
+                <MudRadio Value="@("B")" Color="Color.Primary">Option B</MudRadio>
+                <MudRadio Value="@("C")" Color="Color.Primary">Option C</MudRadio>
+            </MudRadioGroup>
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudSwitch @bind-Value="_switch1" Label="Switch 1" Color="Color.Primary" />
+            <MudSwitch @bind-Value="_switch2" Label="Switch 2" Color="Color.Success" />
+            <MudSwitch @bind-Value="_switch3" Label="Disabled" Disabled="true" />
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+
+@* ===== CHIPS ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-3">Chips</MudText>
+    <div class="d-flex flex-wrap gap-2">
+        <MudChip T="string" Color="Color.Primary">Primary</MudChip>
+        <MudChip T="string" Color="Color.Secondary">Secondary</MudChip>
+        <MudChip T="string" Color="Color.Success">Success</MudChip>
+        <MudChip T="string" Color="Color.Warning">Warning</MudChip>
+        <MudChip T="string" Color="Color.Error">Error</MudChip>
+        <MudChip T="string" Color="Color.Info">Info</MudChip>
+        <MudChip T="string" Icon="@Icons.Material.Filled.Person" Color="Color.Primary">With Icon</MudChip>
+        <MudChip T="string" Variant="Variant.Outlined" Color="Color.Primary">Outlined</MudChip>
+        <MudChip T="string" OnClose="OnChipClose" Color="Color.Primary">Closeable</MudChip>
+    </div>
+</MudPaper>
+
+@* ===== BADGES ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-3">Badges</MudText>
+    <div class="d-flex flex-wrap gap-6 align-center">
+        <MudBadge Content="3" Color="Color.Primary" Overlap="true">
+            <MudIcon Icon="@Icons.Material.Filled.Email" Color="Color.Default" />
+        </MudBadge>
+        <MudBadge Content="@("99+")" Color="Color.Error" Overlap="true">
+            <MudIcon Icon="@Icons.Material.Filled.Notifications" Color="Color.Default" />
+        </MudBadge>
+        <MudBadge Dot="true" Color="Color.Success" Overlap="true">
+            <MudIcon Icon="@Icons.Material.Filled.Person" Color="Color.Default" />
+        </MudBadge>
+    </div>
+</MudPaper>
+
+@* ===== ALERTS ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-3">Alerts</MudText>
+    <MudAlert Severity="Severity.Normal" Class="mb-2">Normal — This is a default alert.</MudAlert>
+    <MudAlert Severity="Severity.Info" Class="mb-2">Info — Something informational.</MudAlert>
+    <MudAlert Severity="Severity.Success" Class="mb-2">Success — Operation completed!</MudAlert>
+    <MudAlert Severity="Severity.Warning" Class="mb-2">Warning — Be careful here.</MudAlert>
+    <MudAlert Severity="Severity.Error" Class="mb-2">Error — Something went wrong.</MudAlert>
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="mb-2">Outlined info alert</MudAlert>
+    <MudAlert Severity="Severity.Success" Variant="Variant.Filled" Class="mb-2">Filled success alert</MudAlert>
+</MudPaper>
+
+@* ===== PROGRESS ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-3">Progress Indicators</MudText>
+    <MudProgressLinear Color="Color.Primary" Value="65" Class="mb-3" />
+    <MudProgressLinear Color="Color.Secondary" Value="40" Striped="true" Class="mb-3" />
+    <MudProgressLinear Color="Color.Success" Indeterminate="true" Class="mb-3" />
+    <div class="d-flex gap-6 align-center mt-3">
+        <MudProgressCircular Color="Color.Primary" Value="75" />
+        <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
+        <MudProgressCircular Color="Color.Success" Value="100" />
+    </div>
+</MudPaper>
+
+@* ===== AVATARS ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-3">Avatars</MudText>
+    <div class="d-flex flex-wrap gap-3 align-center">
+        <MudAvatar Color="Color.Primary">EB</MudAvatar>
+        <MudAvatar Color="Color.Secondary">WF</MudAvatar>
+        <MudAvatar Color="Color.Success" Size="Size.Large">XL</MudAvatar>
+        <MudAvatar Color="Color.Error" Size="Size.Small">SM</MudAvatar>
+        <MudAvatar Color="Color.Info" Variant="Variant.Outlined">OL</MudAvatar>
+        <MudAvatar>
+            <MudIcon Icon="@Icons.Material.Filled.Person" />
+        </MudAvatar>
+    </div>
+</MudPaper>
+
+@* ===== CARDS ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-3">Cards</MudText>
+    <MudGrid>
+        <MudItem xs="12" md="4">
+            <MudCard>
+                <MudCardHeader>
+                    <CardHeaderAvatar>
+                        <MudAvatar Color="Color.Primary">W</MudAvatar>
+                    </CardHeaderAvatar>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.body1">WrkFlo Card</MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">Subtitle text</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudText>This is a sample card component with header, content and actions.</MudText>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary">Action</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudCard Outlined="true">
+                <MudCardContent>
+                    <MudText Typo="Typo.h6">Outlined Card</MudText>
+                    <MudText Class="mt-2">A card with an outlined variant, no elevation.</MudText>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Outlined" Color="Color.Primary" FullWidth="true">Full Width Button</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudCard Elevation="4">
+                <MudCardContent>
+                    <MudText Typo="Typo.h6">Elevated Card</MudText>
+                    <MudText Class="mt-2">A card with higher elevation for emphasis.</MudText>
+                    <MudChip T="string" Color="Color.Success" Size="Size.Small" Class="mt-2">Active</MudChip>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+
+@* ===== TABLE ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-3">Table</MudText>
+    <MudSimpleTable Style="overflow-x: auto;">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Eggs</td>
+                <td>Admin</td>
+                <td><MudChip T="string" Color="Color.Success" Size="Size.Small">Active</MudChip></td>
+                <td><MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" /></td>
+            </tr>
+            <tr>
+                <td>Jane Smith</td>
+                <td>Approver</td>
+                <td><MudChip T="string" Color="Color.Success" Size="Size.Small">Active</MudChip></td>
+                <td><MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" /></td>
+            </tr>
+            <tr>
+                <td>Bob Wilson</td>
+                <td>Submitter</td>
+                <td><MudChip T="string" Color="Color.Warning" Size="Size.Small">Pending</MudChip></td>
+                <td><MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" /></td>
+            </tr>
+        </tbody>
+    </MudSimpleTable>
+</MudPaper>
+
+@* ===== TABS ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-3">Tabs</MudText>
+    <MudTabs Elevation="0" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-4">
+        <MudTabPanel Text="Tab 1" Icon="@Icons.Material.Filled.Home">
+            <MudText>Content for Tab 1. This could be a form, a list, or any content.</MudText>
+        </MudTabPanel>
+        <MudTabPanel Text="Tab 2" Icon="@Icons.Material.Filled.Settings">
+            <MudText>Content for Tab 2. Different section, different content.</MudText>
+        </MudTabPanel>
+        <MudTabPanel Text="Tab 3" Icon="@Icons.Material.Filled.Info">
+            <MudText>Content for Tab 3. You get the idea!</MudText>
+        </MudTabPanel>
+    </MudTabs>
+</MudPaper>
+
+@* ===== EXPANSION PANELS ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-3">Expansion Panels</MudText>
+    <MudExpansionPanels>
+        <MudExpansionPanel Text="Panel 1 — Click to expand">
+            <MudText>Expandable content area. Great for FAQs, settings, or grouped info.</MudText>
+        </MudExpansionPanel>
+        <MudExpansionPanel Text="Panel 2 — Another section">
+            <MudText>More content here. Panels can be used independently or as an accordion.</MudText>
+        </MudExpansionPanel>
+        <MudExpansionPanel Text="Panel 3 — And another">
+            <MudText>Each panel can contain any Blazor content — forms, tables, charts, etc.</MudText>
+        </MudExpansionPanel>
+    </MudExpansionPanels>
+</MudPaper>
+
+@* ===== BREADCRUMBS ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-3">Breadcrumbs</MudText>
+    <MudBreadcrumbs Items="_breadcrumbs" />
+</MudPaper>
+
+@* ===== TOOLTIPS & RATINGS ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-3">Tooltips & Rating</MudText>
+    <div class="d-flex flex-wrap gap-6 align-center">
+        <MudTooltip Text="I'm a tooltip!">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary">Hover Me</MudButton>
+        </MudTooltip>
+        <MudRating @bind-SelectedValue="_ratingValue" />
+    </div>
+</MudPaper>
+
+@* ===== SLIDER ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-3">Slider</MudText>
+    <MudSlider @bind-Value="_sliderValue" Min="0" Max="100" Step="1" Color="Color.Primary">
+        Value: @_sliderValue
+    </MudSlider>
+</MudPaper>
+
+@* ===== DIVIDER ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-3">Dividers</MudText>
+    <MudText>Content above</MudText>
+    <MudDivider Class="my-2" />
+    <MudText>Content below</MudText>
+    <MudDivider DividerType="DividerType.Middle" Class="my-2" />
+    <MudText>After middle divider</MudText>
+</MudPaper>
+
+@* ===== SKELETON ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-3">Skeleton (Loading Placeholders)</MudText>
+    <MudSkeleton />
+    <MudSkeleton Width="60%" Class="mt-2" />
+    <MudSkeleton Width="40%" Class="mt-2" />
+    <div class="d-flex gap-3 mt-3">
+        <MudSkeleton SkeletonType="SkeletonType.Circle" Width="48px" Height="48px" />
+        <div style="flex:1">
+            <MudSkeleton Width="80%" />
+            <MudSkeleton Width="50%" Class="mt-2" />
+        </div>
+    </div>
+</MudPaper>
+
+@* ===== TIMELINE ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-3">Timeline</MudText>
+    <MudTimeline>
+        <MudTimelineItem Color="Color.Success" Size="Size.Small">
+            <MudText Typo="Typo.body2"><b>Submitted</b> — Form created by requester</MudText>
+        </MudTimelineItem>
+        <MudTimelineItem Color="Color.Primary" Size="Size.Small">
+            <MudText Typo="Typo.body2"><b>Manager Review</b> — Awaiting approval</MudText>
+        </MudTimelineItem>
+        <MudTimelineItem Color="Color.Default" Size="Size.Small">
+            <MudText Typo="Typo.body2"><b>Finance</b> — Pending</MudText>
+        </MudTimelineItem>
+    </MudTimeline>
+</MudPaper>
+
+@* ===== LIST ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-3">List</MudText>
+    <MudList T="string">
+        <MudListItem T="string" Icon="@Icons.Material.Filled.Inbox" Text="Inbox" />
+        <MudListItem T="string" Icon="@Icons.Material.Filled.Drafts" Text="Drafts" />
+        <MudDivider />
+        <MudListItem T="string" Icon="@Icons.Material.Filled.Send" Text="Sent" />
+        <MudListItem T="string" Icon="@Icons.Material.Filled.Delete" Text="Trash" />
+    </MudList>
+</MudPaper>
+
+@* ===== PAGINATION ===== *@
+<MudPaper Class="pa-4 mb-4" Elevation="1">
+    <MudText Typo="Typo.h5" Class="mb-3">Pagination</MudText>
+    <MudPagination Count="10" Color="Color.Primary" />
+</MudPaper>
+
+@code {
+    // Text fields
+    private string _textValue = "";
+    private string _multilineValue = "";
+    private int _numericValue = 42;
+
+    // Select
+    private string _selectValue = "Option 1";
+    private string _autocompleteValue = "";
+
+    // Pickers
+    private DateTime? _dateValue = DateTime.Today;
+    private TimeSpan? _timeValue = new TimeSpan(9, 0, 0);
+    private string _colorValue = "#4F46E5";
+
+    // Checkboxes & switches
+    private bool _check1 = true;
+    private bool _check2 = false;
+    private bool _check3 = false;
+    private string _radioValue = "A";
+    private bool _switch1 = true;
+    private bool _switch2 = false;
+    private bool _switch3 = false;
+
+    // Rating & slider
+    private int _ratingValue = 3;
+    private double _sliderValue = 50;
+
+    // Breadcrumbs
+    private List<BreadcrumbItem> _breadcrumbs = new()
+    {
+        new BreadcrumbItem("Home", href: "/", icon: Icons.Material.Filled.Home),
+        new BreadcrumbItem("Workflows", href: "/workflows"),
+        new BreadcrumbItem("Expense Approval", href: null, disabled: true)
+    };
+
+    // Autocomplete search
+    private static string[] _states = { "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia" };
+
+    private async Task<IEnumerable<string>> SearchFunc(string value, CancellationToken token)
+    {
+        if (string.IsNullOrEmpty(value))
+            return _states;
+        return _states.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
+    private void OnChipClose(MudChip<string> chip)
+    {
+        // Handle chip close
+    }
+}

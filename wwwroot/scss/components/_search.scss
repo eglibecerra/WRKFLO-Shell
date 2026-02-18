@@ -1,0 +1,19 @@
+@use '../base/variables' as *;
+
+.mud-input-outlined .mud-input-outlined-border {
+  transition: border-color 0.2s;
+}
+
+.mud-input--is-focused .mud-input-outlined-border {
+  border-color: $primary-light !important;
+  border-width: 2px !important;
+}
+
+.mud-input-adornment-start .mud-icon-root {
+  color: $primary-light !important;
+}
+
+.mud-input-label.mud-input-label-animated.mud-input-label-inputcontrol,
+label.mud-input-label-animated {
+  color: $primary-light !important;
+}
