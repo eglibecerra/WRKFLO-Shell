@@ -13,6 +13,17 @@
     <MudText Typo="Typo.caption" Class="mb-3" Style="font-family: monospace;">
         &lt;StatusTabs InboxCount="36" OutboxCount="714" CompleteCount="15555" ActiveTab="inbox" OnTabChanged="Handler" /&gt;
     </MudText>
+    <MudText Typo="Typo.subtitle2" Class="mb-2 mt-2">Parameters</MudText>
+    <MudSimpleTable Dense="true" Bordered="true" Class="mb-4" Style="max-width: 700px;">
+        <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+            <tr><td><code>InboxCount</code></td><td>int</td><td>0</td><td>Number shown on the Inbox tab</td></tr>
+            <tr><td><code>OutboxCount</code></td><td>int</td><td>0</td><td>Number shown on the Outbox tab</td></tr>
+            <tr><td><code>CompleteCount</code></td><td>int</td><td>0</td><td>Number shown on the Complete tab</td></tr>
+            <tr><td><code>ActiveTab</code></td><td>string</td><td>"inbox"</td><td>Currently selected tab ("inbox", "outbox", "complete")</td></tr>
+            <tr><td><code>OnTabChanged</code></td><td>EventCallback&lt;string&gt;</td><td>—</td><td>Fires when a tab is clicked, returns tab name</td></tr>
+        </tbody>
+    </MudSimpleTable>
     <StatusTabs InboxCount="36" OutboxCount="714" CompleteCount="15555" ActiveTab="inbox" OnTabChanged="OnDemoTabChanged" />
     <MudText Typo="Typo.body2" Class="mt-3">Selected tab: <strong>@_demoTab</strong></MudText>
 </MudPaper>
@@ -26,6 +37,15 @@
     <MudText Typo="Typo.caption" Class="mb-3" Style="font-family: monospace;">
         &lt;LoadingBar Color="Color.Primary" Visible="true" /&gt;
     </MudText>
+    <MudText Typo="Typo.subtitle2" Class="mb-2 mt-2">Parameters</MudText>
+    <MudSimpleTable Dense="true" Bordered="true" Class="mb-4" Style="max-width: 700px;">
+        <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+            <tr><td><code>Color</code></td><td>Color</td><td>Color.Success</td><td>Bar colour (MudBlazor Color enum)</td></tr>
+            <tr><td><code>Visible</code></td><td>bool</td><td>true</td><td>Show or hide the loading bar</td></tr>
+            <tr><td><code>CssClass</code></td><td>string</td><td>""</td><td>Additional CSS classes</td></tr>
+        </tbody>
+    </MudSimpleTable>
     <LoadingBar Color="Color.Primary" Visible="_loadingVisible" />
     <MudButton Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" Class="mt-3" OnClick="ToggleLoading">
         @(_loadingVisible ? "Hide" : "Show") Loading Bar
@@ -41,6 +61,19 @@
     <MudText Typo="Typo.caption" Class="mb-3" Style="font-family: monospace;">
         &lt;FormCard Status="Outbox" Title="Expense Claim" SubmittedBy="Smith, John" TimeElapsed="46 mins" Department="Finance" /&gt;
     </MudText>
+    <MudText Typo="Typo.subtitle2" Class="mb-2 mt-2">Parameters</MudText>
+    <MudSimpleTable Dense="true" Bordered="true" Class="mb-4" Style="max-width: 700px;">
+        <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+            <tr><td><code>Status</code></td><td>string</td><td>"Inbox"</td><td>Badge label &amp; colour ("Inbox", "Outbox", "Complete")</td></tr>
+            <tr><td><code>Title</code></td><td>string</td><td>""</td><td>Form title displayed on the card</td></tr>
+            <tr><td><code>SubmittedBy</code></td><td>string</td><td>""</td><td>Name of the person who submitted</td></tr>
+            <tr><td><code>TimeElapsed</code></td><td>string</td><td>""</td><td>Time since submission (e.g. "46 mins")</td></tr>
+            <tr><td><code>Department</code></td><td>string</td><td>""</td><td>Department label shown top-right</td></tr>
+            <tr><td><code>OnRedirect</code></td><td>EventCallback</td><td>—</td><td>Fires when Redirect button clicked</td></tr>
+            <tr><td><code>OnView</code></td><td>EventCallback</td><td>—</td><td>Fires when View button clicked</td></tr>
+        </tbody>
+    </MudSimpleTable>
 </MudPaper>
 
 <MudGrid>
@@ -81,6 +114,40 @@
     <MudText Typo="Typo.caption" Class="mb-3" Style="font-family: monospace;">
         &lt;WorkflowStepsView Steps="steps" VisibleSteps="5" /&gt;
     </MudText>
+    <MudText Typo="Typo.subtitle2" Class="mb-2 mt-2">Parameters</MudText>
+    <MudSimpleTable Dense="true" Bordered="true" Class="mb-4" Style="max-width: 700px;">
+        <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+            <tr><td><code>Steps</code></td><td>List&lt;BranchingStep&gt;</td><td>empty</td><td>List of workflow steps to display</td></tr>
+            <tr><td><code>VisibleSteps</code></td><td>int</td><td>5</td><td>Max steps visible before carousel activates</td></tr>
+        </tbody>
+    </MudSimpleTable>
+
+    <MudText Typo="Typo.subtitle2" Class="mb-2 mt-4">BranchingStep Model</MudText>
+    <MudSimpleTable Dense="true" Bordered="true" Class="mb-4" Style="max-width: 700px;">
+        <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+        <tbody>
+            <tr><td><code>Name</code></td><td>string</td><td>Step display name (e.g. "Manager Approval")</td></tr>
+            <tr><td><code>Role</code></td><td>string</td><td>Role or team responsible (e.g. "Direct Manager")</td></tr>
+            <tr><td><code>Status</code></td><td>StepStatus</td><td>Completed, Active, Pending, or Skipped</td></tr>
+            <tr><td><code>ActionedBy</code></td><td>string?</td><td>Who actioned this step (tooltip)</td></tr>
+            <tr><td><code>ActionedDate</code></td><td>DateTime?</td><td>When the step was actioned (tooltip)</td></tr>
+            <tr><td><code>Comment</code></td><td>string?</td><td>Comment left by the actioner</td></tr>
+            <tr><td><code>SkipReason</code></td><td>string?</td><td>Reason this step was skipped</td></tr>
+            <tr><td><code>BranchConditionLabel</code></td><td>string?</td><td>Label for the branch condition (e.g. "Amount threshold")</td></tr>
+            <tr><td><code>Branches</code></td><td>List&lt;BranchPath&gt;?</td><td>Possible paths from this step (null = no branching)</td></tr>
+        </tbody>
+    </MudSimpleTable>
+
+    <MudText Typo="Typo.subtitle2" Class="mb-2 mt-4">BranchPath Model</MudText>
+    <MudSimpleTable Dense="true" Bordered="true" Class="mb-4" Style="max-width: 700px;">
+        <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+        <tbody>
+            <tr><td><code>Condition</code></td><td>string</td><td>Condition that triggers this path (e.g. "Amount &gt; $5,000")</td></tr>
+            <tr><td><code>TargetStepName</code></td><td>string</td><td>Name of the step this path leads to</td></tr>
+            <tr><td><code>WasTaken</code></td><td>bool</td><td>Whether this path was actually taken</td></tr>
+        </tbody>
+    </MudSimpleTable>
 
     <MudText Typo="Typo.h6" Class="mb-2 mt-4">Long Workflow — Carousel Active (8 steps)</MudText>
     <WorkflowStepsView Steps="_longWorkflowSteps" VisibleSteps="5" />
@@ -104,12 +171,12 @@
     // ===== BRANCHING WORKFLOW DEMOS =====
 
     // Long workflow with 8 steps — needs carousel
-    private List<WorkflowStepsView.BranchingStep> _longWorkflowSteps = new()
+    private List<BranchingStep> _longWorkflowSteps = new()
     {
-        new() { Name = "Details Entered", Role = "CSR Employee", Status = WorkflowStepsView.StepStatus.Completed, ActionedBy = "BECERRA.EGLI", ActionedDate = new DateTime(2026, 2, 10, 9, 15, 0) },
+        new() { Name = "Details Entered", Role = "CSR Employee", Status = StepStatus.Completed, ActionedBy = "BECERRA.EGLI", ActionedDate = new DateTime(2026, 2, 10, 9, 15, 0) },
         new()
         {
-            Name = "Manager Approval", Role = "Direct Manager", Status = WorkflowStepsView.StepStatus.Completed,
+            Name = "Manager Approval", Role = "Direct Manager", Status = StepStatus.Completed,
             ActionedBy = "SMITH.JANE", ActionedDate = new DateTime(2026, 2, 11, 14, 30, 0),
             BranchConditionLabel = "Department",
             Branches = new()
@@ -118,11 +185,11 @@
                 new() { Condition = "Other Departments", TargetStepName = "Finance Review", WasTaken = false }
             }
         },
-        new() { Name = "IT Architecture Review", Role = "NBIT Architecture", Status = WorkflowStepsView.StepStatus.Completed, ActionedBy = "WILSON.BOB", ActionedDate = new DateTime(2026, 2, 12, 10, 45, 0) },
-        new() { Name = "Security Review", Role = "Security Team", Status = WorkflowStepsView.StepStatus.Completed, ActionedBy = "EDLINN", ActionedDate = new DateTime(2026, 2, 13, 16, 20, 0) },
+        new() { Name = "IT Architecture Review", Role = "NBIT Architecture", Status = StepStatus.Completed, ActionedBy = "WILSON.BOB", ActionedDate = new DateTime(2026, 2, 12, 10, 45, 0) },
+        new() { Name = "Security Review", Role = "Security Team", Status = StepStatus.Completed, ActionedBy = "EDLINN", ActionedDate = new DateTime(2026, 2, 13, 16, 20, 0) },
         new()
         {
-            Name = "Executive Authorisation", Role = "EGM NBIT", Status = WorkflowStepsView.StepStatus.Completed,
+            Name = "Executive Authorisation", Role = "EGM NBIT", Status = StepStatus.Completed,
             ActionedBy = "PARK.LISA", ActionedDate = new DateTime(2026, 2, 14, 11, 0, 0),
             BranchConditionLabel = "Cost threshold",
             Branches = new()
@@ -131,24 +198,24 @@
                 new() { Condition = "Cost > $50,000", TargetStepName = "Board Approval", WasTaken = true }
             }
         },
-        new() { Name = "Board Approval", Role = "Board of Directors", Status = WorkflowStepsView.StepStatus.Active, ActionedDate = new DateTime(2026, 2, 15, 9, 0, 0) },
-        new() { Name = "Procurement", Role = "Procurement Team", Status = WorkflowStepsView.StepStatus.Pending },
-        new() { Name = "Complete", Role = "System", Status = WorkflowStepsView.StepStatus.Pending },
+        new() { Name = "Board Approval", Role = "Board of Directors", Status = StepStatus.Active, ActionedDate = new DateTime(2026, 2, 15, 9, 0, 0) },
+        new() { Name = "Procurement", Role = "Procurement Team", Status = StepStatus.Pending },
+        new() { Name = "Complete", Role = "System", Status = StepStatus.Pending },
     };
 
     // Expense claim with a branch at manager approval (amount determines route)
-    private List<WorkflowStepsView.BranchingStep> _branchingExpenseSteps = new()
+    private List<BranchingStep> _branchingExpenseSteps = new()
     {
         new()
         {
             Name = "Details Entered", Role = "Requester",
-            Status = WorkflowStepsView.StepStatus.Completed,
+            Status = StepStatus.Completed,
             ActionedBy = "BECERRA.EGLI", ActionedDate = new DateTime(2026, 2, 15, 9, 30, 0)
         },
         new()
         {
             Name = "Manager Approval", Role = "Direct Manager",
-            Status = WorkflowStepsView.StepStatus.Completed,
+            Status = StepStatus.Completed,
             ActionedBy = "SMITH.JANE", ActionedDate = new DateTime(2026, 2, 16, 11, 15, 0),
             Comment = "Approved — within budget",
             BranchConditionLabel = "Amount threshold",
@@ -162,34 +229,34 @@
         new()
         {
             Name = "Finance Review", Role = "Finance Team",
-            Status = WorkflowStepsView.StepStatus.Active,
+            Status = StepStatus.Active,
             ActionedDate = new DateTime(2026, 2, 16, 11, 15, 0)
         },
         new()
         {
             Name = "Payment Processing", Role = "Accounts Payable",
-            Status = WorkflowStepsView.StepStatus.Pending
+            Status = StepStatus.Pending
         },
         new()
         {
             Name = "Complete", Role = "System",
-            Status = WorkflowStepsView.StepStatus.Pending
+            Status = StepStatus.Pending
         }
     };
 
     // IT access request — completed, with a skipped security review branch
-    private List<WorkflowStepsView.BranchingStep> _branchingITSteps = new()
+    private List<BranchingStep> _branchingITSteps = new()
     {
         new()
         {
             Name = "Request Submitted", Role = "Requester",
-            Status = WorkflowStepsView.StepStatus.Completed,
+            Status = StepStatus.Completed,
             ActionedBy = "CHEN.MIKE", ActionedDate = new DateTime(2026, 2, 10, 8, 0, 0)
         },
         new()
         {
             Name = "Manager Approval", Role = "Direct Manager",
-            Status = WorkflowStepsView.StepStatus.Completed,
+            Status = StepStatus.Completed,
             ActionedBy = "WILSON.BOB", ActionedDate = new DateTime(2026, 2, 10, 14, 30, 0),
             BranchConditionLabel = "Access level requested",
             Branches = new()
@@ -201,19 +268,19 @@
         new()
         {
             Name = "Security Review", Role = "Security Team",
-            Status = WorkflowStepsView.StepStatus.Skipped,
+            Status = StepStatus.Skipped,
             SkipReason = "Standard access requested — security review not required"
         },
         new()
         {
             Name = "IT Provisioning", Role = "Service Desk",
-            Status = WorkflowStepsView.StepStatus.Completed,
+            Status = StepStatus.Completed,
             ActionedBy = "LEE.SARAH", ActionedDate = new DateTime(2026, 2, 11, 10, 0, 0)
         },
         new()
         {
             Name = "Complete", Role = "System",
-            Status = WorkflowStepsView.StepStatus.Completed,
+            Status = StepStatus.Completed,
             ActionedBy = "SYSTEM", ActionedDate = new DateTime(2026, 2, 11, 10, 0, 30)
         }
     };

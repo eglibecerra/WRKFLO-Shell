@@ -262,27 +262,4 @@
 
     private void CloseAllBranches() => _expandedBranches.Clear();
 
-    public enum StepStatus { Completed, Active, Pending, Skipped }
-
-    public class BranchingStep
-    {
-        public string Name { get; set; } = "";
-        public string Role { get; set; } = "";
-        public StepStatus Status { get; set; } = StepStatus.Pending;
-        public string? ActionedBy { get; set; }
-        public DateTime? ActionedDate { get; set; }
-        public string? Comment { get; set; }
-        public string? SkipReason { get; set; }
-
-        // Branching
-        public string? BranchConditionLabel { get; set; }
-        public List<BranchPath>? Branches { get; set; }
-    }
-
-    public class BranchPath
-    {
-        public string Condition { get; set; } = "";
-        public string TargetStepName { get; set; } = "";
-        public bool WasTaken { get; set; }
-    }
 }
