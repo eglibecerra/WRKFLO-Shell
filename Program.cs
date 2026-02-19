@@ -18,6 +18,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
     var supportedCultures = new[]
     {
+        new CultureInfo("en-AU"),
         new CultureInfo("en"),
         new CultureInfo("es"),
         new CultureInfo("fr"),
@@ -26,7 +27,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
         new CultureInfo("ja"),
         new CultureInfo("zh"),
     };
-    options.DefaultRequestCulture = new RequestCulture("en");
+    options.DefaultRequestCulture = new RequestCulture("en-AU");
     options.SupportedCultures = supportedCultures;
     options.SupportedUICultures = supportedCultures;
 });
