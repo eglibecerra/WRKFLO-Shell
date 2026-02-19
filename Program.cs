@@ -1,3 +1,5 @@
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 using MudBlazor.Services;
 using Wrkflo.Shell.Components;
 
@@ -10,7 +12,29 @@ builder.Services.AddRazorComponents()
 // Add MudBlazor
 builder.Services.AddMudServices();
 
+// Localisation
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[]
+    {
+        new CultureInfo("en"),
+        new CultureInfo("es"),
+        new CultureInfo("fr"),
+        new CultureInfo("de"),
+        new CultureInfo("pt"),
+        new CultureInfo("ja"),
+        new CultureInfo("zh"),
+    };
+    options.DefaultRequestCulture = new RequestCulture("en");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+});
+
 var app = builder.Build();
+
+// Use request localisation middleware
+app.UseRequestLocalization();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

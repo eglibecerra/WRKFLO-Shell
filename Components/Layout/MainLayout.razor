@@ -1,4 +1,5 @@
 @inherits LayoutComponentBase
+@inject IStringLocalizer<MainLayout> L
 
 <MudThemeProvider Theme="_theme" />
 <MudPopoverProvider />
@@ -9,9 +10,9 @@
     @* HEADER *@
     <MudAppBar Elevation="3" Class="wrkflo-appbar">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Class="wrkflo-menu-btn" Edge="Edge.Start" OnClick="ToggleDrawer" />
-        <MudText Typo="Typo.h6" Class="wrkflo-logo">WrkFlo</MudText>
+        <MudText Typo="Typo.h6" Class="wrkflo-logo">@L["AppTitle"]</MudText>
         <MudSpacer />
-        <NavSearch Placeholder="Search Forms" OnSearch="OnSearchForms" Results="_searchResults" OnResultSelected="OnSearchResultSelected" />
+        <NavSearch Placeholder="@L["SearchForms"]" OnSearch="OnSearchForms" Results="_searchResults" OnResultSelected="OnSearchResultSelected" />
         <MudSpacer />
         <MudMenu AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
             <ActivatorContent>
@@ -24,14 +25,14 @@
             </ActivatorContent>
             <ChildContent>
                 <MudMenuItem Icon="@Icons.Material.Filled.Notifications" IconColor="Color.Primary">
-                    Notifications
+                    @L["Notifications"]
                     <MudChip T="string" Color="Color.Error" Size="Size.Small" Class="ml-2">3</MudChip>
                 </MudMenuItem>
-                <MudMenuItem Icon="@Icons.Material.Filled.Email" IconColor="Color.Primary">Messages</MudMenuItem>
-                <MudMenuItem Icon="@Icons.Material.Filled.Settings" IconColor="Color.Primary">Settings</MudMenuItem>
+                <MudMenuItem Icon="@Icons.Material.Filled.Email" IconColor="Color.Primary">@L["Messages"]</MudMenuItem>
+                <MudMenuItem Icon="@Icons.Material.Filled.Settings" IconColor="Color.Primary">@L["Settings"]</MudMenuItem>
                 <MudDivider />
-                <MudMenuItem Icon="@Icons.Material.Filled.Person" IconColor="Color.Primary">My Profile</MudMenuItem>
-                <MudMenuItem Icon="@Icons.Material.Filled.ExitToApp" IconColor="Color.Error">Sign Out</MudMenuItem>
+                <MudMenuItem Icon="@Icons.Material.Filled.Person" IconColor="Color.Primary">@L["MyProfile"]</MudMenuItem>
+                <MudMenuItem Icon="@Icons.Material.Filled.ExitToApp" IconColor="Color.Error">@L["SignOut"]</MudMenuItem>
             </ChildContent>
         </MudMenu>
     </MudAppBar>
@@ -39,12 +40,21 @@
     @* LEFT NAVIGATION *@
     <MudDrawer @bind-Open="_drawerOpen" Elevation="2" Variant="DrawerVariant.Responsive" ClipMode="DrawerClipMode.Always">
         <MudNavMenu>
-            <MudNavLink Href="/" Icon="@Icons.Material.Filled.Dashboard" IconColor="Color.Primary" Class="wrkflo-nav-link">Dashboard</MudNavLink>
-            <MudNavLink Href="/forms" Icon="@Icons.Material.Filled.Description" IconColor="Color.Primary" Class="wrkflo-nav-link">Forms</MudNavLink>
-            <MudNavLink Href="/workflows" Icon="@Icons.Material.Filled.AccountTree" IconColor="Color.Primary" Class="wrkflo-nav-link">Workflows</MudNavLink>
+            <MudNavLink Href="/" Icon="@Icons.Material.Filled.Dashboard" IconColor="Color.Primary" Class="wrkflo-nav-link">@L["Dashboard"]</MudNavLink>
+            <MudNavLink Href="/forms" Icon="@Icons.Material.Filled.Description" IconColor="Color.Primary" Class="wrkflo-nav-link">@L["Forms"]</MudNavLink>
+            <MudNavLink Href="/workflows" Icon="@Icons.Material.Filled.AccountTree" IconColor="Color.Primary" Class="wrkflo-nav-link">@L["Workflows"]</MudNavLink>
+            <MudNavGroup Title="@L["Admin"]" Icon="@Icons.Material.Filled.AdminPanelSettings" IconColor="Color.Primary" Class="wrkflo-nav-link" Expanded="false">
+                <MudNavLink Href="/admin/users" Icon="@Icons.Material.Filled.People" IconColor="Color.Primary" Class="wrkflo-nav-link">@L["Users"]</MudNavLink>
+                <MudNavGroup Title="@L["Settings"]" Icon="@Icons.Material.Filled.Settings" IconColor="Color.Primary" Class="wrkflo-nav-link" Expanded="false">
+                    <MudNavLink Href="/admin/settings/general" Icon="@Icons.Material.Filled.Tune" IconColor="Color.Primary" Class="wrkflo-nav-link">@L["General"]</MudNavLink>
+                    <MudNavLink Href="/admin/settings/notifications" Icon="@Icons.Material.Filled.Notifications" IconColor="Color.Primary" Class="wrkflo-nav-link">@L["Notifications"]</MudNavLink>
+                    <MudNavLink Href="/admin/settings/security" Icon="@Icons.Material.Filled.Security" IconColor="Color.Primary" Class="wrkflo-nav-link">@L["Security"]</MudNavLink>
+                </MudNavGroup>
+                <MudNavLink Href="/admin/branding" Icon="@Icons.Material.Filled.Palette" IconColor="Color.Primary" Class="wrkflo-nav-link">@L["Branding"]</MudNavLink>
+            </MudNavGroup>
             <MudDivider Class="my-2" />
-            <MudNavLink Href="/components" Icon="@Icons.Material.Filled.Widgets" IconColor="Color.Primary" Class="wrkflo-nav-link">Component Showcase</MudNavLink>
-            <MudNavLink Href="/custom-components" Icon="@Icons.Material.Filled.Extension" IconColor="Color.Primary" Class="wrkflo-nav-link">Custom Components</MudNavLink>
+            <MudNavLink Href="/components" Icon="@Icons.Material.Filled.Widgets" IconColor="Color.Primary" Class="wrkflo-nav-link">@L["ComponentShowcase"]</MudNavLink>
+            <MudNavLink Href="/custom-components" Icon="@Icons.Material.Filled.Extension" IconColor="Color.Primary" Class="wrkflo-nav-link">@L["CustomComponents"]</MudNavLink>
         </MudNavMenu>
     </MudDrawer>
 
@@ -67,7 +77,7 @@
 <footer class="wrkflo-footer-wrapper">
     <LoadingBar Color="Color.Primary" Visible="_isLoading" CssClass="wrkflo-footer-loader" />
     <div class="wrkflo-footer">
-        <MudText Typo="Typo.body2" Class="wrkflo-footer-text">WrkFlo © 2026 by { bectec }</MudText>
+        <MudText Typo="Typo.body2" Class="wrkflo-footer-text">@L["FooterText"]</MudText>
         <MudSpacer />
         <MudText Typo="Typo.body2" Class="wrkflo-footer-text">v0.1.0</MudText>
     </div>

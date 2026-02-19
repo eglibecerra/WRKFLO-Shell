@@ -3,16 +3,17 @@
    Segmented button bar for filtering forms by status.
    Usage: <StatusTabs InboxCount="5" OutboxCount="12" CompleteCount="48" ActiveTab="inbox" OnTabChanged="HandleTab" />
    =========================== *@
+@inject IStringLocalizer<StatusTabs> L
 
 <div class="status-tabs">
     <button class="status-tab inbox @(ActiveTab == "inbox" ? "active" : "")" @onclick='() => SelectTab("inbox")'>
-        Inbox (@InboxCount)
+        @L["Inbox"] (@InboxCount)
     </button>
     <button class="status-tab outbox @(ActiveTab == "outbox" ? "active" : "")" @onclick='() => SelectTab("outbox")'>
-        Outbox (@OutboxCount)
+        @L["Outbox"] (@OutboxCount)
     </button>
     <button class="status-tab complete @(ActiveTab == "complete" ? "active" : "")" @onclick='() => SelectTab("complete")'>
-        Complete (@CompleteCount)
+        @L["Complete"] (@CompleteCount)
     </button>
 </div>
 

@@ -5,6 +5,7 @@
    Hover any step for action details.
    Usage: <WorkflowStepsView Steps="steps" />
    =========================== *@
+@inject IStringLocalizer<WorkflowStepsView> L
 
 <div class="wf-branch">
     @if (_expandedBranches.Any())
@@ -19,9 +20,9 @@
             ToggledIcon="@Icons.Material.Filled.AccountTree"
             Size="Size.Small"
             ToggledColor="Color.Primary"
-            Title="@(_showFullMap ? "Switch to linear view" : "Show full workflow map")" />
+            Title="@(_showFullMap ? L["SwitchToLinearView"] : L["ShowFullWorkflowMap"])" />
         <MudText Typo="Typo.caption" Class="wf-branch-toggle-label">
-            @(_showFullMap ? "Full Map" : "Linear View")
+            @(_showFullMap ? L["FullMap"] : L["LinearView"])
         </MudText>
     </div>
 
@@ -71,8 +72,8 @@
                                 <div class="workflow-tooltip">
                                     @if (step.Status == StepStatus.Completed)
                                     {
-                                        <div>Actioned on <strong>@step.ActionedDate?.ToString("dd/MM/yyyy h:mm:ss tt")</strong></div>
-                                        <div>By <strong>@step.ActionedBy</strong></div>
+                                        <div>@L["ActionedOn"] <strong>@step.ActionedDate?.ToString("dd/MM/yyyy h:mm:ss tt")</strong></div>
+                                        <div>@L["By"] <strong>@step.ActionedBy</strong></div>
                                         @if (!string.IsNullOrEmpty(step.Comment))
                                         {
                                             <div style="margin-top: 4px; font-style: italic;">"@step.Comment"</div>
@@ -80,12 +81,12 @@
                                     }
                                     else if (step.Status == StepStatus.Active)
                                     {
-                                        <div>Forwarded to <strong>@step.Role</strong></div>
-                                        <div>on <strong>@step.ActionedDate?.ToString("dd/MM/yyyy h:mm:ss tt")</strong></div>
+                                        <div>@L["ForwardedTo"] <strong>@step.Role</strong></div>
+                                        <div>@L["On"] <strong>@step.ActionedDate?.ToString("dd/MM/yyyy h:mm:ss tt")</strong></div>
                                     }
                                     else if (step.Status == StepStatus.Skipped)
                                     {
-                                        <div>Skipped — condition not met</div>
+                                        <div>@L["SkippedConditionNotMet"]</div>
                                         @if (!string.IsNullOrEmpty(step.SkipReason))
                                         {
                                             <div>@step.SkipReason</div>
@@ -93,7 +94,7 @@
                                     }
                                     else
                                     {
-                                        <div>Pending</div>
+                                        <div>@L["Pending"]</div>
                                     }
                                 </div>
                             </TooltipContent>
@@ -113,7 +114,7 @@
 
                             @if (hasBranch)
                             {
-                                <MudTooltip Text="@($"Branch point: {step.Branches!.Count} possible paths")" Placement="Placement.Top" Arrow="true">
+                                <MudTooltip Text="@string.Format(L["BranchPointPossiblePaths"], step.Branches!.Count)" Placement="Placement.Top" Arrow="true">
                                     <button class="wf-branch-fork-btn @(isBranchExpanded ? "wf-branch-fork-btn--active" : "")"
                                             @onclick="() => ToggleBranch(index)">
                                         <MudIcon Icon="@Icons.Material.Filled.CallSplit" Size="Size.Small" />
@@ -126,7 +127,7 @@
                         <MudPopover Open="@(hasBranch && isBranchExpanded)" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Class="wf-branch-panel">
                             <div class="wf-branch-panel-header">
                                 <MudIcon Icon="@Icons.Material.Outlined.AccountTree" Size="Size.Small" />
-                                <MudText Typo="Typo.caption"><strong>Branch Point</strong> — @step.BranchConditionLabel</MudText>
+                                <MudText Typo="Typo.caption"><strong>@L["BranchPoint"]</strong> — @step.BranchConditionLabel</MudText>
                             </div>
                             <div class="wf-branch-paths">
                                 @foreach (var branch in step.Branches!)
@@ -149,7 +150,7 @@
                                         </div>
                                         @if (isTaken)
                                         {
-                                            <MudChip T="string" Size="Size.Small" Color="Color.Success" Variant="Variant.Outlined" Class="wf-branch-path-chip">Taken</MudChip>
+                                            <MudChip T="string" Size="Size.Small" Color="Color.Success" Variant="Variant.Outlined" Class="wf-branch-path-chip">@L["Taken"]</MudChip>
                                         }
                                     </div>
                                 }

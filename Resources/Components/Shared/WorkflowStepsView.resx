@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <data name="FullMap" xml:space="preserve">
+    <value>Full Map</value>
+  </data>
+  <data name="LinearView" xml:space="preserve">
+    <value>Linear View</value>
+  </data>
+  <data name="SwitchToLinearView" xml:space="preserve">
+    <value>Switch to linear view</value>
+  </data>
+  <data name="ShowFullWorkflowMap" xml:space="preserve">
+    <value>Show full workflow map</value>
+  </data>
+  <data name="ActionedOn" xml:space="preserve">
+    <value>Actioned on</value>
+  </data>
+  <data name="By" xml:space="preserve">
+    <value>By</value>
+  </data>
+  <data name="ForwardedTo" xml:space="preserve">
+    <value>Forwarded to</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>on</value>
+  </data>
+  <data name="SkippedConditionNotMet" xml:space="preserve">
+    <value>Skipped — condition not met</value>
+  </data>
+  <data name="Pending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="BranchPoint" xml:space="preserve">
+    <value>Branch Point</value>
+  </data>
+  <data name="BranchPointPossiblePaths" xml:space="preserve">
+    <value>Branch point: {0} possible paths</value>
+  </data>
+  <data name="Taken" xml:space="preserve">
+    <value>Taken</value>
+  </data>
+</root>

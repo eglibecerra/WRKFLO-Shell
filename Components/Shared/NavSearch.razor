@@ -1,8 +1,9 @@
 @rendermode InteractiveServer
+@inject IStringLocalizer<NavSearch> L
 
 <div class="wrkflo-nav-search @CssClass">
     <MudTextField @bind-Value="_searchText"
-                  Placeholder="@Placeholder"
+                  Placeholder="@ResolvedPlaceholder"
                   Variant="Variant.Outlined"
                   Margin="Margin.Dense"
                   Adornment="Adornment.Start"
@@ -40,7 +41,7 @@
     {
         <MudPaper Class="wrkflo-search-results" Elevation="4">
             <div class="pa-3 d-flex align-center justify-center">
-                <MudText Typo="Typo.body2" Color="Color.Secondary">No results found</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Secondary">@L["NoResultsFound"]</MudText>
             </div>
         </MudPaper>
     }
@@ -55,7 +56,9 @@
     /// Placeholder text shown in the search box.
     /// </summary>
     [Parameter]
-    public string Placeholder { get; set; } = "Search forms, workflows...";
+    public string? Placeholder { get; set; }
+
+    private string ResolvedPlaceholder => Placeholder ?? L["Placeholder"];
 
     /// <summary>
     /// Additional CSS classes applied to the wrapper div.

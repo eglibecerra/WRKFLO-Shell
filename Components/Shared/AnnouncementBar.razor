@@ -1,4 +1,5 @@
 @rendermode InteractiveServer
+@inject IStringLocalizer<AnnouncementBar> L
 
 @if (Visible)
 {
@@ -13,7 +14,7 @@
         </div>
         @if (Dismissible)
         {
-            <button class="announcement-bar__close" @onclick="Dismiss" aria-label="Dismiss">
+            <button class="announcement-bar__close" @onclick="Dismiss" aria-label="@L["Dismiss"]">
                 <MudIcon Icon="@Icons.Material.Filled.Close" Size="Size.Small" />
             </button>
         }

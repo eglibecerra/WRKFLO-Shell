@@ -3,6 +3,7 @@
    Card displaying a form summary with status badge, title, time elapsed, and action buttons.
    Usage: <FormCard Status="Outbox" Title="Expense Claim" SubmittedBy="Smith, John" TimeElapsed="46 mins" Department="Finance" />
    =========================== *@
+@inject IStringLocalizer<FormCard> L
 
 <MudCard Class="form-card" Elevation="1">
     <MudCardContent Class="form-card-content">
@@ -20,8 +21,8 @@
                 <MudText Typo="Typo.body2">@TimeElapsed</MudText>
             </div>
             <div class="form-card-actions">
-                <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Default" OnClick="OnRedirect">REDIRECT</MudButton>
-                <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Default" OnClick="OnView">VIEW</MudButton>
+                <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Default" OnClick="OnRedirect">@L["Redirect"]</MudButton>
+                <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Default" OnClick="OnView">@L["View"]</MudButton>
             </div>
         </div>
     </MudCardContent>
