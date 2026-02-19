@@ -1,0 +1,25 @@
+@using Wrkflo.Shell.Services
+@using Wrkflo.Shell.Models
+@inject ITenantBrandingService BrandingService
+
+<div class="wrkflo-app-logo">
+    @if (!string.IsNullOrEmpty(_branding?.LogoUrl) && _branding.Plan >= PlanTier.Pro)
+    {
+        <img src="@_branding.LogoUrl"
+             alt="@(_branding.LogoAlt ?? _branding.TenantName)"
+             class="wrkflo-app-logo__img" />
+    }
+    else
+    {
+        <MudText Typo="Typo.h6" Class="wrkflo-app-logo__text">@(_branding?.TenantName ?? "WrkFlo")</MudText>
+    }
+</div>
+
+@code {
+    private TenantBranding? _branding;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _branding = await BrandingService.GetBrandingAsync();
+    }
+}

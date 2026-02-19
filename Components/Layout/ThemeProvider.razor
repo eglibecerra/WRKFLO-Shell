@@ -1,0 +1,43 @@
+@using Wrkflo.Shell.Services
+@using Wrkflo.Shell.Models
+@inject ITenantBrandingService BrandingService
+
+@* CSS Custom Properties — consumed by all components via var(--wrkflo-*) *@
+<style id="wrkflo-theme-variables">
+    @((MarkupString)_cssVariables)
+</style>
+
+@* Enterprise: custom CSS override — injected last so it wins specificity *@
+@if (!string.IsNullOrEmpty(_branding?.CustomCss) && _branding.Plan == PlanTier.Enterprise)
+{
+    <style id="wrkflo-custom-css">
+        @((MarkupString)_branding.CustomCss)
+    </style>
+}
+
+@* MudBlazor theme kept in sync with tenant branding *@
+<MudThemeProvider Theme="_mudTheme" IsDarkMode="false" />
+
+@code {
+    private TenantBranding? _branding;
+    private string _cssVariables = "";
+    private MudTheme _mudTheme = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _branding = await BrandingService.GetBrandingAsync();
+        _cssVariables = BrandingService.GenerateCssVariables(_branding);
+        _mudTheme = BrandingService.GenerateMudTheme(_branding);
+    }
+
+    /// <summary>
+    /// Call this to refresh branding (e.g. after admin saves new colours).
+    /// </summary>
+    public async Task RefreshAsync()
+    {
+        _branding = await BrandingService.GetBrandingAsync();
+        _cssVariables = BrandingService.GenerateCssVariables(_branding);
+        _mudTheme = BrandingService.GenerateMudTheme(_branding);
+        StateHasChanged();
+    }
+}

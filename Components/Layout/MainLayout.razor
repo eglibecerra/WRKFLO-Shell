@@ -1,7 +1,7 @@
 @inherits LayoutComponentBase
 @inject IStringLocalizer<MainLayout> L
 
-<MudThemeProvider Theme="_theme" />
+<ThemeProvider />
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
@@ -10,7 +10,7 @@
     @* HEADER *@
     <MudAppBar Elevation="3" Class="wrkflo-appbar">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Class="wrkflo-menu-btn" Edge="Edge.Start" OnClick="ToggleDrawer" />
-        <MudText Typo="Typo.h6" Class="wrkflo-logo">@L["AppTitle"]</MudText>
+        <AppLogo />
         <MudSpacer />
         <NavSearch Placeholder="@L["SearchForms"]" OnSearch="OnSearchForms" Results="_searchResults" OnResultSelected="OnSearchResultSelected" />
         <MudSpacer />
@@ -79,6 +79,8 @@
     <div class="wrkflo-footer">
         <MudText Typo="Typo.body2" Class="wrkflo-footer-text">@L["FooterText"]</MudText>
         <MudSpacer />
+        <PoweredBy />
+        <MudSpacer />
         <MudText Typo="Typo.body2" Class="wrkflo-footer-text">v0.1.0</MudText>
     </div>
 </footer>
@@ -122,25 +124,4 @@
         }
     }
 
-    private readonly MudTheme _theme = new()
-    {
-        Typography = new Typography
-        {
-            Default = new DefaultTypography
-            {
-                FontFamily = new[] { "Roboto", "Helvetica", "Arial", "sans-serif" }
-            }
-        },
-        PaletteLight = new PaletteLight
-        {
-            Primary = "#4F46E5",
-            Secondary = "#818CF8",
-            Background = "#F9FAFB",
-            Surface = "#FFFFFF",
-            AppbarBackground = "#F9FAFB",
-            AppbarText = "#4F46E5",
-            DrawerBackground = "#FFFFFF",
-            DrawerText = "#111827"
-        }
-    };
 }

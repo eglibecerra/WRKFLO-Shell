@@ -2,6 +2,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using MudBlazor.Services;
 using Wrkflo.Shell.Components;
+using Wrkflo.Shell.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,9 @@ builder.Services.AddRazorComponents()
 
 // Add MudBlazor
 builder.Services.AddMudServices();
+
+// Tenant branding (swap for DB-backed implementation later)
+builder.Services.AddScoped<ITenantBrandingService, DefaultTenantBrandingService>();
 
 // Localisation
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
