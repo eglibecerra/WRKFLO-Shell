@@ -1,0 +1,205 @@
+@page "/login"
+@layout AuthLayout
+@using System.ComponentModel.DataAnnotations
+
+<PageTitle>Sign In — WRKFLO</PageTitle>
+
+<MudCard Elevation="3" Class="login-card">
+    <MudCardContent Class="pa-6">
+
+        <MudText Typo="Typo.h5" Align="Align.Center" Class="mb-1" Style="font-weight:600;">Welcome back</MudText>
+        <MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Secondary" Class="mb-6">Sign in to your WRKFLO account</MudText>
+
+        @* EMAIL + PASSWORD FORM *@
+        <MudForm @ref="_form" @bind-IsValid="_isValid">
+            <MudTextField T="string"
+                          @bind-Value="_email"
+                          Label="Work email"
+                          Variant="Variant.Outlined"
+                          InputType="InputType.Email"
+                          Required="true"
+                          RequiredError="Email is required"
+                          Validation="@(new EmailAddressAttribute() { ErrorMessage = "Enter a valid email" })"
+                          Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Email"
+                          AdornmentColor="Color.Primary"
+                          Class="mb-3" />
+
+            <MudTextField T="string"
+                          @bind-Value="_password"
+                          Label="Password"
+                          Variant="Variant.Outlined"
+                          InputType="@_passwordInputType"
+                          Required="true"
+                          RequiredError="Password is required"
+                          Adornment="Adornment.End"
+                          AdornmentIcon="@_passwordToggleIcon"
+                          OnAdornmentClick="TogglePasswordVisibility"
+                          AdornmentColor="Color.Default"
+                          Class="mb-2" />
+
+            <div class="login-row mb-4">
+                <MudCheckBox T="bool" @bind-Value="_rememberMe" Color="Color.Primary" Size="Size.Small">
+                    <MudText Typo="Typo.body2">Remember me</MudText>
+                </MudCheckBox>
+                <MudLink Href="/forgot-password" Typo="Typo.body2">Forgot password?</MudLink>
+            </div>
+
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       FullWidth="true"
+                       Size="Size.Large"
+                       OnClick="HandleLogin"
+                       Disabled="_isLoading"
+                       Class="mb-4">
+                @if (_isLoading)
+                {
+                    <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+                    <span>Signing in...</span>
+                }
+                else
+                {
+                    <span>Sign In</span>
+                }
+            </MudButton>
+        </MudForm>
+
+        @* DIVIDER *@
+        <div class="login-divider mb-4">
+            <MudDivider />
+            <MudText Typo="Typo.caption" Color="Color.Secondary" Class="login-divider-text">or continue with</MudText>
+            <MudDivider />
+        </div>
+
+        @* SSO BUTTONS *@
+        <div class="login-sso-buttons">
+            <MudButton Variant="Variant.Outlined"
+                       FullWidth="true"
+                       StartIcon="@Icons.Custom.Brands.MicrosoftWindows"
+                       OnClick="@(() => HandleSso("microsoft"))"
+                       Class="mb-2 login-sso-btn">
+                Sign in with Microsoft
+            </MudButton>
+
+            <MudButton Variant="Variant.Outlined"
+                       FullWidth="true"
+                       StartIcon="@Icons.Custom.Brands.Google"
+                       OnClick="@(() => HandleSso("google"))"
+                       Class="mb-2 login-sso-btn">
+                Sign in with Google
+            </MudButton>
+
+            <MudButton Variant="Variant.Outlined"
+                       FullWidth="true"
+                       StartIcon="@Icons.Material.Filled.Business"
+                       OnClick="ShowOrgSsoDialog"
+                       Class="login-sso-btn">
+                Sign in with SSO
+            </MudButton>
+        </div>
+
+    </MudCardContent>
+</MudCard>
+
+<MudText Typo="Typo.caption" Align="Align.Center" Color="Color.Secondary" Class="mt-3">
+    Don't have an account? <MudLink Href="/register" Typo="Typo.caption">Request access</MudLink>
+</MudText>
+
+@* ORG SSO DIALOG *@
+<MudDialog @bind-Visible="_orgSsoDialogOpen">
+    <TitleContent>
+        <MudText Typo="Typo.h6">Sign in with your organisation</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudText Typo="Typo.body2" Class="mb-4" Color="Color.Secondary">Enter your work email domain and we'll redirect you to your organisation's identity provider.</MudText>
+        <MudTextField T="string"
+                      @bind-Value="_orgDomain"
+                      Label="Work email or domain"
+                      Placeholder="yourcompany.com"
+                      Variant="Variant.Outlined"
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Domain"
+                      AdornmentColor="Color.Primary" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="@(() => _orgSsoDialogOpen = false)">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="HandleOrgSso">Continue</MudButton>
+    </DialogActions>
+</MudDialog>
+
+<style>
+    .login-card {
+        width: 100%;
+        border-radius: 12px !important;
+    }
+
+    .login-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .login-divider {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .login-divider .mud-divider {
+        flex: 1;
+    }
+
+    .login-divider-text {
+        white-space: nowrap;
+    }
+
+    .login-sso-btn {
+        border-color: var(--mud-palette-lines-default) !important;
+        color: var(--mud-palette-text-primary) !important;
+        text-transform: none !important;
+        font-weight: 500;
+    }
+</style>
+
+@code {
+    private MudForm _form = default!;
+    private bool _isValid;
+    private bool _isLoading;
+    private bool _rememberMe;
+    private string _email = string.Empty;
+    private string _password = string.Empty;
+    private bool _showPassword;
+    private bool _orgSsoDialogOpen;
+    private string _orgDomain = string.Empty;
+
+    private InputType _passwordInputType => _showPassword ? InputType.Text : InputType.Password;
+    private string _passwordToggleIcon => _showPassword ? Icons.Material.Filled.VisibilityOff : Icons.Material.Filled.Visibility;
+
+    private void TogglePasswordVisibility() => _showPassword = !_showPassword;
+
+    private void ShowOrgSsoDialog() => _orgSsoDialogOpen = true;
+
+    private async Task HandleLogin()
+    {
+        await _form.Validate();
+        if (!_isValid) return;
+
+        _isLoading = true;
+        // TODO: Call auth service
+        await Task.Delay(1500); // Simulated API call
+        _isLoading = false;
+    }
+
+    private void HandleSso(string provider)
+    {
+        // TODO: Redirect to OAuth provider
+        // NavigationManager.NavigateTo($"/auth/{provider}");
+    }
+
+    private void HandleOrgSso()
+    {
+        _orgSsoDialogOpen = false;
+        // TODO: Lookup org domain → redirect to their IDP
+        // NavigationManager.NavigateTo($"/auth/saml?domain={_orgDomain}");
+    }
+}
