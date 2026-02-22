@@ -1,25 +1,31 @@
 @page "/login"
 @layout AuthLayout
 @using System.ComponentModel.DataAnnotations
+@using Wrkflo.Shell.Services
+@using Wrkflo.Shell.Models
+@inject IStringLocalizer<Login> L
+@inject ITenantBrandingService BrandingService
 
-<PageTitle>Sign In — WRKFLO</PageTitle>
+<PageTitle>@L["PageTitle"] — @_branding?.TenantName</PageTitle>
 
 <MudCard Elevation="3" Class="login-card">
     <MudCardContent Class="pa-6">
 
-        <MudText Typo="Typo.h5" Align="Align.Center" Class="mb-1" Style="font-weight:600;">Welcome back</MudText>
-        <MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Secondary" Class="mb-6">Sign in to your WRKFLO account</MudText>
+        <MudText Typo="Typo.h5" Align="Align.Center" Class="mb-1" Style="font-weight:600;">@L["WelcomeBack"]</MudText>
+        <MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Secondary" Class="mb-6">
+            @string.Format(L["SignInSubtitle"], _branding?.TenantName ?? "WRKFLO")
+        </MudText>
 
         @* EMAIL + PASSWORD FORM *@
         <MudForm @ref="_form" @bind-IsValid="_isValid">
             <MudTextField T="string"
                           @bind-Value="_email"
-                          Label="Work email"
+                          Label="@L["WorkEmail"]"
                           Variant="Variant.Outlined"
                           InputType="InputType.Email"
                           Required="true"
-                          RequiredError="Email is required"
-                          Validation="@(new EmailAddressAttribute() { ErrorMessage = "Enter a valid email" })"
+                          RequiredError="@L["EmailRequired"]"
+                          Validation="@(new EmailAddressAttribute() { ErrorMessage = L["EmailInvalid"] })"
                           Adornment="Adornment.Start"
                           AdornmentIcon="@Icons.Material.Filled.Email"
                           AdornmentColor="Color.Primary"
@@ -27,11 +33,11 @@
 
             <MudTextField T="string"
                           @bind-Value="_password"
-                          Label="Password"
+                          Label="@L["Password"]"
                           Variant="Variant.Outlined"
                           InputType="@_passwordInputType"
                           Required="true"
-                          RequiredError="Password is required"
+                          RequiredError="@L["PasswordRequired"]"
                           Adornment="Adornment.End"
                           AdornmentIcon="@_passwordToggleIcon"
                           OnAdornmentClick="TogglePasswordVisibility"
@@ -40,9 +46,9 @@
 
             <div class="login-row mb-4">
                 <MudCheckBox T="bool" @bind-Value="_rememberMe" Color="Color.Primary" Size="Size.Small">
-                    <MudText Typo="Typo.body2">Remember me</MudText>
+                    <MudText Typo="Typo.body2">@L["RememberMe"]</MudText>
                 </MudCheckBox>
-                <MudLink Href="/forgot-password" Typo="Typo.body2">Forgot password?</MudLink>
+                <MudLink Href="/forgot-password" Typo="Typo.body2">@L["ForgotPassword"]</MudLink>
             </div>
 
             <MudButton Variant="Variant.Filled"
@@ -55,11 +61,11 @@
                 @if (_isLoading)
                 {
                     <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
-                    <span>Signing in...</span>
+                    <span>@L["SigningIn"]</span>
                 }
                 else
                 {
-                    <span>Sign In</span>
+                    <span>@L["SignIn"]</span>
                 }
             </MudButton>
         </MudForm>
@@ -67,7 +73,7 @@
         @* DIVIDER *@
         <div class="login-divider mb-4">
             <MudDivider />
-            <MudText Typo="Typo.caption" Color="Color.Secondary" Class="login-divider-text">or continue with</MudText>
+            <MudText Typo="Typo.caption" Color="Color.Secondary" Class="login-divider-text">@L["OrContinueWith"]</MudText>
             <MudDivider />
         </div>
 
@@ -78,7 +84,7 @@
                        StartIcon="@Icons.Custom.Brands.MicrosoftWindows"
                        OnClick="@(() => HandleSso("microsoft"))"
                        Class="mb-2 login-sso-btn">
-                Sign in with Microsoft
+                @L["SignInWithMicrosoft"]
             </MudButton>
 
             <MudButton Variant="Variant.Outlined"
@@ -86,7 +92,7 @@
                        StartIcon="@Icons.Custom.Brands.Google"
                        OnClick="@(() => HandleSso("google"))"
                        Class="mb-2 login-sso-btn">
-                Sign in with Google
+                @L["SignInWithGoogle"]
             </MudButton>
 
             <MudButton Variant="Variant.Outlined"
@@ -94,7 +100,7 @@
                        StartIcon="@Icons.Material.Filled.Business"
                        OnClick="ShowOrgSsoDialog"
                        Class="login-sso-btn">
-                Sign in with SSO
+                @L["SignInWithSSO"]
             </MudButton>
         </div>
 
@@ -102,19 +108,19 @@
 </MudCard>
 
 <MudText Typo="Typo.caption" Align="Align.Center" Color="Color.Secondary" Class="mt-3">
-    Don't have an account? <MudLink Href="/register" Typo="Typo.caption">Request access</MudLink>
+    @L["NoAccount"] <MudLink Href="/register" Typo="Typo.caption">@L["RequestAccess"]</MudLink>
 </MudText>
 
 @* ORG SSO DIALOG *@
 <MudDialog @bind-Visible="_orgSsoDialogOpen">
     <TitleContent>
-        <MudText Typo="Typo.h6">Sign in with your organisation</MudText>
+        <MudText Typo="Typo.h6">@L["OrgSsoTitle"]</MudText>
     </TitleContent>
     <DialogContent>
-        <MudText Typo="Typo.body2" Class="mb-4" Color="Color.Secondary">Enter your work email domain and we'll redirect you to your organisation's identity provider.</MudText>
+        <MudText Typo="Typo.body2" Class="mb-4" Color="Color.Secondary">@L["OrgSsoSubtitle"]</MudText>
         <MudTextField T="string"
                       @bind-Value="_orgDomain"
-                      Label="Work email or domain"
+                      Label="@L["WorkEmailOrDomain"]"
                       Placeholder="yourcompany.com"
                       Variant="Variant.Outlined"
                       Adornment="Adornment.Start"
@@ -122,8 +128,8 @@
                       AdornmentColor="Color.Primary" />
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@(() => _orgSsoDialogOpen = false)">Cancel</MudButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="HandleOrgSso">Continue</MudButton>
+        <MudButton OnClick="@(() => _orgSsoDialogOpen = false)">@L["Cancel"]</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="HandleOrgSso">@L["Continue"]</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -154,8 +160,8 @@
     }
 
     .login-sso-btn {
-        border-color: var(--mud-palette-lines-default) !important;
-        color: var(--mud-palette-text-primary) !important;
+        border-color: var(--wrkflo-border) !important;
+        color: var(--wrkflo-text-primary) !important;
         text-transform: none !important;
         font-weight: 500;
     }
@@ -163,6 +169,7 @@
 
 @code {
     private MudForm _form = default!;
+    private TenantBranding? _branding;
     private bool _isValid;
     private bool _isLoading;
     private bool _rememberMe;
@@ -174,6 +181,11 @@
 
     private InputType _passwordInputType => _showPassword ? InputType.Text : InputType.Password;
     private string _passwordToggleIcon => _showPassword ? Icons.Material.Filled.VisibilityOff : Icons.Material.Filled.Visibility;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _branding = await BrandingService.GetBrandingAsync();
+    }
 
     private void TogglePasswordVisibility() => _showPassword = !_showPassword;
 

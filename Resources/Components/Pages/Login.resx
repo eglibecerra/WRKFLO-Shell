@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <data name="PageTitle" xml:space="preserve">
+    <value>Sign In</value>
+  </data>
+  <data name="WelcomeBack" xml:space="preserve">
+    <value>Welcome back</value>
+  </data>
+  <data name="SignInSubtitle" xml:space="preserve">
+    <value>Sign in to your {0} account</value>
+  </data>
+  <data name="WorkEmail" xml:space="preserve">
+    <value>Work email</value>
+  </data>
+  <data name="EmailRequired" xml:space="preserve">
+    <value>Email is required</value>
+  </data>
+  <data name="EmailInvalid" xml:space="preserve">
+    <value>Enter a valid email</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="PasswordRequired" xml:space="preserve">
+    <value>Password is required</value>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Remember me</value>
+  </data>
+  <data name="ForgotPassword" xml:space="preserve">
+    <value>Forgot password?</value>
+  </data>
+  <data name="SignIn" xml:space="preserve">
+    <value>Sign In</value>
+  </data>
+  <data name="SigningIn" xml:space="preserve">
+    <value>Signing in...</value>
+  </data>
+  <data name="OrContinueWith" xml:space="preserve">
+    <value>or continue with</value>
+  </data>
+  <data name="SignInWithMicrosoft" xml:space="preserve">
+    <value>Sign in with Microsoft</value>
+  </data>
+  <data name="SignInWithGoogle" xml:space="preserve">
+    <value>Sign in with Google</value>
+  </data>
+  <data name="SignInWithSSO" xml:space="preserve">
+    <value>Sign in with SSO</value>
+  </data>
+  <data name="NoAccount" xml:space="preserve">
+    <value>Don't have an account?</value>
+  </data>
+  <data name="RequestAccess" xml:space="preserve">
+    <value>Request access</value>
+  </data>
+  <data name="OrgSsoTitle" xml:space="preserve">
+    <value>Sign in with your organisation</value>
+  </data>
+  <data name="OrgSsoSubtitle" xml:space="preserve">
+    <value>Enter your work email domain and we'll redirect you to your organisation's identity provider.</value>
+  </data>
+  <data name="WorkEmailOrDomain" xml:space="preserve">
+    <value>Work email or domain</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+</root>
