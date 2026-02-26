@@ -77,32 +77,33 @@
         }
         else
         {
-            @foreach (var section in _schema.Sections)
+            @foreach (var formSection in _schema.Sections)
             {
-                <div class="formosa-section @(_selectedSectionId == section.Id ? "section-selected" : "")"
-                     @onclick="() => SelectSection(section.Id)">
+                <div class="formosa-section @(_selectedSectionId == formSection.Id ? "section-selected" : "")"
+                     @onclick="() => SelectSection(formSection.Id)">
 
                     @* Section header *@
                     <div class="formosa-section-header">
                         <MudIcon Icon="@Icons.Material.Filled.DragIndicator"
                                  Size="Size.Small" Color="Color.Secondary" Class="mr-1" />
                         <MudText Typo="Typo.caption" Style="font-weight:600">
-                            @section.Label
+                            @formSection.Label
                         </MudText>
                         <MudSpacer />
                         <MudChip T="string" Size="Size.Small" Variant="Variant.Text" Color="Color.Default">
-                            @section.Columns col@(section.Columns > 1 ? "s" : "")
+                            @formSection.Columns col@(formSection.Columns > 1 ? "s" : "")
                         </MudChip>
-                        <MudIconButton Icon="@Icons.Material.Filled.DeleteOutline"
-                                       Size="Size.Small" Color="Color.Error"
-                                       Title="Remove section"
-                                       OnClick="() => RemoveSection(section.Id)"
-                                       @onclick:stopPropagation="true" />
+                        @* Wrap in div to stop click bubbling to section selector *@
+                        <div @onclick:stopPropagation="true">
+                            <MudIconButton Icon="@Icons.Material.Filled.DeleteOutline"
+                                           Size="Size.Small" Color="Color.Error"
+                                           OnClick="() => RemoveSection(formSection.Id)" />
+                        </div>
                     </div>
 
                     @* Column grid *@
-                    <div class="formosa-columns" style="grid-template-columns: repeat(@section.Columns, 1fr);">
-                        @foreach (var cell in section.Rows.First().Cells.OrderBy(c => c.ColumnIndex))
+                    <div class="formosa-columns" style="grid-template-columns: repeat(@formSection.Columns, 1fr);">
+                        @foreach (var cell in formSection.Rows.First().Cells.OrderBy(c => c.ColumnIndex))
                         {
                             <div class="formosa-cell">
                                 <MudText Typo="Typo.caption" Color="Color.Tertiary">
