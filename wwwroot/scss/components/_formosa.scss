@@ -1,0 +1,210 @@
+// =============================
+// Formosa — Form Designer
+// =============================
+
+// ── Page Header ──
+.formosa-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.formosa-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+// ── Workspace: 3-panel grid ──
+.formosa-workspace {
+    display: grid;
+    grid-template-columns: 180px 1fr 300px;
+    gap: 12px;
+    height: calc(100vh - 220px);
+    min-height: 480px;
+}
+
+// ── LEFT: Palette ──
+.formosa-palette {
+    background: var(--mud-palette-surface);
+    border-radius: 8px;
+    padding: 14px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.palette-item {
+    border: 2px dashed var(--mud-palette-divider);
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: grab;
+    user-select: none;
+    transition: border-color 0.15s ease, background 0.15s ease;
+
+    &:hover {
+        border-color: var(--mud-palette-primary);
+        background: rgba(79, 70, 229, 0.05);
+    }
+
+    &:active {
+        cursor: grabbing;
+    }
+}
+
+.palette-col-preview-row {
+    display: flex;
+    gap: 3px;
+    margin-bottom: 4px;
+}
+
+.palette-col-block {
+    flex: 1;
+    height: 18px;
+    background: var(--mud-palette-primary);
+    opacity: 0.35;
+    border-radius: 3px;
+}
+
+// ── CENTRE: Canvas ──
+.formosa-canvas {
+    background: var(--mud-palette-background-grey);
+    border-radius: 8px;
+    padding: 16px;
+    overflow-y: auto;
+    border: 2px dashed transparent;
+    transition: border-color 0.15s ease, background 0.15s ease;
+
+    &.canvas-drag-over {
+        border-color: var(--mud-palette-primary);
+        background: rgba(79, 70, 229, 0.04);
+    }
+}
+
+.formosa-empty-state {
+    height: 100%;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+// ── Sections ──
+.formosa-section {
+    background: var(--mud-palette-surface);
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 1px solid var(--mud-palette-divider);
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+    &:hover {
+        border-color: var(--mud-palette-primary);
+    }
+
+    &.section-selected {
+        border-color: var(--mud-palette-primary);
+        box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15);
+    }
+}
+
+.formosa-section-header {
+    display: flex;
+    align-items: center;
+    padding: 6px 10px;
+    background: var(--mud-palette-background-grey);
+    border-bottom: 1px solid var(--mud-palette-divider);
+}
+
+// ── Column grid ──
+.formosa-columns {
+    display: grid;
+    gap: 1px;
+    background: var(--mud-palette-divider);
+}
+
+.formosa-cell {
+    background: var(--mud-palette-surface);
+    min-height: 80px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+
+    // Subtle dashed inner border — shows the drop target for Phase B
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 6px;
+        border: 1px dashed var(--mud-palette-divider);
+        border-radius: 4px;
+        pointer-events: none;
+        opacity: 0.6;
+    }
+}
+
+// ── Bottom "add more" drop zone ──
+.formosa-add-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 1px dashed var(--mud-palette-divider);
+    border-radius: 8px;
+    cursor: default;
+    transition: border-color 0.15s, background 0.15s;
+
+    &:hover {
+        border-color: var(--mud-palette-primary);
+        background: rgba(79, 70, 229, 0.03);
+    }
+}
+
+// ── RIGHT: JSON Debug Panel ──
+.formosa-json-panel {
+    background: #1e1e2e;
+    border-radius: 8px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.formosa-json-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.formosa-json-output {
+    flex: 1;
+    overflow-y: auto;
+    font-family: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #a6e3a1;
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #45475a;
+        border-radius: 2px;
+    }
+}

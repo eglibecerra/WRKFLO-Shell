@@ -1,0 +1,218 @@
+@page "/formosa"
+@rendermode InteractiveServer
+@using System.Text.Json
+@using System.Text.Json.Serialization
+
+<PageTitle>Formosa — Layout POC</PageTitle>
+
+<div class="formosa-header">
+    <div>
+        <MudText Typo="Typo.h5" Class="mb-0">Formosa</MudText>
+        <MudText Typo="Typo.body2" Color="Color.Secondary">Form Designer — Layout POC</MudText>
+    </div>
+    <div class="formosa-header-actions">
+        <MudChip T="string" Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Filled.DataObject">
+            Schema v@_schema.SchemaVersion
+        </MudChip>
+        <MudButton Variant="Variant.Outlined" Color="Color.Error" Size="Size.Small"
+                   StartIcon="@Icons.Material.Filled.ClearAll"
+                   OnClick="ClearCanvas"
+                   Disabled="!_schema.Sections.Any()">
+            Clear
+        </MudButton>
+    </div>
+</div>
+
+<div class="formosa-workspace">
+
+    @* ── LEFT: Element Palette ── *@
+    <div class="formosa-palette mud-elevation-1">
+        <MudText Typo="Typo.overline" Class="mb-3" Style="color: var(--mud-palette-text-secondary)">
+            Layout Sections
+        </MudText>
+
+        @foreach (var cols in new[] { 1, 2, 3, 4 })
+        {
+            <div class="palette-item"
+                 draggable="true"
+                 @ondragstart="() => OnPaletteDragStart(cols)">
+                <div class="palette-col-preview-row">
+                    @for (int i = 0; i < cols; i++)
+                    {
+                        <div class="palette-col-block"></div>
+                    }
+                </div>
+                <MudText Typo="Typo.body2" Class="mt-1">
+                    @cols @(cols == 1 ? "Column" : "Columns")
+                </MudText>
+            </div>
+        }
+
+        <MudDivider Class="my-3" />
+        <MudText Typo="Typo.caption" Color="Color.Secondary">
+            More elements coming in Phase B (labels, inputs, etc.)
+        </MudText>
+    </div>
+
+    @* ── CENTRE: Designer Canvas ── *@
+    <div class="formosa-canvas @(_isDragOverCanvas ? "canvas-drag-over" : "")"
+         @ondrop="OnCanvasDrop"
+         @ondrop:preventDefault="true"
+         @ondragover:preventDefault="true"
+         @ondragenter="() => _isDragOverCanvas = true"
+         @ondragleave="() => _isDragOverCanvas = false">
+
+        @if (!_schema.Sections.Any())
+        {
+            <div class="formosa-empty-state">
+                <MudIcon Icon="@Icons.Material.Outlined.DragIndicator"
+                         Size="Size.Large" Color="Color.Tertiary" />
+                <MudText Typo="Typo.body1" Color="Color.Secondary" Class="mt-2">
+                    Drag a layout section here to get started
+                </MudText>
+                <MudText Typo="Typo.caption" Color="Color.Tertiary">
+                    Choose 1–4 columns from the palette on the left
+                </MudText>
+            </div>
+        }
+        else
+        {
+            @foreach (var section in _schema.Sections)
+            {
+                <div class="formosa-section @(_selectedSectionId == section.Id ? "section-selected" : "")"
+                     @onclick="() => SelectSection(section.Id)">
+
+                    @* Section header *@
+                    <div class="formosa-section-header">
+                        <MudIcon Icon="@Icons.Material.Filled.DragIndicator"
+                                 Size="Size.Small" Color="Color.Secondary" Class="mr-1" />
+                        <MudText Typo="Typo.caption" Style="font-weight:600">
+                            @section.Label
+                        </MudText>
+                        <MudSpacer />
+                        <MudChip T="string" Size="Size.Small" Variant="Variant.Text" Color="Color.Default">
+                            @section.Columns col@(section.Columns > 1 ? "s" : "")
+                        </MudChip>
+                        <MudIconButton Icon="@Icons.Material.Filled.DeleteOutline"
+                                       Size="Size.Small" Color="Color.Error"
+                                       Title="Remove section"
+                                       OnClick="() => RemoveSection(section.Id)"
+                                       @onclick:stopPropagation="true" />
+                    </div>
+
+                    @* Column grid *@
+                    <div class="formosa-columns" style="grid-template-columns: repeat(@section.Columns, 1fr);">
+                        @foreach (var cell in section.Rows.First().Cells.OrderBy(c => c.ColumnIndex))
+                        {
+                            <div class="formosa-cell">
+                                <MudText Typo="Typo.caption" Color="Color.Tertiary">
+                                    Col @(cell.ColumnIndex + 1)
+                                </MudText>
+                                @* Phase B: elements dropped into cells will render here *@
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+            @* Bottom drop target for adding another section *@
+            <div class="formosa-add-more"
+                 @ondrop="OnCanvasDrop"
+                 @ondrop:preventDefault="true"
+                 @ondragover:preventDefault="true">
+                <MudIcon Icon="@Icons.Material.Filled.AddCircleOutline" Size="Size.Small" Color="Color.Tertiary" Class="mr-1" />
+                <MudText Typo="Typo.caption" Color="Color.Secondary">
+                    Drop another section here
+                </MudText>
+            </div>
+        }
+    </div>
+
+    @* ── RIGHT: Live JSON Debug Panel ── *@
+    <div class="formosa-json-panel mud-elevation-1">
+        <div class="formosa-json-header">
+            <MudText Typo="Typo.subtitle2" Style="color:#cdd6f4">Schema JSON</MudText>
+            <MudTooltip Text="This JSON is what gets saved to the database and fed to the renderer">
+                <MudIcon Icon="@Icons.Material.Filled.Info" Size="Size.Small" Style="color:#585b70; cursor:help;" />
+            </MudTooltip>
+        </div>
+        <pre class="formosa-json-output">@_schemaJson</pre>
+    </div>
+
+</div>
+
+@code {
+    private FormSchema _schema = new();
+    private string _schemaJson = "";
+    private int _draggingColumns = 0;
+    private bool _isDragOverCanvas = false;
+    private string? _selectedSectionId;
+
+    protected override void OnInitialized()
+    {
+        UpdateJson();
+    }
+
+    private void OnPaletteDragStart(int columns)
+    {
+        _draggingColumns = columns;
+        _selectedSectionId = null;
+    }
+
+    private void OnCanvasDrop()
+    {
+        _isDragOverCanvas = false;
+
+        if (_draggingColumns < 1 || _draggingColumns > 4) return;
+
+        var section = new FormSection
+        {
+            Label = $"Section {_schema.Sections.Count + 1}",
+            Columns = _draggingColumns,
+            Rows = new List<FormRow>
+            {
+                new FormRow
+                {
+                    Cells = Enumerable.Range(0, _draggingColumns)
+                        .Select(i => new FormCell { ColumnIndex = i })
+                        .ToList()
+                }
+            }
+        };
+
+        _schema.Sections.Add(section);
+        _schema.UpdatedAt = DateTime.UtcNow;
+        _draggingColumns = 0;
+        _selectedSectionId = section.Id;
+        UpdateJson();
+    }
+
+    private void RemoveSection(string id)
+    {
+        _schema.Sections.RemoveAll(s => s.Id == id);
+        if (_selectedSectionId == id) _selectedSectionId = null;
+        _schema.UpdatedAt = DateTime.UtcNow;
+        UpdateJson();
+    }
+
+    private void SelectSection(string id)
+    {
+        _selectedSectionId = _selectedSectionId == id ? null : id;
+    }
+
+    private void ClearCanvas()
+    {
+        _schema.Sections.Clear();
+        _selectedSectionId = null;
+        _schema.UpdatedAt = DateTime.UtcNow;
+        UpdateJson();
+    }
+
+    private void UpdateJson()
+    {
+        _schemaJson = JsonSerializer.Serialize(_schema, new JsonSerializerOptions
+        {
+            WriteIndented = true
+        });
+    }
+}
