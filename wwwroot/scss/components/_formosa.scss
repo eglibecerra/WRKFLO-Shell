@@ -2,6 +2,15 @@
 // Formosa — Form Designer
 // =============================
 
+// ── Full-width layout content wrapper ──
+.formosa-layout-content {
+    padding: 20px 24px;
+    height: calc(100vh - 64px); // subtract appbar height
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
 // ── Page Header ──
 .formosa-header {
     display: flex;
@@ -21,8 +30,9 @@
     display: grid;
     grid-template-columns: 180px 1fr 300px;
     gap: 12px;
-    height: calc(100vh - 220px);
-    min-height: 480px;
+    flex: 1;           // fill remaining height inside formosa-layout-content
+    min-height: 0;     // allow flex children to shrink below content size
+    overflow: hidden;
 }
 
 // ── LEFT: Palette ──

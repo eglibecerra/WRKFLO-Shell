@@ -1,0 +1,60 @@
+@inherits LayoutComponentBase
+@inject IStringLocalizer<MainLayout> L
+
+<ThemeProvider />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    @* HEADER *@
+    <MudAppBar Elevation="3" Class="wrkflo-appbar">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Class="wrkflo-menu-btn" Edge="Edge.Start" OnClick="ToggleDrawer" />
+        <AppLogo />
+        <MudSpacer />
+        <NavSearch Placeholder="@L["SearchForms"]" OnSearch="OnSearchForms" Results="_searchResults" OnResultSelected="OnSearchResultSelected" />
+        <MudSpacer />
+        <MudMenu AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+            <ActivatorContent>
+                <MudButton Variant="Variant.Text" Class="wrkflo-user-btn">
+                    <MudText Typo="Typo.body2" Class="mr-2 wrkflo-user-name">Becerra, Egli</MudText>
+                    <MudAvatar Size="Size.Small" Class="wrkflo-user-avatar">
+                        <MudImage Src="images/avatar-egli.png" Alt="Egli Becerra" />
+                    </MudAvatar>
+                </MudButton>
+            </ActivatorContent>
+            <ChildContent>
+                <MudMenuItem Icon="@Icons.Material.Filled.Settings" IconColor="Color.Primary">@L["Settings"]</MudMenuItem>
+                <MudDivider />
+                <MudMenuItem Icon="@Icons.Material.Filled.ExitToApp" IconColor="Color.Error">@L["SignOut"]</MudMenuItem>
+            </ChildContent>
+        </MudMenu>
+    </MudAppBar>
+
+    @* LEFT NAVIGATION *@
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="2" Variant="DrawerVariant.Responsive" ClipMode="DrawerClipMode.Always">
+        <MudNavMenu>
+            <MudNavLink Href="/" Icon="@Icons.Material.Filled.Dashboard" IconColor="Color.Primary" Class="wrkflo-nav-link">@L["Dashboard"]</MudNavLink>
+            <MudNavLink Href="/forms" Icon="@Icons.Material.Filled.Description" IconColor="Color.Primary" Class="wrkflo-nav-link">@L["Forms"]</MudNavLink>
+            <MudNavLink Href="/workflows" Icon="@Icons.Material.Filled.AccountTree" IconColor="Color.Primary" Class="wrkflo-nav-link">@L["Workflows"]</MudNavLink>
+            <MudNavLink Href="/formosa" Icon="@Icons.Material.Filled.BorderAll" IconColor="Color.Primary" Class="wrkflo-nav-link">Formosa (POC)</MudNavLink>
+        </MudNavMenu>
+    </MudDrawer>
+
+    @* MAIN CONTENT — full width, no MaxWidth container *@
+    <MudMainContent>
+        <div class="formosa-layout-content">
+            @Body
+        </div>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    private bool _drawerOpen = false;
+    private List<NavSearch.SearchResult> _searchResults = [];
+
+    private void ToggleDrawer() => _drawerOpen = !_drawerOpen;
+
+    private void OnSearchForms(string query) { }
+    private void OnSearchResultSelected(NavSearch.SearchResult result) { }
+}
