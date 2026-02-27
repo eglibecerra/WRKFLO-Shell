@@ -16,13 +16,26 @@ public class FormSchema
 
 /// <summary>
 /// A horizontal band on the form. Contains 1–4 columns.
+/// LayoutType drives the CSS grid template (e.g. "1-col", "2-col", "1-2-col").
 /// </summary>
 public class FormSection
 {
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public string Label { get; set; } = "Section";
+    public string LayoutType { get; set; } = "1-col";
     public int Columns { get; set; } = 1;
     public List<FormRow> Rows { get; set; } = new();
+}
+
+/// <summary>
+/// UI-only helper — not serialised to schema. Defines available layout options.
+/// </summary>
+public class FormLayoutDefinition
+{
+    public string Id { get; set; } = "";
+    public string Label { get; set; } = "";
+    public int ColumnCount { get; set; } = 1;
+    public string GridTemplate { get; set; } = "1fr";
 }
 
 /// <summary>
