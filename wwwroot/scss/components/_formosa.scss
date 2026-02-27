@@ -2,21 +2,23 @@
 // Formosa — Form Designer
 // =============================
 
-// ── Full-width layout wrapper ──
-.formosa-layout-content {
-    padding: 0;
-    height: calc(100vh - 64px);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+// ── MudMainContent override for full-height designer ──
+.formosa-main-content {
+    padding: 0 !important;
+    height: calc(100vh - 64px) !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
 }
 
 // ── Shell: top bar + tab bar + main ──
 .fd-shell {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    flex: 1;
+    min-height: 0;
     overflow: hidden;
+    width: 100%;
 }
 
 // ── TOP BAR ──
@@ -101,13 +103,18 @@
 // ── MAIN AREA ──
 .fd-main {
     display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
     flex: 1;
+    min-height: 0;
     overflow: hidden;
+    width: 100%;
 }
 
 // ── CANVAS ──
 .fd-canvas {
     flex: 1;
+    min-width: 0;
     background: #ffffff;
     overflow-y: auto;
     padding: 40px;
