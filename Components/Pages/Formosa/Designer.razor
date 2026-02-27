@@ -13,19 +13,15 @@
             <MudIconButton Icon="@Icons.Material.Filled.ArrowBack" Size="Size.Small" Color="Color.Default" />
             <span class="fd-form-name">@_formName</span>
             <span class="fd-draft-badge">
-                <MudIcon Icon="@Icons.Material.Filled.Circle" Size="Size.Small" Style="font-size:8px; color: #3B82F6;" Class="mr-1" />
+                <MudIcon Icon="@Icons.Material.Filled.Circle" Size="Size.Small" Style="font-size:8px; color:#3B82F6;" Class="mr-1" />
                 Draft · @(_isDirty ? "Unsaved" : "Saved")
             </span>
         </div>
         <div class="fd-topbar-right">
             <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small"
-                       StartIcon="@Icons.Material.Filled.Save" OnClick="SaveForm">
-                Save
-            </MudButton>
+                       StartIcon="@Icons.Material.Filled.Save" OnClick="SaveForm">Save</MudButton>
             <MudButton Variant="Variant.Outlined" Color="Color.Default" Size="Size.Small"
-                       StartIcon="@Icons.Material.Filled.Spellcheck">
-                Check content
-            </MudButton>
+                       StartIcon="@Icons.Material.Filled.Spellcheck">Check content</MudButton>
         </div>
     </div>
 
@@ -38,14 +34,12 @@
                     @onclick='() => _activeTab = "preview"'>Preview and test</button>
         </div>
         <div class="fd-toolbar">
-            <MudIconButton Icon="@Icons.Material.Filled.Undo" Size="Size.Small" Color="Color.Default" Disabled="true" />
-            <MudIconButton Icon="@Icons.Material.Filled.Redo" Size="Size.Small" Color="Color.Default" Disabled="true" />
-            <MudDivider Vertical="true" FlexItem="true" Class="mx-1" Style="height:20px; align-self:center;" />
-            <MudButton Variant="Variant.Text" Size="Size.Small" Color="Color.Default"
+            <MudIconButton Icon="@Icons.Material.Filled.Undo" Size="Size.Small" Disabled="true" />
+            <MudIconButton Icon="@Icons.Material.Filled.Redo" Size="Size.Small" Disabled="true" />
+            <MudDivider Vertical="true" FlexItem="true" Class="mx-1" Style="height:20px;align-self:center;" />
+            <MudButton Variant="Variant.Text" Size="Size.Small"
                        StartIcon="@Icons.Material.Filled.Code"
-                       OnClick="() => _showJson = !_showJson">
-                HTML
-            </MudButton>
+                       OnClick="() => _showJson = !_showJson">HTML</MudButton>
         </div>
     </div>
 
@@ -63,12 +57,12 @@
                 @if (!_schema.Sections.Any())
                 {
                     <div class="fd-canvas-empty">
-                        <MudIcon Icon="@Icons.Material.Outlined.DragIndicator" Size="Size.Large" Color="Color.Tertiary" />
+                        <MudIcon Icon="@Icons.Material.Outlined.Dashboard" Size="Size.Large" Color="Color.Tertiary" />
                         <MudText Typo="Typo.body1" Color="Color.Secondary" Class="mt-2">
-                            Select a layout from the panel on the right
+                            Select a layout section from the panel on the right
                         </MudText>
                         <MudText Typo="Typo.caption" Color="Color.Tertiary">
-                            or drag a section type onto the canvas
+                            Then drag form elements into each column
                         </MudText>
                     </div>
                 }
@@ -95,19 +89,100 @@
                                 </div>
 
                                 @* Column grid *@
-                                <div class="fd-section-columns"
-                                     style="grid-template-columns: @def.GridTemplate;">
+                                <div class="fd-section-columns" style="grid-template-columns: @def.GridTemplate;">
                                     @foreach (var cell in formSection.Rows.First().Cells.OrderBy(c => c.ColumnIndex))
                                     {
-                                        <div class="fd-cell"
+                                        var sId = formSection.Id;
+                                        var cId = cell.Id;
+                                        <div class="fd-cell @(cell.Elements.Any() ? "fd-cell-has-elements" : "")"
                                              @ondragover:preventDefault="true"
-                                             @ondrop:preventDefault="true">
-                                            <div class="fd-cell-placeholder">
-                                                <MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Small" Color="Color.Tertiary" />
-                                                <MudText Typo="Typo.caption" Color="Color.Tertiary" Class="mt-1">
-                                                    Add element here
-                                                </MudText>
-                                            </div>
+                                             @ondrop:preventDefault="true"
+                                             @ondrop="() => OnCellDrop(sId, cId)">
+
+                                            @if (cell.Elements.Any())
+                                            {
+                                                @* Render elements *@
+                                                <div class="fd-cell-elements">
+                                                    @foreach (var el in cell.Elements)
+                                                    {
+                                                        <div class="fd-element">
+                                                            @if (el.Type == "label")
+                                                            {
+                                                                <span class="fd-el-label-display">
+                                                                    @el.Props.GetValueOrDefault("text", "Label")
+                                                                </span>
+                                                            }
+                                                            else if (el.Type == "input-text")
+                                                            {
+                                                                <div class="fd-el-field">
+                                                                    <label class="fd-el-label-text">@el.Props.GetValueOrDefault("label", "Text Field")</label>
+                                                                    <input type="text" class="fd-el-input"
+                                                                           placeholder="@el.Props.GetValueOrDefault("placeholder", "Enter text...")"
+                                                                           disabled />
+                                                                </div>
+                                                            }
+                                                            else if (el.Type == "input-number")
+                                                            {
+                                                                <div class="fd-el-field">
+                                                                    <label class="fd-el-label-text">@el.Props.GetValueOrDefault("label", "Number")</label>
+                                                                    <input type="number" class="fd-el-input" placeholder="0" disabled />
+                                                                </div>
+                                                            }
+                                                            else if (el.Type == "input-date")
+                                                            {
+                                                                <div class="fd-el-field">
+                                                                    <label class="fd-el-label-text">@el.Props.GetValueOrDefault("label", "Date")</label>
+                                                                    <input type="date" class="fd-el-input" disabled />
+                                                                </div>
+                                                            }
+                                                            else if (el.Type == "input-checkbox")
+                                                            {
+                                                                <div class="fd-el-checkbox">
+                                                                    <input type="checkbox" disabled />
+                                                                    <label class="fd-el-label-text">@el.Props.GetValueOrDefault("label", "Checkbox")</label>
+                                                                </div>
+                                                            }
+                                                            else if (el.Type == "input-dropdown")
+                                                            {
+                                                                <div class="fd-el-field">
+                                                                    <label class="fd-el-label-text">@el.Props.GetValueOrDefault("label", "Dropdown")</label>
+                                                                    <select class="fd-el-input" disabled>
+                                                                        <option>Select an option...</option>
+                                                                    </select>
+                                                                </div>
+                                                            }
+                                                            else if (el.Type == "input-textarea")
+                                                            {
+                                                                <div class="fd-el-field">
+                                                                    <label class="fd-el-label-text">@el.Props.GetValueOrDefault("label", "Text Area")</label>
+                                                                    <textarea class="fd-el-input fd-el-textarea"
+                                                                              placeholder="@el.Props.GetValueOrDefault("placeholder", "Enter text...")"
+                                                                              rows="3" disabled></textarea>
+                                                                </div>
+                                                            }
+                                                            @* Remove element button *@
+                                                            <div @onclick:stopPropagation="true" class="fd-element-remove">
+                                                                <MudIconButton Icon="@Icons.Material.Outlined.Close"
+                                                                               Size="Size.Small" Color="Color.Error"
+                                                                               OnClick="() => RemoveElement(sId, cId, el.Id)" />
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    @* Drop more zone *@
+                                                    <div class="fd-cell-drop-more">
+                                                        <MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Small" Color="Color.Tertiary" />
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="fd-cell-placeholder">
+                                                    <MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Small" Color="Color.Tertiary" />
+                                                    <MudText Typo="Typo.caption" Color="Color.Tertiary" Class="mt-1">
+                                                        Add element here
+                                                    </MudText>
+                                                </div>
+                                            }
                                         </div>
                                     }
                                 </div>
@@ -116,7 +191,7 @@
                     </div>
                 }
 
-                @* JSON panel (toggled by HTML button) *@
+                @* JSON drawer *@
                 @if (_showJson)
                 {
                     <div class="fd-json-drawer">
@@ -132,6 +207,8 @@
 
             @* ── RIGHT SIDEBAR ── *@
             <div class="fd-sidebar">
+
+                @* Layout section types *@
                 <div class="fd-sidebar-section">
                     <div class="fd-sidebar-heading">
                         <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown" Size="Size.Small" Class="mr-1" />
@@ -155,13 +232,34 @@
                         }
                     </div>
                 </div>
+
+                <MudDivider Class="my-3" />
+
+                @* Form elements *@
+                <div class="fd-sidebar-section">
+                    <div class="fd-sidebar-heading">
+                        <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown" Size="Size.Small" Class="mr-1" />
+                        <span>Form elements</span>
+                    </div>
+                    <div class="fd-element-list">
+                        @foreach (var elDef in _elementDefs)
+                        {
+                            <div class="fd-element-item"
+                                 draggable="true"
+                                 @ondragstart="() => OnElementDragStart(elDef.Type)">
+                                <MudIcon Icon="@elDef.Icon" Size="Size.Small" Color="Color.Primary" Class="mr-2" />
+                                <span>@elDef.Label</span>
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
         }
         else
         {
             @* ── PREVIEW TAB ── *@
             <div class="fd-preview">
-                <MudText Typo="Typo.h6" Class="mb-4">@_formName</MudText>
+                <MudText Typo="Typo.h6" Class="mb-6">@_formName</MudText>
                 @if (!_schema.Sections.Any())
                 {
                     <MudText Color="Color.Secondary">No sections added yet.</MudText>
@@ -175,7 +273,60 @@
                             @foreach (var cell in formSection.Rows.First().Cells.OrderBy(c => c.ColumnIndex))
                             {
                                 <div class="fd-preview-cell">
-                                    <div class="fd-preview-empty-cell">empty column</div>
+                                    @foreach (var el in cell.Elements)
+                                    {
+                                        <div class="fd-preview-element">
+                                            @if (el.Type == "label")
+                                            {
+                                                <p class="fd-preview-label">@el.Props.GetValueOrDefault("text", "Label")</p>
+                                            }
+                                            else if (el.Type == "input-text")
+                                            {
+                                                <div class="fd-preview-field">
+                                                    <label>@el.Props.GetValueOrDefault("label", "Text Field")</label>
+                                                    <input type="text" placeholder="@el.Props.GetValueOrDefault("placeholder", "")" class="fd-preview-input" />
+                                                </div>
+                                            }
+                                            else if (el.Type == "input-number")
+                                            {
+                                                <div class="fd-preview-field">
+                                                    <label>@el.Props.GetValueOrDefault("label", "Number")</label>
+                                                    <input type="number" placeholder="0" class="fd-preview-input" />
+                                                </div>
+                                            }
+                                            else if (el.Type == "input-date")
+                                            {
+                                                <div class="fd-preview-field">
+                                                    <label>@el.Props.GetValueOrDefault("label", "Date")</label>
+                                                    <input type="date" class="fd-preview-input" />
+                                                </div>
+                                            }
+                                            else if (el.Type == "input-checkbox")
+                                            {
+                                                <div class="fd-preview-checkbox">
+                                                    <input type="checkbox" id="@el.Id" />
+                                                    <label for="@el.Id">@el.Props.GetValueOrDefault("label", "Checkbox")</label>
+                                                </div>
+                                            }
+                                            else if (el.Type == "input-dropdown")
+                                            {
+                                                <div class="fd-preview-field">
+                                                    <label>@el.Props.GetValueOrDefault("label", "Dropdown")</label>
+                                                    <select class="fd-preview-input">
+                                                        <option>Select an option...</option>
+                                                    </select>
+                                                </div>
+                                            }
+                                            else if (el.Type == "input-textarea")
+                                            {
+                                                <div class="fd-preview-field">
+                                                    <label>@el.Props.GetValueOrDefault("label", "Text Area")</label>
+                                                    <textarea placeholder="@el.Props.GetValueOrDefault("placeholder", "")"
+                                                              rows="3" class="fd-preview-input fd-preview-textarea"></textarea>
+                                                </div>
+                                            }
+                                        </div>
+                                    }
                                 </div>
                             }
                         </div>
@@ -187,15 +338,18 @@
 </div>
 
 @code {
+    // ── State ──
     private FormSchema _schema = new();
     private string _formName = "Form 1";
     private string _activeTab = "design";
     private string? _selectedSectionId;
     private string _draggingLayoutId = "";
+    private string _draggingElementType = "";
     private bool _isDirty = false;
     private bool _showJson = false;
     private string _schemaJson = "";
 
+    // ── Layout definitions ──
     private readonly List<FormLayoutDefinition> _layouts = new()
     {
         new() { Id = "1-col",   Label = "1 column",   ColumnCount = 1, GridTemplate = "1fr" },
@@ -206,12 +360,32 @@
         new() { Id = "custom",  Label = "Custom",     ColumnCount = 3, GridTemplate = "1fr 1fr 1fr" },
     };
 
+    // ── Element definitions (UI only) ──
+    private record ElementDef(string Type, string Label, string Icon);
+
+    private readonly List<ElementDef> _elementDefs = new()
+    {
+        new("label",          "Label",     Icons.Material.Filled.TextFields),
+        new("input-text",     "Text",      Icons.Material.Outlined.ShortText),
+        new("input-number",   "Number",    Icons.Material.Outlined.Numbers),
+        new("input-date",     "Date",      Icons.Material.Outlined.DateRange),
+        new("input-checkbox", "Checkbox",  Icons.Material.Outlined.CheckBox),
+        new("input-dropdown", "Dropdown",  Icons.Material.Outlined.ArrowDropDownCircle),
+        new("input-textarea", "Text Area", Icons.Material.Outlined.Notes),
+    };
+
     protected override void OnInitialized() => UpdateJson();
 
+    // ── Layout helpers ──
     private FormLayoutDefinition GetLayout(string id) =>
         _layouts.FirstOrDefault(l => l.Id == id) ?? _layouts[0];
 
-    private void OnLayoutDragStart(string layoutId) => _draggingLayoutId = layoutId;
+    // ── Drag: layout sections ──
+    private void OnLayoutDragStart(string layoutId)
+    {
+        _draggingLayoutId = layoutId;
+        _draggingElementType = "";
+    }
 
     private void OnCanvasDrop()
     {
@@ -222,6 +396,49 @@
         }
     }
 
+    // ── Drag: elements ──
+    private void OnElementDragStart(string elementType)
+    {
+        _draggingElementType = elementType;
+        _draggingLayoutId = "";
+    }
+
+    private void OnCellDrop(string sectionId, string cellId)
+    {
+        if (string.IsNullOrEmpty(_draggingElementType)) return;
+
+        var cell = _schema.Sections
+            .FirstOrDefault(s => s.Id == sectionId)
+            ?.Rows.SelectMany(r => r.Cells)
+            .FirstOrDefault(c => c.Id == cellId);
+
+        if (cell == null) return;
+
+        cell.Elements.Add(new FormElement
+        {
+            Type = _draggingElementType,
+            Props = GetDefaultProps(_draggingElementType)
+        });
+
+        _draggingElementType = "";
+        _schema.UpdatedAt = DateTime.UtcNow;
+        _isDirty = true;
+        UpdateJson();
+    }
+
+    private Dictionary<string, string> GetDefaultProps(string type) => type switch
+    {
+        "label"          => new() { ["text"] = "Label" },
+        "input-text"     => new() { ["label"] = "Text Field",  ["placeholder"] = "Enter text...",  ["required"] = "false" },
+        "input-number"   => new() { ["label"] = "Number",      ["placeholder"] = "0",              ["required"] = "false" },
+        "input-date"     => new() { ["label"] = "Date",                                             ["required"] = "false" },
+        "input-checkbox" => new() { ["label"] = "Checkbox",                                         ["required"] = "false" },
+        "input-dropdown" => new() { ["label"] = "Dropdown",    ["options"] = "Option 1,Option 2,Option 3", ["required"] = "false" },
+        "input-textarea" => new() { ["label"] = "Text Area",   ["placeholder"] = "Enter text...",  ["required"] = "false", ["rows"] = "3" },
+        _                => new()
+    };
+
+    // ── Section actions ──
     private void AddSection(string layoutId)
     {
         var def = GetLayout(layoutId);
@@ -251,6 +468,19 @@
     {
         _schema.Sections.RemoveAll(s => s.Id == id);
         if (_selectedSectionId == id) _selectedSectionId = null;
+        _schema.UpdatedAt = DateTime.UtcNow;
+        _isDirty = true;
+        UpdateJson();
+    }
+
+    private void RemoveElement(string sectionId, string cellId, string elementId)
+    {
+        var cell = _schema.Sections
+            .FirstOrDefault(s => s.Id == sectionId)
+            ?.Rows.SelectMany(r => r.Cells)
+            .FirstOrDefault(c => c.Id == cellId);
+
+        cell?.Elements.RemoveAll(e => e.Id == elementId);
         _schema.UpdatedAt = DateTime.UtcNow;
         _isDirty = true;
         UpdateJson();

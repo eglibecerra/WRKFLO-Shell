@@ -322,6 +322,127 @@
     line-height: 1.2;
 }
 
+// ── ELEMENT PALETTE (sidebar) ──
+.fd-element-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.fd-element-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--mud-palette-divider);
+    font-size: 13px;
+    cursor: grab;
+    user-select: none;
+    transition: border-color 0.15s, background 0.15s;
+
+    &:hover {
+        border-color: var(--mud-palette-primary);
+        background: rgba(79, 70, 229, 0.04);
+    }
+
+    &:active { cursor: grabbing; }
+}
+
+// ── ELEMENTS IN CELLS (designer canvas) ──
+.fd-cell-has-elements {
+    align-items: stretch;
+    padding: 8px;
+}
+
+.fd-cell-elements {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+}
+
+.fd-element {
+    position: relative;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
+    padding: 10px 36px 10px 12px;
+    transition: border-color 0.15s;
+
+    &:hover {
+        border-color: var(--mud-palette-primary);
+
+        .fd-element-remove {
+            opacity: 1;
+        }
+    }
+}
+
+.fd-element-remove {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.fd-el-label-display {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--mud-palette-text-primary);
+}
+
+.fd-el-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.fd-el-label-text {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--mud-palette-text-secondary);
+}
+
+.fd-el-input {
+    width: 100%;
+    padding: 6px 10px;
+    border: 1px solid #CBD5E1;
+    border-radius: 4px;
+    font-size: 13px;
+    color: var(--mud-palette-text-primary);
+    background: #fff;
+    opacity: 0.7;
+
+    &:disabled { cursor: default; background: #F8FAFC; }
+}
+
+.fd-el-textarea {
+    resize: none;
+}
+
+.fd-el-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+
+    input[type="checkbox"] { width: 16px; height: 16px; }
+}
+
+.fd-cell-drop-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border: 1px dashed #CBD5E1;
+    border-radius: 4px;
+    opacity: 0.5;
+    transition: opacity 0.15s, border-color 0.15s;
+
+    &:hover { opacity: 1; border-color: var(--mud-palette-primary); }
+}
+
 // ── PREVIEW TAB ──
 .fd-preview {
     flex: 1;
@@ -347,4 +468,54 @@
     border-radius: 4px;
     padding: 12px;
     text-align: center;
+}
+
+.fd-preview-element {
+    margin-bottom: 12px;
+}
+
+.fd-preview-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--mud-palette-text-primary);
+    margin: 0 0 4px;
+}
+
+.fd-preview-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    label {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--mud-palette-text-secondary);
+    }
+}
+
+.fd-preview-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #CBD5E1;
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--mud-palette-text-primary);
+    background: #fff;
+    outline: none;
+    transition: border-color 0.15s;
+
+    &:focus { border-color: var(--mud-palette-primary); }
+}
+
+.fd-preview-textarea {
+    resize: vertical;
+}
+
+.fd-preview-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+
+    input[type="checkbox"] { width: 16px; height: 16px; }
 }
